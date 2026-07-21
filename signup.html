@@ -320,6 +320,16 @@ createdAt:serverTimestamp()
 
 });
 
+await setDoc(doc(db,"usernames",username),{
+
+uid:uid,
+
+email:email,
+
+createdAt:serverTimestamp()
+
+});
+
 showPopup(
 "Success",
 "Merchant account created successfully."
@@ -348,4 +358,4 @@ false
 </script>
 
 </body>
-</html>
+    </html>
