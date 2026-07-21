@@ -89,7 +89,18 @@ transform:rotate(90deg);
 }
 .logo{font-size:30px;font-weight:700}
 .logo span{color:#3b82f6}
-.icon,.avatar{width:48px;height:48px;border-radius:14px;background:#182235;display:flex;align-items:center;justify-content:center}
+.icon,.avatar{
+width:48px;
+height:48px;
+border-radius:14px;
+background:var(--card);
+border:1px solid var(--border);
+display:flex;
+align-items:center;
+justify-content:center;
+transition:.3s;
+box-shadow:0 3px 10px rgba(0,0,0,.05);
+}
 .right{display:flex;gap:10px}
 .card{
 background:var(--card);
@@ -459,6 +470,52 @@ color:#f59e0b;
 
 .failed i{
 color:#ef4444;
+}
+
+body.light .card{
+
+box-shadow:0 8px 24px rgba(15,23,42,.08);
+
+}
+
+body.light .sidebar{
+
+box-shadow:0 0 25px rgba(15,23,42,.08);
+
+}
+
+body.light .notification-panel{
+
+box-shadow:0 15px 35px rgba(15,23,42,.10);
+
+}
+
+body.light .logo{
+
+color:#111827;
+
+}
+
+body.light .logo span{
+
+color:#2563eb;
+
+}
+
+body.light .btn.secondary{
+
+background:#fff;
+
+border:1px solid var(--border);
+
+color:#111827;
+
+}
+
+body.light .activity-item:hover{
+
+background:#f8fafc;
+
 }
 </style>
 </head>
