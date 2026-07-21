@@ -652,7 +652,7 @@ async function checkPaymentStatus(checkoutRequestId) {
             const result =
                 await response.json();
 
-            if (result.status === "SUCCESS") {
+            if (result.data.status === "SUCCESS") {
 
                 clearInterval(timer);
 
@@ -669,9 +669,9 @@ async function checkPaymentStatus(checkoutRequestId) {
             }
 
             if (
-                result.status === "FAILED" ||
-                result.status === "CANCELLED"
-            ) {
+    result.data.status === "FAILED" ||
+    result.data.status === "CANCELLED"
+) {
 
                 clearInterval(timer);
 
@@ -705,7 +705,7 @@ async function checkPaymentStatus(checkoutRequestId) {
 
         }
 
-    }, 5000);
+    }, 3000);
 
 }
 
