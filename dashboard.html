@@ -1,0 +1,1098 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>AUTOPAY Dashboard</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
+body{background:#0c1424;color:#fff}
+.container{max-width:430px;margin:auto;padding:14px}
+.top{display:flex;justify-content:space-between;align-items:center;margin:8px 0 18px}
+
+.left{
+display:flex;
+align-items:center;
+gap:12px;
+}
+
+.notify{
+position:relative;
+}
+
+.dot{
+position:absolute;
+top:11px;
+right:11px;
+width:8px;
+height:8px;
+background:#ef4444;
+border-radius:50%;
+border:2px solid #182235;
+}
+
+.logo i{
+margin-right:8px;
+color:#3b82f6;
+}
+
+.menu-btn{
+cursor:pointer;
+transition:.3s;
+}
+
+.menu-btn:hover{
+transform:rotate(90deg);
+}
+.logo{font-size:30px;font-weight:700}
+.logo span{color:#3b82f6}
+.icon,.avatar{width:48px;height:48px;border-radius:14px;background:#182235;display:flex;align-items:center;justify-content:center}
+.right{display:flex;gap:10px}
+.card{background:#182235;border-radius:18px;padding:16px;margin-bottom:16px;border:1px solid #253149}
+.greet{display:flex;justify-content:space-between;align-items:center}
+.small{color:#9aa7bd;font-size:13px}
+.balances{display:grid;grid-template-columns:1fr 1fr}
+.bal{padding:14px}
+.bal:first-child{border-right:1px solid #293650}
+.amount{font-size:18px;font-weight:bold;margin:10px 0}
+.badge{
+display:inline-block;
+padding:6px 10px;
+border-radius:10px;
+background:#1e3a8a;
+color:#dbeafe;
+font-size:12px;
+cursor:pointer;
+transition:.3s;
+}
+
+.badge:hover{
+background:#2563eb;
+transform:translateY(-2px);
+}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+.btn{
+padding:18px;
+border-radius:14px;
+text-align:center;
+font-weight:bold;
+cursor:pointer;
+transition:.3s;
+user-select:none;
+}
+
+.btn:hover{
+transform:translateY(-3px);
+}
+
+.btn:active{
+transform:scale(.97);
+}
+.primary{background:#2563eb}
+.secondary{background:#2a354b}
+.grid{display:grid;grid-template-columns:1fr 1fr;border:1px solid #2b3750;border-radius:16px;overflow:hidden}
+.cell{padding:18px;border-right:1px solid #2b3750;border-bottom:1px solid #2b3750}
+.cell:nth-child(2n){border-right:none}
+  
+.chart{
+height:220px;
+padding:10px;
+}
+
+.chart canvas{
+width:100%!important;
+height:100%!important;
+}
+.status{color:#f59e0b}
+.float{position:fixed;right:20px;bottom:20px;width:60px;height:60px;background:#2563eb;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:28px}
+/* ===== Sidebar ===== */
+
+.sidebar{
+position:fixed;
+top:0;
+left:-280px;
+width:260px;
+height:100%;
+background:#182235;
+z-index:1000;
+transition:.35s;
+overflow-y:auto;
+box-shadow:5px 0 20px rgba(0,0,0,.4);
+}
+
+.sidebar.show{
+left:0;
+}
+
+.overlay{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,.55);
+backdrop-filter:blur(2px);
+display:none;
+z-index:999;
+}
+
+.overlay.show{
+display:block;
+}
+
+.side-header{
+padding:25px 20px;
+font-size:28px;
+font-weight:bold;
+border-bottom:1px solid #2b3750;
+}
+
+.side-header i{
+color:#3b82f6;
+margin-right:8px;
+}
+
+.side-header span{
+color:#3b82f6;
+}
+
+.side-menu{
+padding:15px;
+}
+
+.side-menu a{
+display:flex;
+align-items:center;
+gap:15px;
+padding:14px;
+margin-bottom:8px;
+border-radius:12px;
+color:#fff;
+text-decoration:none;
+transition:.3s;
+}
+
+.side-menu a:hover{
+background:#2563eb;
+}
+
+.side-menu i{
+width:22px;
+text-align:center;
+}
+
+.side-menu a.active{
+background:#2563eb;
+color:#fff;
+}
+
+.side-menu a.active i{
+color:#fff;
+}
+
+/* ===== Notification Panel ===== */
+
+.notification-panel{
+
+position:fixed;
+
+top:80px;
+
+right:-380px;
+
+width:340px;
+
+max-width:90%;
+
+background:#182235;
+
+border:1px solid #2b3750;
+
+border-radius:18px;
+
+box-shadow:0 15px 35px rgba(0,0,0,.45);
+
+transition:.35s;
+
+z-index:1200;
+
+overflow:hidden;
+
+}
+
+.notification-panel.show{
+
+right:15px;
+
+}
+
+.notification-header{
+
+padding:18px;
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+border-bottom:1px solid #2b3750;
+
+font-weight:bold;
+
+}
+
+.notification-body{
+
+max-height:350px;
+
+overflow-y:auto;
+
+}
+
+.notification-item{
+
+padding:16px 18px;
+
+border-bottom:1px solid #253149;
+
+cursor:pointer;
+
+transition:.3s;
+
+}
+
+.notification-item:hover{
+
+background:#1f2c45;
+
+}
+
+.notification-title{
+
+font-weight:bold;
+
+margin-bottom:5px;
+
+}
+
+.notification-time{
+
+font-size:12px;
+
+color:#94a3b8;
+
+}
+
+.close-notification{
+
+cursor:pointer;
+
+font-size:18px;
+
+}
+
+.activity-header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:18px;
+}
+
+.activity-header h3{
+font-size:15px;
+letter-spacing:.5px;
+}
+
+.activity-header a{
+color:#9aa7bd;
+text-decoration:none;
+font-size:14px;
+}
+
+.activity-list{
+display:flex;
+flex-direction:column;
+gap:0;
+}
+
+.activity-item{
+display:flex;
+align-items:center;
+padding:14px 0;
+border-bottom:1px solid #2b3750;
+}
+
+.activity-item:last-child{
+border-bottom:none;
+}
+
+.activity-item:hover{
+transform:translateY(-2px);
+border-color:#3b82f6;
+}
+
+.activity-left{
+width:45%;
+}
+
+.activity-middle{
+width:28%;
+text-align:left;
+}
+
+.activity-title{
+font-size:17px;
+font-weight:700;
+}
+
+.activity-time{
+font-size:11px;
+margin-top:2px;
+}
+
+.activity-amount{
+font-size:17px;
+font-weight:700;
+}
+
+.activity-right{
+font-size:15px;
+}
+  
+.activity-right{
+width:27%;
+display:flex;
+align-items:center;
+justify-content:flex-end;
+gap:6px;
+font-size:14px;
+font-weight:600;
+}
+
+.activity-right i{
+font-size:11px;
+}
+
+.activity-columns{
+display:flex;
+padding:10px 0;
+margin-bottom:4px;
+font-size:13px;
+font-weight:600;
+color:#9aa7bd;
+border-bottom:1px solid #2b3750;
+}
+
+.activity-columns div:nth-child(1){
+width:45%;
+}
+
+.activity-columns div:nth-child(2){
+width:28%;
+}
+
+.activity-columns div:nth-child(3){
+width:27%;
+text-align:right;
+}
+  
+.success i{
+color:#22c55e;
+}
+
+.pending i{
+color:#f59e0b;
+}
+
+.failed i{
+color:#ef4444;
+}
+</style>
+</head>
+<body>
+<div class="overlay"></div>
+
+<div class="sidebar">
+
+<div class="side-header" style="display:flex;justify-content:space-between;align-items:center;">
+
+<div>
+<i class="fas fa-bolt"></i>
+AUTO<span>PAY</span>
+</div>
+
+<div id="closeSidebar" style="cursor:pointer;">
+<i class="fas fa-times"></i>
+</div>
+
+</div>
+
+<div class="side-menu">
+
+<a href="dashboard.html" class="active">
+<i class="fas fa-home"></i>
+Dashboard
+</a>
+
+<a href="transactions.html">
+<i class="fas fa-money-check-dollar"></i>
+Transactions
+</a>
+
+<a href="wallet.html">
+<i class="fas fa-wallet"></i>
+Wallet
+</a>
+
+<a href="accounts.html">
+<i class="fas fa-building-columns"></i>
+Payment Accounts
+</a>
+
+<a href="links.html">
+<i class="fas fa-link"></i>
+Payment Links
+</a>
+
+<a href="apikeys.html">
+<i class="fas fa-key"></i>
+API Keys
+</a>
+
+<a href="apilogs.html">
+<i class="fas fa-file-lines"></i>
+API Logs
+</a>
+
+<a href="docs.html">
+<i class="fas fa-book"></i>
+Documentation
+</a>
+
+<a href="profile.html">
+<i class="fas fa-user"></i>
+Profile
+</a>
+
+<a href="settings.html">
+<i class="fas fa-gear"></i>
+Settings
+</a>
+
+<a href="logout.html">
+<i class="fas fa-right-from-bracket"></i>
+Logout
+</a>
+
+</div>
+
+</div>
+<div class="container">
+<div class="top">
+
+<div class="left">
+
+<div class="icon menu-btn">
+<i class="fas fa-bars"></i>
+</div>
+
+<div class="logo">
+<i class="fas fa-bolt"></i>
+AUTO<span>PAY</span>
+</div>
+
+</div>
+
+<div class="right">
+
+<div class="icon">
+<i class="fas fa-moon"></i>
+</div>
+
+<div class="icon notify">
+
+<i class="fas fa-bell"></i>
+
+<span class="dot"></span>
+
+</div>
+
+<div class="avatar" id="avatar">
+AC
+</div>
+
+</div>
+
+</div>
+
+<div class="card greet">
+
+<div>
+
+<h2 id="greeting">
+Good Morning
+</h2>
+
+<p id="date" class="small"></p>
+
+</div>
+
+<div class="icon">
+
+<i class="fas fa-pen"></i>
+
+</div>
+
+</div>
+
+<div class="card balances">
+<div class="bal">
+<div class="small">SERVICE BALANCE</div>
+<div class="amount" id="serviceBalance">
+KES 0.00
+</div>
+<span class="badge" id="serviceTopup">Topup</span>
+</div>
+<div class="bal">
+<div class="small">WALLET BALANCE</div>
+<div class="amount" id="walletBalance">
+KES 0.00
+</div>
+<span class="badge" id="walletTopup">Topup</span>
+</div>
+</div>
+
+<div class="actions">
+<div class="btn primary" id="gatewayBtn">AUTOPAY Gateway</div>
+<div class="btn secondary" id="withdrawBtn">Withdraw</div>
+</div>
+
+<div class="small" style="margin:8px 0">PROCESSING ACTIVITY</div>
+<div class="grid card" style="padding:0">
+<div class="cell"><div class="small">ACTIVE LINKS</div><h2 id="activeLinks">0</h2></div>
+<div class="cell"><div class="small">TRANSACTIONS</div><h2 id="transactions">0</h2></div>
+<div class="cell"><div class="small">PAYMENT ACCOUNTS</div><h2 id="accounts">0</h2></div>
+<div class="cell"><div class="small">COMPLETED</div><h2 id="completed">KES 0</h2></div>
+</div>
+
+<div class="card">
+<div style="display:flex;justify-content:space-between"><b>REVENUE HORIZON</b><span class="small">6 Month Tracker</span></div>
+<div class="chart">
+<canvas id="revenueChart"></canvas>
+</div>
+</div>
+
+<div class="card">
+
+<div class="activity-header">
+
+<h3>RECENT ACTIVITY STREAM</h3>
+
+<a href="transactions.html">View Archive</a>
+
+</div>
+
+<div class="activity-list">
+
+<div class="activity-columns">
+
+<div>Reference Identifier</div>
+
+<div>Volume</div>
+
+<div style="text-align:right;">State</div>
+
+</div>
+  
+<div class="activity-item">
+
+<div class="activity-left">
+
+<div class="activity-title">TXN001</div>
+
+<div class="activity-time">
+Jul 21, 10:53 AM
+</div>
+
+</div>
+
+<div class="activity-middle">
+
+<div class="activity-amount">
+KES 10
+</div>
+
+</div>
+
+<div class="activity-right failed">
+
+<i class="fas fa-circle"></i>
+
+Failed
+
+</div>
+
+</div>
+
+<div class="activity-item">
+
+<div class="activity-left">
+
+<div class="activity-title">TXN002</div>
+
+<div class="activity-time">
+Jul 21, 10:51 AM
+</div>
+
+</div>
+
+<div class="activity-middle">
+
+<div class="activity-amount">
+KES 500
+</div>
+
+</div>
+
+<div class="activity-right pending">
+
+<i class="fas fa-circle"></i>
+
+Pending
+
+</div>
+
+</div>
+
+<div class="activity-item">
+
+<div class="activity-left">
+
+<div class="activity-title">TXN003</div>
+
+<div class="activity-time">
+Jul 21, 09:30 AM
+</div>
+
+</div>
+
+<div class="activity-middle">
+
+<div class="activity-amount">
+KES 1,250
+</div>
+
+</div>
+
+<div class="activity-right success">
+
+<i class="fas fa-circle"></i>
+
+Success
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+  
+<div class="float"><i class="fa-brands fa-whatsapp"></i></div>
+
+<div class="notification-panel" id="notificationPanel">
+
+<div class="notification-header">
+
+<span>Notifications</span>
+
+<i class="fas fa-times close-notification" id="closeNotification"></i>
+
+</div>
+
+<div class="notification-body">
+
+<div class="notification-item">
+
+<div class="notification-title">
+
+Welcome to AUTOPAY
+
+</div>
+
+<div>
+
+Your merchant account has been created successfully.
+
+</div>
+
+<div class="notification-time">
+
+Just now
+
+</div>
+
+</div>
+
+<div class="notification-item">
+
+<div class="notification-title">
+
+API Ready
+
+</div>
+
+<div>
+
+Generate your first API key from Developer Settings.
+
+</div>
+
+<div class="notification-time">
+
+5 min ago
+
+</div>
+
+</div>
+
+<div class="notification-item">
+
+<div class="notification-title">
+
+Security
+
+</div>
+
+<div>
+
+Enable Two-Factor Authentication to protect your account.
+
+</div>
+
+<div class="notification-time">
+
+Yesterday
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
+<script type="module">
+import { auth, db } from "./firebase.js";
+
+import {
+onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
+
+import {
+doc,
+getDoc
+} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
+  
+const now=new Date();
+
+document.getElementById("date").innerHTML=
+now.toLocaleDateString(
+"en-US",
+{
+weekday:"short",
+month:"short",
+day:"numeric",
+year:"numeric"
+});
+
+let h=now.getHours();
+
+let greet="Good Evening";
+
+if(h<12){
+
+greet="Good Morning";
+
+}else if(h<18){
+
+greet="Good Afternoon";
+
+}
+
+onAuthStateChanged(auth, async(user)=>{
+
+if(!user){
+
+window.location.href="login.html";
+
+return;
+
+}
+
+try{
+
+const snap = await getDoc(doc(db,"users",user.uid));
+
+if(!snap.exists()){
+
+window.location.href="login.html";
+return;
+
+}
+
+const data = snap.data();
+
+document.getElementById("greeting").innerHTML =
+greet + ", " + data.fullName.split(" ")[0];
+
+document.getElementById("walletBalance").innerHTML =
+"KES " + Number(data.walletBalance || 0).toLocaleString();
+
+document.getElementById("serviceBalance").innerHTML =
+"KES " + Number(data.serviceBalance || 0).toLocaleString();
+
+document.getElementById("avatar").innerHTML =
+data.fullName.charAt(0).toUpperCase();
+
+}catch(error){
+
+console.error(error);
+window.location.href="login.html";
+
+}
+
+});
+
+// Navigation Function
+function openPage(page){
+    window.location.href = page;
+}
+
+// AUTOPAY Gateway
+document.getElementById("gatewayBtn").onclick = function(){
+    openPage("gateway.html");
+};
+
+// Withdraw
+document.getElementById("withdrawBtn").onclick = function(){
+    openPage("withdraw.html");
+};
+
+// Service Topup
+document.getElementById("serviceTopup").onclick = function(){
+    openPage("service-topup.html");
+};
+
+// Wallet Topup
+document.getElementById("walletTopup").onclick = function(){
+    openPage("wallet-topup.html");
+};
+
+// Profile
+document.querySelector(".avatar").onclick = function(){
+    openPage("profile.html");
+};
+
+// Notifications
+const notificationPanel =
+document.getElementById("notificationPanel");
+
+document.querySelector(".notify").onclick = function(){
+
+notificationPanel.classList.toggle("show");
+
+};
+
+// WhatsApp Support
+document.querySelector(".float").onclick = function(){
+    window.open("https://wa.me/254103446265", "_blank");
+};
+
+// Sidebar
+
+const menuBtn = document.querySelector(".menu-btn");
+const sidebar = document.querySelector(".sidebar");
+const overlay = document.querySelector(".overlay");
+
+menuBtn.onclick = function(){
+
+sidebar.classList.add("show");
+overlay.classList.add("show");
+document.body.style.overflow = "hidden";
+
+};
+
+function closeSidebar(){
+
+sidebar.classList.remove("show");
+overlay.classList.remove("show");
+document.body.style.overflow = "auto";
+
+}
+
+overlay.onclick = closeSidebar;
+document.getElementById("closeSidebar").onclick = closeSidebar;
+
+
+document.getElementById("closeNotification").onclick=function(){
+
+notificationPanel.classList.remove("show");
+
+};
+
+document.addEventListener("click",function(e){
+
+if(
+
+!notificationPanel.contains(e.target)
+
+&&
+
+!document.querySelector(".notify").contains(e.target)
+
+){
+
+notificationPanel.classList.remove("show");
+
+}
+
+});
+
+// Revenue Chart
+
+const ctx = document.getElementById("revenueChart");
+
+new Chart(ctx,{
+
+type:"line",
+
+data:{
+
+labels:[
+"Jan",
+"Feb",
+"Mar",
+"Apr",
+"May",
+"Jun"
+],
+
+datasets:[{
+
+label:"Revenue",
+
+data:[
+0,
+25000,
+42000,
+38000,
+56000,
+72000
+],
+
+borderColor:"#3b82f6",
+
+backgroundColor:"rgba(59,130,246,.15)",
+
+fill:true,
+
+tension:.4,
+
+pointRadius:5,
+
+pointBackgroundColor:"#3b82f6"
+
+}]
+
+},
+
+options:{
+
+responsive:true,
+
+maintainAspectRatio:false,
+
+plugins:{
+
+legend:{
+
+display:false
+
+}
+
+},
+
+scales:{
+
+x:{
+
+grid:{
+display:false
+},
+
+ticks:{
+color:"#9aa7bd"
+}
+
+},
+
+y:{
+
+grid:{
+color:"#253149"
+},
+
+ticks:{
+color:"#9aa7bd"
+}
+
+}
+
+}
+
+}
+
+});
+
+function animateCounter(id,end,prefix=""){
+
+let value=0;
+
+let step=Math.max(1,Math.ceil(end/60));
+
+const el=document.getElementById(id);
+
+const timer=setInterval(()=>{
+
+value+=step;
+
+if(value>=end){
+
+value=end;
+
+clearInterval(timer);
+
+}
+
+el.innerHTML=prefix+value.toLocaleString();
+
+},20);
+
+}
+
+animateCounter("activeLinks",12);
+
+animateCounter("transactions",846);
+
+animateCounter("accounts",4);
+
+animateCounter("completed",582430,"KES ");
+</script>
+</body>
+</html>
