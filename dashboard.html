@@ -605,92 +605,8 @@ KES 0.00
 <div style="text-align:right;">State</div>
 
 </div>
-  
-<div class="activity-item">
 
-<div class="activity-left">
-
-<div class="activity-title">TXN001</div>
-
-<div class="activity-time">
-Jul 21, 10:53 AM
-</div>
-
-</div>
-
-<div class="activity-middle">
-
-<div class="activity-amount">
-KES 10
-</div>
-
-</div>
-
-<div class="activity-right failed">
-
-<i class="fas fa-circle"></i>
-
-Failed
-
-</div>
-
-</div>
-
-<div class="activity-item">
-
-<div class="activity-left">
-
-<div class="activity-title">TXN002</div>
-
-<div class="activity-time">
-Jul 21, 10:51 AM
-</div>
-
-</div>
-
-<div class="activity-middle">
-
-<div class="activity-amount">
-KES 500
-</div>
-
-</div>
-
-<div class="activity-right pending">
-
-<i class="fas fa-circle"></i>
-
-Pending
-
-</div>
-
-</div>
-
-<div class="activity-item">
-
-<div class="activity-left">
-
-<div class="activity-title">TXN003</div>
-
-<div class="activity-time">
-Jul 21, 09:30 AM
-</div>
-
-</div>
-
-<div class="activity-middle">
-
-<div class="activity-amount">
-KES 1,250
-</div>
-
-</div>
-
-<div class="activity-right success">
-
-<i class="fas fa-circle"></i>
-
-Success
+<div id="recentTransactions"></div>
 
 </div>
 
@@ -1131,13 +1047,78 @@ let totalTransactions=0;
 
 let completedAmount=0;
 
+const recentContainer =
+document.getElementById("recentTransactions");
+
+recentContainer.innerHTML = "";
+
 snapshot.forEach(doc=>{
 
 const data=doc.data();
 
+const date = data.createdAt?.toDate
+    ? data.createdAt.toDate()
+    : new Date();
+
+const status =
+(data.status || "PENDING").toUpperCase();
+
+let css = "pending";
+let text = "Pending";
+
+if(status === "SUCCESS"){
+
+    css = "success";
+    text = "Completed";
+
+}else if(status === "FAILED"){
+
+    css = "failed";
+    text = "Failed";
+
+}
+
+const ref =
+data.checkoutRequestId ||
+doc.id.substring(0,8).toUpperCase();
+
+recentContainer.innerHTML += `
+<div class="activity-item">
+
+<div class="activity-left">
+
+<div class="activity-title">
+${ref}
+</div>
+
+<div class="activity-time">
+${date.toLocaleString()}
+</div>
+
+</div>
+
+<div class="activity-middle">
+
+<div class="activity-amount">
+KES ${Number(data.amount||0).toLocaleString()}
+</div>
+
+</div>
+
+<div class="activity-right ${css}">
+
+<i class="fas fa-circle"></i>
+
+${text}
+
+</div>
+
+</div>
+`;
+
 totalTransactions++;
 
-if(data.status==="Success"){
+if((data.status || "").toUpperCase() === "SUCCESS"){
 
 completedAmount += Number(data.amount||0);
 
