@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AUTOPAY | Transactions</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+
+/* CSS WILL BE ADDED IN THE NEXT MESSAGE */
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Inter',sans-serif;
+}
+
+body{
+background:#f5f7fb;
+display:flex;
+color:#1f2937;
+}
+
+a{
+text-decoration:none;
+}
+
+/* Sidebar */
+
+.sidebar{
+width:250px;
+height:100vh;
+background:#fff;
+border-right:1px solid #e5e7eb;
+position:fixed;
+left:0;
+top:0;
+overflow:auto;
+}
+
+.logo{
+padding:25px;
+font-size:26px;
+font-weight:800;
+color:#2563eb;
+text-align:center;
+border-bottom:1px solid #eee;
+}
+
+.sidebar a{
+display:block;
+padding:15px 22px;
+color:#475569;
+font-weight:600;
+transition:.25s;
+}
+
+.sidebar a:hover{
+background:#eff6ff;
+color:#2563eb;
+}
+
+.sidebar a.active{
+background:#2563eb;
+color:#fff;
+}
+
+/* Main */
+
+.main{
+margin-left:250px;
+width:calc(100% - 250px);
+padding:25px;
+}
+
+.topbar{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:25px;
+}
+
+.topbar h2{
+font-size:30px;
+font-weight:800;
+}
+
+.topbar p{
+color:#64748b;
+margin-top:5px;
+}
+
+.top-actions{
+display:flex;
+gap:10px;
+}
+
+.top-actions button{
+padding:12px 18px;
+border:none;
+border-radius:12px;
+background:#2563eb;
+color:white;
+cursor:pointer;
+font-weight:600;
+transition:.2s;
+}
+
+.top-actions button:hover{
+transform:translateY(-2px);
+}
+
+/* Summary */
+
+.summary{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:18px;
+margin-bottom:25px;
+}
+
+.summary-card{
+background:white;
+border-radius:18px;
+padding:20px;
+box-shadow:0 8px 25px rgba(0,0,0,.05);
+}
+
+.summary-card span{
+font-size:14px;
+color:#64748b;
+}
+
+.summary-card h2{
+margin-top:10px;
+font-size:28px;
+font-weight:800;
+color:#2563eb;
+}
+
+/* Filters */
+
+.filters{
+display:flex;
+gap:15px;
+margin-bottom:25px;
+flex-wrap:wrap;
+}
+
+.filters input{
+flex:1;
+min-width:220px;
+padding:14px;
+border-radius:12px;
+border:1px solid #d1d5db;
+font-size:15px;
+}
+
+.filters select{
+padding:14px;
+border-radius:12px;
+border:1px solid #d1d5db;
+font-size:15px;
+}
+
+/* Transaction Card */
+
+.transaction-card{
+background:white;
+padding:20px;
+border-radius:18px;
+margin-bottom:18px;
+box-shadow:0 8px 25px rgba(0,0,0,.05);
+transition:.25s;
+cursor:pointer;
+}
+
+.transaction-card:hover{
+transform:translateY(-2px);
+}
+
+.transaction-header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:15px;
+}
+
+.transaction-title{
+font-size:18px;
+font-weight:700;
+}
+
+.transaction-date{
+font-size:13px;
+color:#64748b;
+margin-top:4px;
+}
+
+.status{
+padding:7px 15px;
+border-radius:50px;
+font-size:12px;
+font-weight:700;
+}
+
+.success{
+background:#dcfce7;
+color:#15803d;
+}
+
+.pending{
+background:#fef3c7;
+color:#a16207;
+}
+
+.failed{
+background:#fee2e2;
+color:#dc2626;
+}
+
+.refunded{
+background:#dbeafe;
+color:#2563eb;
+}
+
+.transaction-body{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:12px;
+margin-top:15px;
+}
+
+.item{
+background:#f8fafc;
+padding:12px;
+border-radius:12px;
+}
+
+.item small{
+display:block;
+color:#64748b;
+margin-bottom:6px;
+}
+
+.item strong{
+font-size:15px;
+}
+
+.amount{
+font-size:24px;
+font-weight:800;
+color:#16a34a;
+margin-top:15px;
+}
+
+/* Loading */
+
+.loading{
+text-align:center;
+padding:40px;
+color:#64748b;
+}
+
+/* Empty State */
+
+.empty-state{
+text-align:center;
+padding:60px 20px;
+}
+
+.empty-state img{
+opacity:.8;
+margin-bottom:20px;
+}
+
+.empty-state h3{
+font-size:24px;
+margin-bottom:10px;
+}
+
+.empty-state p{
+color:#64748b;
+}
+
+/* Modal */
+
+.modal{
+display:none;
+position:fixed;
+left:0;
+top:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,.45);
+justify-content:center;
+align-items:center;
+z-index:999;
+}
+
+.modal-content{
+background:white;
+width:95%;
+max-width:500px;
+border-radius:20px;
+padding:25px;
+animation:popup .25s;
+}
+
+@keyframes popup{
+
+from{
+opacity:0;
+transform:scale(.9);
+}
+
+to{
+opacity:1;
+transform:scale(1);
+}
+
+}
+
+#closeModal{
+float:right;
+font-size:30px;
+cursor:pointer;
+}
+
+/* Mobile */
+
+@media(max-width:900px){
+
+.sidebar{
+display:none;
+}
+
+.main{
+margin-left:0;
+width:100%;
+padding:18px;
+}
+
+.transaction-body{
+grid-template-columns:1fr;
+}
+
+.summary{
+grid-template-columns:1fr;
+}
+
+.topbar{
+flex-direction:column;
+align-items:flex-start;
+gap:15px;
+}
+
+.top-actions{
+width:100%;
+}
+
+.top-actions button{
+flex:1;
+}
+
+.filters{
+flex-direction:column;
+}
+
+.filters input,
+.filters select{
+width:100%;
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="sidebar">
+
+<div class="logo">
+
+⚡ AUTOPAY
+
+</div>
+
+<a href="dashboard.html">
+🏠 Dashboard
+</a>
+
+<a class="active" href="transactions.html">
+💳 Transactions
+</a>
+
+<a href="wallet.html">
+👛 Wallet
+</a>
+
+<a href="payment-accounts.html">
+🏦 Payment Accounts
+</a>
+
+<a href="payment-links.html">
+🔗 Payment Links
+</a>
+
+<a href="api-keys.html">
+🔑 API Keys
+</a>
+
+<a href="api-logs.html">
+📄 API Logs
+</a>
+
+<a href="documentation.html">
+📖 Documentation
+</a>
+
+<a href="profile.html">
+👤 Profile
+</a>
+
+<a href="settings.html">
+⚙ Settings
+</a>
+
+<a id="logoutBtn" href="#">
+
+🚪 Logout
+
+</a>
+
+</div>
+
+<div class="main">
+
+<div class="topbar">
+
+<div>
+
+<h2>
+
+Transactions
+
+</h2>
+
+<p>
+
+View all merchant transactions
+
+</p>
+
+</div>
+
+<div class="top-actions">
+
+<button id="refreshBtn">
+
+🔄 Refresh
+
+</button>
+
+<button id="exportBtn">
+
+📤 Export CSV
+
+</button>
+
+</div>
+
+</div>
+
+<div class="summary">
+
+<div class="summary-card">
+
+<span>
+
+Processed
+
+</span>
+
+<h2 id="processedCount">
+
+0
+
+</h2>
+
+</div>
+
+<div class="summary-card">
+
+<span>
+
+Fees Earned
+
+</span>
+
+<h2 id="feesEarned">
+
+Ksh 0.00
+
+</h2>
+
+</div>
+
+<div class="summary-card">
+
+<span>
+
+Failed
+
+</span>
+
+<h2 id="failedCount">
+
+0
+
+</h2>
+
+</div>
+
+<div class="summary-card">
+
+<span>
+
+Total Volume
+
+</span>
+
+<h2 id="totalVolume">
+
+Ksh 0.00
+
+</h2>
+
+</div>
+
+</div>
+
+<div class="filters">
+
+<input
+
+id="searchInput"
+
+type="text"
+
+placeholder="Search transaction ID, phone or reference">
+
+<select id="statusFilter">
+
+<option value="All">
+
+All Status
+
+</option>
+
+<option value="Success">
+
+Success
+
+</option>
+
+<option value="Pending">
+
+Pending
+
+</option>
+
+<option value="Failed">
+
+Failed
+
+</option>
+
+<option value="Refunded">
+
+Refunded
+
+</option>
+
+</select>
+
+</div>
+
+<div
+id="loading"
+class="loading">
+
+Loading transactions...
+
+</div>
+
+<div
+id="emptyState"
+class="empty-state"
+style="display:none;">
+
+<img
+src="https://cdn-icons-png.flaticon.com/512/4076/4076549.png"
+width="120">
+
+<h3>
+
+No Transactions Found
+
+</h3>
+
+<p>
+
+Your completed payments will appear here.
+
+</p>
+
+</div>
+
+<div
+id="transactionsList">
+
+<!-- Transaction cards will appear here -->
+
+</div>
+
+</div>
+
+<div
+id="transactionModal"
+class="modal">
+
+<div class="modal-content">
+
+<span
+id="closeModal">
+
+×
+
+</span>
+
+<h2>
+
+Transaction Details
+
+</h2>
+
+<div
+id="modalContent">
+
+</div>
+
+</div>
+
+</div>
+
+<!-- FIREBASE SCRIPT WILL BE ADDED IN THE NEXT MESSAGE -->
+<script type="module">
+
+import { auth, db } from "./firebase.js";
+
+import {
+onAuthStateChanged,
+signOut
+} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
+
+import {
+doc,
+getDoc,
+collection,
+query,
+where,
+orderBy,
+onSnapshot
+} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
+
+const transactionsList=document.getElementById("transactionsList");
+const loading=document.getElementById("loading");
+const emptyState=document.getElementById("emptyState");
+
+const processedCount=document.getElementById("processedCount");
+const failedCount=document.getElementById("failedCount");
+const feesEarned=document.getElementById("feesEarned");
+const totalVolume=document.getElementById("totalVolume");
+
+let merchantId="";
+let allTransactions=[];
+
+onAuthStateChanged(auth,async(user)=>{
+
+if(!user){
+
+window.location.href="login.html";
+
+return;
+
+}
+
+const userSnap=await getDoc(doc(db,"users",user.uid));
+
+if(!userSnap.exists()){
+
+alert("Merchant profile not found.");
+
+return;
+
+}
+
+merchantId=userSnap.data().merchantId;
+
+loadTransactions();
+
+});
+
+function loadTransactions(){
+
+const q=query(
+
+collection(db,"transactions"),
+
+where("merchantId","==",merchantId),
+
+orderBy("createdAt","desc")
+
+);
+
+onSnapshot(q,(snapshot)=>{
+
+loading.style.display="none";
+
+transactionsList.innerHTML="";
+
+allTransactions=[];
+
+let processed=0;
+
+let failed=0;
+
+let fees=0;
+
+let volume=0;
+
+if(snapshot.empty){
+
+emptyState.style.display="block";
+
+return;
+
+}
+
+emptyState.style.display="none";
+
+snapshot.forEach(docSnap=>{
+
+const data=docSnap.data();
+
+allTransactions.push(data);
+
+if(data.status==="Success"){
+
+processed++;
+
+}
+
+if(data.status==="Failed"){
+
+failed++;
+
+}
+
+fees+=Number(data.fee||0);
+
+volume+=Number(data.amount||0);
+
+transactionsList.innerHTML+=`
+
+<div class="transaction-card">
+
+<div class="transaction-header">
+
+<div>
+
+<div class="transaction-title">
+
+${data.method||"Payment"}
+
+</div>
+
+<div class="transaction-date">
+
+${data.createdAt?.toDate().toLocaleString()||""}
+
+</div>
+
+</div>
+
+<div class="status ${data.status.toLowerCase()}">
+
+${data.status}
+
+</div>
+
+</div>
+
+<div class="transaction-body">
+
+<div class="item">
+
+<small>Transaction ID</small>
+
+<strong>${data.transactionId}</strong>
+
+</div>
+
+<div class="item">
+
+<small>Customer</small>
+
+<strong>${data.customerName||"N/A"}</strong>
+
+</div>
+
+<div class="item">
+
+<small>Phone</small>
+
+<strong>${data.phone}</strong>
+
+</div>
+
+<div class="item">
+
+<small>Reference</small>
+
+<strong>${data.reference||"-"}</strong>
+
+</div>
+
+</div>
+
+<div class="amount">
+
+Ksh ${Number(data.amount).toLocaleString()}
+
+</div>
+
+</div>
+
+`;
+
+});
+
+processedCount.innerHTML=processed;
+
+failedCount.innerHTML=failed;
+
+feesEarned.innerHTML="Ksh "+fees.toLocaleString();
+
+totalVolume.innerHTML="Ksh "+volume.toLocaleString();
+
+});
+
+}
+
+document.getElementById("searchInput").addEventListener("input",function(){
+
+const keyword=this.value.toLowerCase();
+
+const cards=document.querySelectorAll(".transaction-card");
+
+cards.forEach(card=>{
+
+const text=card.innerText.toLowerCase();
+
+card.style.display=text.includes(keyword)?"block":"none";
+
+});
+
+});
+
+document.getElementById("statusFilter").addEventListener("change",function(){
+
+const status=this.value;
+
+const cards=document.querySelectorAll(".transaction-card");
+
+cards.forEach(card=>{
+
+if(status==="All"){
+
+card.style.display="block";
+
+return;
+
+}
+
+card.style.display=
+
+card.innerText.includes(status)
+
+?"block"
+
+:"none";
+
+});
+
+});
+
+document.getElementById("refreshBtn").onclick=function(){
+
+location.reload();
+
+};
+
+document.getElementById("exportBtn").onclick=function(){
+
+let csv="Transaction ID,Customer,Phone,Amount,Status\n";
+
+allTransactions.forEach(t=>{
+
+csv+=`${t.transactionId},${t.customerName},${t.phone},${t.amount},${t.status}\n`;
+
+});
+
+const blob=new Blob([csv],{type:"text/csv"});
+
+const a=document.createElement("a");
+
+a.href=URL.createObjectURL(blob);
+
+a.download="transactions.csv";
+
+a.click();
+
+};
+
+document.getElementById("logoutBtn").onclick=async function(e){
+
+e.preventDefault();
+
+await signOut(auth);
+
+window.location.href="login.html";
+
+};
+
+</script>
+
+</body>
+  </html>
