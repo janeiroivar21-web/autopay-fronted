@@ -325,13 +325,17 @@ showPopup(
 "Merchant account created successfully."
 );
 
+try{
+
+// all your code...
+
 setTimeout(()=>{
 
 window.location.href="login.html";
 
 },2000);
 
-catch(error){
+} catch(error){
 
 console.log(error);
 
