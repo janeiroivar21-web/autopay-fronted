@@ -6,8 +6,50 @@
 <title>AUTOPAY Dashboard</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
-body{background:#0c1424;color:#fff}
+:root{
+
+--bg:#0c1424;
+--card:#182235;
+--card2:#2a354b;
+--text:#ffffff;
+--text2:#9aa7bd;
+--border:#2b3750;
+--primary:#2563eb;
+--primary-dark:#1e3a8a;
+--success:#22c55e;
+--warning:#f59e0b;
+--danger:#ef4444;
+
+}
+
+body.light{
+
+--bg:#f5f7fb;
+--card:#ffffff;
+--card2:#eef2f7;
+--text:#1e293b;
+--text2:#64748b;
+--border:#dbe2ea;
+--primary:#2563eb;
+--primary-dark:#1d4ed8;
+--success:#16a34a;
+--warning:#d97706;
+--danger:#dc2626;
+
+}
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:var(--bg);
+color:var(--text);
+transition:.3s;
+}
 .container{max-width:430px;margin:auto;padding:14px}
 .top{display:flex;justify-content:space-between;align-items:center;margin:8px 0 18px}
 
@@ -49,9 +91,14 @@ transform:rotate(90deg);
 .logo span{color:#3b82f6}
 .icon,.avatar{width:48px;height:48px;border-radius:14px;background:#182235;display:flex;align-items:center;justify-content:center}
 .right{display:flex;gap:10px}
-.card{background:#182235;border-radius:18px;padding:16px;margin-bottom:16px;border:1px solid #253149}
+.card{
+background:var(--card);
+border:1px solid var(--border);
+}
 .greet{display:flex;justify-content:space-between;align-items:center}
-.small{color:#9aa7bd;font-size:13px}
+.small{
+color:var(--text2);
+}
 .balances{display:grid;grid-template-columns:1fr 1fr}
 .bal{padding:14px}
 .bal:first-child{border-right:1px solid #293650}
@@ -89,8 +136,12 @@ transform:translateY(-3px);
 .btn:active{
 transform:scale(.97);
 }
-.primary{background:#2563eb}
-.secondary{background:#2a354b}
+.primary{
+background:var(--primary);
+}
+.secondary{
+background:var(--card2);
+}
 .grid{display:grid;grid-template-columns:1fr 1fr;border:1px solid #2b3750;border-radius:16px;overflow:hidden}
 .cell{padding:18px;border-right:1px solid #2b3750;border-bottom:1px solid #2b3750}
 .cell:nth-child(2n){border-right:none}
@@ -507,8 +558,8 @@ AUTO<span>PAY</span>
 
 <div class="right">
 
-<div class="icon">
-<i class="fas fa-moon"></i>
+<div class="icon" id="themeToggle">
+<i class="fas fa-moon" id="themeIcon"></i>
 </div>
 
 <div class="icon notify">
@@ -1139,6 +1190,34 @@ document.getElementById("completed").innerHTML =
 });
 
 }
+
+const themeToggle = document.getElementById("themeToggle");
+const themeIcon = document.getElementById("themeIcon");
+
+const savedTheme = localStorage.getItem("theme");
+
+if(savedTheme === "light"){
+    document.body.classList.add("light");
+    themeIcon.className = "fas fa-sun";
+}
+
+themeToggle.onclick = function(){
+
+    document.body.classList.toggle("light");
+
+    if(document.body.classList.contains("light")){
+
+        localStorage.setItem("theme","light");
+        themeIcon.className = "fas fa-sun";
+
+    }else{
+
+        localStorage.setItem("theme","dark");
+        themeIcon.className = "fas fa-moon";
+
+    }
+
+};
 </script>
 </body>
   </html>
