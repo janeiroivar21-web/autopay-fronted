@@ -715,6 +715,8 @@ getDoc,
 collection,
 query,
 where,
+orderBy,
+limit,
 getDocs,
 onSnapshot
 } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
@@ -1038,7 +1040,9 @@ accountsSnap.size;
 // TRANSACTIONS
 const transactionsQuery = query(
 collection(db,"transactions"),
-where("merchantId","==",merchantId)
+where("merchantId","==",merchantId),
+orderBy("createdAt","desc"),
+limit(5)
 );
 
 onSnapshot(transactionsQuery,(snapshot)=>{
