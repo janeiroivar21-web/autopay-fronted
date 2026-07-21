@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -796,7 +795,12 @@ onAuthStateChanged
 
 import {
 doc,
-getDoc
+getDoc,
+collection,
+query,
+where,
+getDocs,
+onSnapshot
 } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
   
 const now=new Date();
@@ -847,6 +851,8 @@ return;
 }
 
 const data = snap.data();
+
+loadProcessingActivity(data.merchantId);
 
 document.getElementById("greeting").innerHTML =
 greet + ", " + data.fullName.split(" ")[0];
@@ -1086,13 +1092,68 @@ el.innerHTML=prefix+value.toLocaleString();
 
 }
 
-animateCounter("activeLinks",12);
+async function loadProcessingActivity(merchantId){
 
-animateCounter("transactions",846);
+// ACTIVE LINKS
+const linksQuery = query(
+collection(db,"paymentLinks"),
+where("merchantId","==",merchantId),
+where("status","==","Active")
+);
 
-animateCounter("accounts",4);
+const linksSnap = await getDocs(linksQuery);
 
-animateCounter("completed",582430,"KES ");
+document.getElementById("activeLinks").innerHTML =
+linksSnap.size;
+
+
+// PAYMENT ACCOUNTS
+const accountsQuery = query(
+collection(db,"paymentAccounts"),
+where("merchantId","==",merchantId)
+);
+
+const accountsSnap = await getDocs(accountsQuery);
+
+document.getElementById("accounts").innerHTML =
+accountsSnap.size;
+
+
+// TRANSACTIONS
+const transactionsQuery = query(
+collection(db,"transactions"),
+where("merchantId","==",merchantId)
+);
+
+onSnapshot(transactionsQuery,(snapshot)=>{
+
+let totalTransactions=0;
+
+let completedAmount=0;
+
+snapshot.forEach(doc=>{
+
+const data=doc.data();
+
+totalTransactions++;
+
+if(data.status==="Success"){
+
+completedAmount += Number(data.amount||0);
+
+}
+
+});
+
+document.getElementById("transactions").innerHTML =
+totalTransactions.toLocaleString();
+
+document.getElementById("completed").innerHTML =
+"KES "+completedAmount.toLocaleString();
+
+});
+
+}
 </script>
 </body>
-</html>
+  </html>
