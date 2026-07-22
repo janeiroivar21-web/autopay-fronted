@@ -101,13 +101,19 @@ transform:scale(.97);
 .cell:nth-child(2n){border-right:none}
   
 .chart{
-height:220px;
-padding:10px;
+height:160px;
+padding:6px 8px 0;
 }
 
 .chart canvas{
 width:100%!important;
 height:100%!important;
+}
+
+.revenue-card{
+
+padding:14px;
+
 }
 .status{color:#f59e0b}
 .float{position:fixed;right:20px;bottom:20px;width:60px;height:60px;background:#2563eb;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:28px}
@@ -582,11 +588,22 @@ KES 0.00
 <div class="cell"><div class="small">COMPLETED</div><h2 id="completed">KES 0</h2></div>
 </div>
 
-<div class="card">
-<div style="display:flex;justify-content:space-between"><b>REVENUE HORIZON</b><span class="small">6 Month Tracker</span></div>
-<div class="chart">
-<canvas id="revenueChart"></canvas>
+<div class="card revenue-card">
+
+<div style="display:flex;justify-content:space-between;align-items:center">
+
+<b>REVENUE HORIZON</b>
+
+<span class="small">6 Month Tracker</span>
+
 </div>
+
+<div class="chart">
+
+<canvas id="revenueChart"></canvas>
+
+</div>
+
 </div>
 
 <div class="card">
@@ -897,45 +914,32 @@ notificationPanel.classList.remove("show");
 
 const ctx = document.getElementById("revenueChart");
 
-new Chart(ctx,{
+const revenueChart = new Chart(ctx,{
 
-type:"line",
+type:"bar",
 
 data:{
 
-labels:[
-"Jan",
-"Feb",
-"Mar",
-"Apr",
-"May",
-"Jun"
-],
+labels:["Jan","Feb","Mar","Apr","May","Jun"],
 
 datasets:[{
 
-label:"Revenue",
+data:[0,25000,42000,38000,56000,72000],
 
-data:[
-0,
-25000,
-42000,
-38000,
-56000,
-72000
+backgroundColor:[
+"#94a3b8",
+"#94a3b8",
+"#94a3b8",
+"#ef4444",
+"#22c55e",
+"#111827"
 ],
 
-borderColor:"#3b82f6",
+borderRadius:8,
 
-backgroundColor:"rgba(59,130,246,.15)",
+borderSkipped:false,
 
-fill:true,
-
-tension:.4,
-
-pointRadius:5,
-
-pointBackgroundColor:"#3b82f6"
+barThickness:18
 
 }]
 
@@ -950,9 +954,7 @@ maintainAspectRatio:false,
 plugins:{
 
 legend:{
-
 display:false
-
 }
 
 },
@@ -965,6 +967,10 @@ grid:{
 display:false
 },
 
+border:{
+display:false
+},
+
 ticks:{
 color:"#9aa7bd"
 }
@@ -973,12 +979,14 @@ color:"#9aa7bd"
 
 y:{
 
+display:false,
+
 grid:{
-color:"#253149"
+display:false
 },
 
-ticks:{
-color:"#9aa7bd"
+border:{
+display:false
 }
 
 }
@@ -1044,10 +1052,13 @@ accountsSnap.size;
 
 // TRANSACTIONS
 const transactionsQuery = query(
+
 collection(db,"transactions"),
+
 where("merchantId","==",merchantId),
-orderBy("createdAt","desc"),
-limit(5)
+
+orderBy("createdAt","desc")
+
 );
 
 onSnapshot(transactionsQuery,(snapshot)=>{
