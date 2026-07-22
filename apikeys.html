@@ -683,6 +683,7 @@ serverTimestamp
 
 let merchantId = "";
 let deleteId = "";
+let keysLoaded = false;
 
 // Authentication
 onAuthStateChanged(auth, async(user)=>{
@@ -691,6 +692,22 @@ if(!user){
 
 location.href="login.html";
 return;
+
+}
+
+// Load cached merchant first
+const cached = JSON.parse(localStorage.getItem("merchant"));
+
+if(cached){
+
+merchantId = cached.merchantId || "";
+
+document.getElementById("avatar").innerHTML =
+(cached.fullName || "A").charAt(0).toUpperCase();
+
+if(merchantId){
+loadKeys();
+}
 
 }
 
@@ -705,12 +722,14 @@ return;
 
 const userData = snap.data();
 
+// Update cache
+localStorage.setItem("merchant",JSON.stringify(userData));
+localStorage.setItem("merchantUid",user.uid);
+
 merchantId = userData.merchantId;
 
 document.getElementById("avatar").innerHTML =
-userData.fullName.charAt(0).toUpperCase();
-
-loadKeys();
+(userData.fullName || "A").charAt(0).toUpperCase();
 
 });
 
@@ -797,6 +816,10 @@ document.getElementById("keyName").value="";
 
 // Load API Keys
 function loadKeys(){
+
+if(keysLoaded || !merchantId) return;
+
+keysLoaded = true;
 
 const q=query(
 
