@@ -885,6 +885,10 @@ document.getElementById("serviceBalance").innerHTML =
 document.getElementById("avatar").innerHTML =
 cached.fullName.charAt(0).toUpperCase();
 
+  if(cached.merchantId){
+    loadProcessingActivity(cached.merchantId);
+  }
+
 }
 
 try{
@@ -902,6 +906,8 @@ const data = snap.data();
 
 // Save merchant locally
 localStorage.setItem("merchant", JSON.stringify(data));
+
+localStorage.setItem("merchantUid", user.uid);
 
 loadProcessingActivity(data.merchantId);
 
@@ -1337,8 +1343,7 @@ await signOut(auth);
 
 // Optional: clear any saved data
 localStorage.removeItem("merchant");
-localStorage.removeItem("merchantId");
-
+localStorage.removeItem("merchantUid");
 // Redirect to login
 window.location.href = "login.html";
 
