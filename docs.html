@@ -287,6 +287,30 @@ white-space:nowrap;
 
     </div>
 
+    <div class="card">
+
+<h2>Quick Start</h2>
+
+<p>
+Complete these steps to start accepting payments with AUTOPAY.
+</p>
+
+<ol style="padding-left:20px;line-height:2;">
+
+<li>Create your AUTOPAY merchant account.</li>
+
+<li>Generate your API Keys.</li>
+
+<li>Configure your Webhook URL.</li>
+
+<li>Call the STK Push API.</li>
+
+<li>Receive payment confirmation through Webhook or Check Status.</li>
+
+</ol>
+
+    </div>
+
     <!-- Base URL -->
 
     <div class="card">
@@ -296,7 +320,7 @@ white-space:nowrap;
         <div class="code-box">
 
             <code id="baseUrl">
-https://autopay-backend-1y64.onrender.com/api
+https://autopay.co.ke/api
             </code>
 
             <button onclick="copyCode('baseUrl')">
@@ -306,6 +330,52 @@ https://autopay-backend-1y64.onrender.com/api
             </button>
 
         </div>
+
+    </div>
+
+    <div class="card">
+
+<h2>Available Endpoints</h2>
+
+<table>
+
+<tr>
+<th>Method</th>
+<th>Endpoint</th>
+<th>Description</th>
+</tr>
+
+<tr>
+<td>POST</td>
+<td>/api/stk-push</td>
+<td>Initiate STK Push</td>
+</tr>
+
+<tr>
+<td>POST</td>
+<td>/api/check-status</td>
+<td>Check Transaction Status</td>
+</tr>
+
+<tr>
+<td>POST</td>
+<td>/api/withdraw</td>
+<td>Withdraw Funds</td>
+</tr>
+
+<tr>
+<td>POST</td>
+<td>/api/webhook</td>
+<td>Webhook Callback</td>
+</tr>
+
+<tr>
+<td>GET</td>
+<td>/health</td>
+<td>Gateway Health</td>
+</tr>
+
+</table>
 
     </div>
 
@@ -329,6 +399,28 @@ https://autopay-backend-1y64.onrender.com/api
 
 Copy
 
+</button>
+
+</div>
+
+    </div>
+
+    <div class="card">
+
+<h2>Required Headers</h2>
+
+<div class="code-box">
+
+<pre id="headers">
+Authorization: Bearer YOUR_SECRET_KEY
+
+Content-Type: application/json
+
+Accept: application/json
+</pre>
+
+<button onclick="copyCode('headers')">
+Copy
 </button>
 
 </div>
@@ -363,6 +455,42 @@ Copy
 
     </div>
 
+    <div class="card">
+
+<h2>JavaScript Example</h2>
+
+<div class="code-box">
+
+<pre id="javascriptExample">
+fetch("https://autopay.co.ke/api/stk-push",{
+
+method:"POST",
+
+headers:{
+Authorization:"Bearer YOUR_SECRET_KEY",
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify({
+
+amount:100,
+phone:"254712345678",
+accountReference:"ORDER1001",
+description:"Payment"
+
+})
+
+});
+</pre>
+
+<button onclick="copyCode('javascriptExample')">
+Copy
+</button>
+
+</div>
+
+    </div>
+
     <!-- Check Status -->
 
     <div class="card">
@@ -381,6 +509,32 @@ Copy
 
 Copy
 
+</button>
+
+</div>
+
+    </div>
+
+    <div class="card">
+
+<h2>PHP Example</h2>
+
+<div class="code-box">
+
+<pre id="phpExample">
+$curl=curl_init();
+
+curl_setopt_array($curl,[
+
+CURLOPT_URL=>"https://autopay.co.ke/api/stk-push",
+
+CURLOPT_POST=>true
+
+]);
+</pre>
+
+<button onclick="copyCode('phpExample')">
+Copy
 </button>
 
 </div>
@@ -408,6 +562,30 @@ Copy
 
 Copy
 
+</button>
+
+</div>
+
+    </div>
+
+    <div class="card">
+
+<h2>Node.js Example</h2>
+
+<div class="code-box">
+
+<pre id="nodeExample">
+const axios=require("axios");
+
+await axios.post(
+
+"https://autopay.co.ke/api/stk-push"
+
+);
+</pre>
+
+<button onclick="copyCode('nodeExample')">
+Copy
 </button>
 
 </div>
@@ -463,6 +641,28 @@ Copy
             </tr>
 
         </table>
+
+    </div>
+
+    <div class="card">
+
+<h2>Success Response</h2>
+
+<div class="code-box">
+
+<pre id="successResponse">
+{
+"success":true,
+"message":"STK Push sent successfully",
+"checkoutRequestId":"ws_CO_123456789"
+}
+</pre>
+
+<button onclick="copyCode('successResponse')">
+Copy
+</button>
+
+</div>
 
     </div>
 
