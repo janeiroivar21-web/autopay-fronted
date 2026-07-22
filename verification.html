@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>KYC Verification - AUTOPAY</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<style>
+/* CSS will be added next */
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#0c1424;
+color:#fff;
+transition:.3s;
+}
+
+.container{
+max-width:700px;
+margin:auto;
+padding:20px;
+padding-bottom:90px;
+}
+
+.top{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:25px;
+}
+
+.back-btn,
+.avatar{
+width:48px;
+height:48px;
+background:#182235;
+border:1px solid #253149;
+border-radius:14px;
+display:flex;
+align-items:center;
+justify-content:center;
+cursor:pointer;
+transition:.3s;
+}
+
+.back-btn:hover,
+.avatar:hover{
+transform:translateY(-2px);
+}
+
+.title{
+display:flex;
+align-items:center;
+gap:10px;
+font-size:24px;
+font-weight:bold;
+}
+
+.title i{
+color:#2563eb;
+}
+
+.card{
+background:#182235;
+border:1px solid #253149;
+border-radius:18px;
+padding:20px;
+margin-bottom:20px;
+}
+
+.card h2{
+margin-bottom:15px;
+font-size:20px;
+}
+
+.card p{
+color:#94a3b8;
+line-height:1.6;
+margin-top:10px;
+}
+
+.status{
+display:inline-block;
+padding:10px 18px;
+border-radius:30px;
+font-weight:bold;
+margin-top:10px;
+margin-bottom:10px;
+}
+
+.pending{
+background:#f59e0b;
+color:#fff;
+}
+
+.review{
+background:#2563eb;
+color:#fff;
+}
+
+.verified{
+background:#16a34a;
+color:#fff;
+}
+
+.rejected{
+background:#dc2626;
+color:#fff;
+}
+
+input,
+textarea,
+select{
+width:100%;
+margin-top:12px;
+padding:15px;
+border-radius:12px;
+border:1px solid #334155;
+background:#0f172a;
+color:#fff;
+font-size:15px;
+outline:none;
+transition:.3s;
+}
+
+input:focus,
+textarea:focus,
+select:focus{
+border-color:#2563eb;
+}
+
+textarea{
+resize:vertical;
+min-height:110px;
+}
+
+input[type=file]{
+padding:12px;
+cursor:pointer;
+}
+
+label{
+display:block;
+margin-top:15px;
+margin-bottom:6px;
+font-weight:bold;
+font-size:14px;
+color:#cbd5e1;
+}
+
+input[type=checkbox]{
+width:auto;
+margin-right:10px;
+}
+
+button{
+width:100%;
+padding:16px;
+margin-top:20px;
+background:#2563eb;
+border:none;
+border-radius:14px;
+color:#fff;
+font-size:16px;
+font-weight:bold;
+cursor:pointer;
+transition:.3s;
+}
+
+button:hover{
+background:#1d4ed8;
+}
+
+button:disabled{
+opacity:.6;
+cursor:not-allowed;
+}
+
+body.light{
+background:#f5f7fb;
+color:#111827;
+}
+
+body.light .card,
+body.light .back-btn,
+body.light .avatar{
+background:#fff;
+border-color:#dbe2ea;
+color:#111827;
+}
+
+body.light input,
+body.light textarea,
+body.light select{
+background:#f8fafc;
+border-color:#dbe2ea;
+color:#111827;
+}
+
+body.light label{
+color:#334155;
+}
+
+@media(max-width:768px){
+
+.container{
+padding:15px;
+}
+
+.title{
+font-size:20px;
+}
+
+.card{
+padding:18px;
+}
+
+button{
+font-size:15px;
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- Header -->
+
+    <div class="top">
+
+        <div class="back-btn" id="backBtn">
+            <i class="fas fa-arrow-left"></i>
+        </div>
+
+        <div class="title">
+            <i class="fas fa-id-card"></i>
+            <span>KYC Verification</span>
+        </div>
+
+        <div class="avatar" id="avatar">
+            AP
+        </div>
+
+    </div>
+
+    <!-- Status -->
+
+    <div class="card">
+
+        <h2>KYC Status</h2>
+
+        <div id="kycStatus" class="status pending">
+            Pending Verification
+        </div>
+
+        <p>
+            Complete your verification to activate all AUTOPAY merchant features.
+        </p>
+
+    </div>
+
+    <!-- Business Information -->
+
+    <div class="card">
+
+        <h2>Business Information</h2>
+
+        <input type="text" id="businessName" placeholder="Business Name">
+
+        <input type="text" id="businessType" placeholder="Business Type">
+
+        <input type="text" id="registrationNumber" placeholder="Business Registration Number (Optional)">
+
+        <textarea id="businessDescription" placeholder="Business Description"></textarea>
+
+    </div>
+
+    <!-- Owner Information -->
+
+    <div class="card">
+
+        <h2>Owner Information</h2>
+
+        <input type="text" id="fullName" placeholder="Full Name">
+
+        <input type="text" id="idNumber" placeholder="National ID / Passport Number">
+
+        <input type="date" id="dob">
+
+    </div>
+
+    <!-- Contact Information -->
+
+    <div class="card">
+
+        <h2>Contact Information</h2>
+
+        <input type="email" id="email" placeholder="Email Address">
+
+        <input type="tel" id="phone" placeholder="Phone Number">
+
+        <textarea id="address" placeholder="Business Address"></textarea>
+
+    </div>
+
+    <!-- Documents -->
+
+    <div class="card">
+
+        <h2>Upload Documents</h2>
+
+        <label>National ID Front</label>
+        <input type="file" id="idFront" accept="image/*">
+
+        <label>National ID Back</label>
+        <input type="file" id="idBack" accept="image/*">
+
+        <label>Selfie with ID</label>
+        <input type="file" id="selfie" accept="image/*">
+
+        <label>Certificate of Registration (Optional)</label>
+        <input type="file" id="registrationFile" accept=".jpg,.jpeg,.png,.pdf">
+
+        <label>KRA PIN Certificate (Optional)</label>
+        <input type="file" id="kraPin" accept=".jpg,.jpeg,.png,.pdf">
+
+    </div>
+
+    <!-- Settlement Details -->
+
+    <div class="card">
+
+        <h2>Settlement Details</h2>
+
+        <input type="text" id="bankName" placeholder="Bank Name">
+
+        <input type="text" id="accountName" placeholder="Account Name">
+
+        <input type="text" id="accountNumber" placeholder="Account Number">
+
+        <input type="text" id="mpesaTill" placeholder="M-Pesa Till / Paybill (Optional)">
+
+    </div>
+
+    <!-- Declaration -->
+
+    <div class="card">
+
+        <label>
+
+            <input type="checkbox" id="agree">
+
+            I confirm that all information provided is accurate and belongs to me.
+
+        </label>
+
+    </div>
+
+    <!-- Submit -->
+
+    <button id="submitKyc">
+
+        Submit Verification
+
+    </button>
+
+</div>
+
+<script type="module">
+
+import { auth, db } from "./firebase.js";
+
+import {
+onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
+
+import {
+doc,
+getDoc,
+setDoc,
+serverTimestamp
+} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
+
+// Theme
+if(localStorage.getItem("theme")==="light"){
+document.body.classList.add("light");
+}
+
+// Back
+document.getElementById("backBtn").onclick=()=>{
+history.back();
+};
+
+let currentUser=null;
+
+// Authentication
+onAuthStateChanged(auth,async(user)=>{
+
+if(!user){
+location.href="login.html";
+return;
+}
+
+currentUser=user;
+
+const snap=await getDoc(doc(db,"users",user.uid));
+
+if(!snap.exists()){
+location.href="login.html";
+return;
+}
+
+const data=snap.data();
+
+// Avatar
+document.getElementById("avatar").innerHTML=
+(data.fullName||"A").charAt(0).toUpperCase();
+
+// Auto-fill
+document.getElementById("fullName").value=data.fullName||"";
+document.getElementById("email").value=data.email||"";
+document.getElementById("phone").value=data.phone||"";
+
+// Check existing KYC
+const kycSnap=await getDoc(doc(db,"kyc",user.uid));
+
+if(kycSnap.exists()){
+
+const kyc=kycSnap.data();
+
+document.getElementById("businessName").value=kyc.businessName||"";
+document.getElementById("businessType").value=kyc.businessType||"";
+document.getElementById("registrationNumber").value=kyc.registrationNumber||"";
+document.getElementById("businessDescription").value=kyc.businessDescription||"";
+
+document.getElementById("idNumber").value=kyc.idNumber||"";
+document.getElementById("dob").value=kyc.dob||"";
+document.getElementById("address").value=kyc.address||"";
+
+document.getElementById("bankName").value=kyc.bankName||"";
+document.getElementById("accountName").value=kyc.accountName||"";
+document.getElementById("accountNumber").value=kyc.accountNumber||"";
+document.getElementById("mpesaTill").value=kyc.mpesaTill||"";
+
+const status=kyc.status||"Pending";
+
+const badge=document.getElementById("kycStatus");
+
+badge.innerHTML=status;
+
+badge.className="status";
+
+if(status==="Pending"){
+badge.classList.add("pending");
+}else if(status==="Under Review"){
+badge.classList.add("review");
+}else if(status==="Verified"){
+badge.classList.add("verified");
+}else{
+badge.classList.add("rejected");
+}
+
+}
+
+});
+
+// Submit
+document.getElementById("submitKyc").onclick=async()=>{
+
+if(!currentUser)return;
+
+if(!document.getElementById("agree").checked){
+alert("Please accept the declaration.");
+return;
+}
+
+const btn=document.getElementById("submitKyc");
+
+btn.disabled=true;
+
+btn.innerHTML="Submitting...";
+
+try{
+
+await setDoc(doc(db,"kyc",currentUser.uid),{
+
+uid:currentUser.uid,
+
+fullName:document.getElementById("fullName").value,
+
+businessName:document.getElementById("businessName").value,
+
+businessType:document.getElementById("businessType").value,
+
+registrationNumber:document.getElementById("registrationNumber").value,
+
+businessDescription:document.getElementById("businessDescription").value,
+
+email:document.getElementById("email").value,
+
+phone:document.getElementById("phone").value,
+
+address:document.getElementById("address").value,
+
+idNumber:document.getElementById("idNumber").value,
+
+dob:document.getElementById("dob").value,
+
+bankName:document.getElementById("bankName").value,
+
+accountName:document.getElementById("accountName").value,
+
+accountNumber:document.getElementById("accountNumber").value,
+
+mpesaTill:document.getElementById("mpesaTill").value,
+
+status:"Pending",
+
+submittedAt:serverTimestamp()
+
+},{merge:true});
+
+alert("KYC submitted successfully.");
+
+document.getElementById("kycStatus").innerHTML="Pending";
+document.getElementById("kycStatus").className="status pending";
+
+}catch(err){
+
+console.log(err);
+
+alert("Unable to submit KYC.");
+
+}
+
+btn.disabled=false;
+
+btn.innerHTML="Submit Verification";
+
+};
+
+</script>
+
+</body>
+</html>
