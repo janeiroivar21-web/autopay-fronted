@@ -286,13 +286,18 @@ email,
 password
 );
 
-const uid=userCredential.user.uid;
+const uid = userCredential.user.uid;
+
+console.log("User UID:", uid);
+console.log("Current User:", auth.currentUser);
+
+try{
 
 await setDoc(doc(db,"users",uid),{
 
 uid,
 
-merchantId: "APY" + Math.floor(100000 + Math.random() * 900000),
+merchantId:"APY"+Math.floor(100000+Math.random()*900000),
 
 fullName,
 
@@ -319,6 +324,38 @@ accountStatus:"Active",
 createdAt:serverTimestamp()
 
 });
+
+console.log("✅ USERS document created");
+
+}catch(e){
+
+console.error("❌ USERS ERROR:",e);
+
+throw e;
+
+}
+
+try{
+
+await setDoc(doc(db,"usernames",username),{
+
+uid,
+
+email,
+
+createdAt:serverTimestamp()
+
+});
+
+console.log("✅ USERNAMES document created");
+
+}catch(e){
+
+console.error("❌ USERNAMES ERROR:",e);
+
+throw e;
+
+}
 
 await setDoc(doc(db,"usernames",username),{
 
