@@ -6,62 +6,9 @@
 <title>AUTOPAY Dashboard</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 <style>
-:root{
-
---bg:#0c1424;
---card:#182235;
---card2:#2a354b;
---text:#ffffff;
---text2:#9aa7bd;
---border:#2b3750;
---primary:#2563eb;
---primary-dark:#1e3a8a;
---success:#22c55e;
---warning:#f59e0b;
---danger:#ef4444;
-
-}
-
-body.light{
-
---bg:#f5f7fb;
---card:#ffffff;
---card2:#eef2f7;
---text:#1e293b;
---text2:#64748b;
---border:#dbe2ea;
---primary:#2563eb;
---primary-dark:#1d4ed8;
---success:#16a34a;
---warning:#d97706;
---danger:#dc2626;
-
-}
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:"Inter",Arial,sans-serif;
-transition:
-background .25s ease,
-color .25s ease,
-border-color .25s ease,
-box-shadow .25s ease,
-transform .25s ease;
-}
-
-body{
-background:var(--bg);
-color:var(--text);
-transition:.3s;
-}
-
-.container{
-max-width:430px;
-margin:auto;
-padding:18px;
-}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
+body{background:#0c1424;color:#fff}
+.container{max-width:430px;margin:auto;padding:14px}
 .top{display:flex;justify-content:space-between;align-items:center;margin:8px 0 18px}
 
 .left{
@@ -100,129 +47,52 @@ transform:rotate(90deg);
 }
 .logo{font-size:30px;font-weight:700}
 .logo span{color:#3b82f6}
-.icon,.avatar{
-width:48px;
-height:48px;
-border-radius:16px;
-background:var(--card);
-border:1px solid var(--border);
-display:flex;
-align-items:center;
-justify-content:center;
-cursor:pointer;
-box-shadow:0 5px 15px rgba(15,23,42,.05);
-transition:.25s;
-}
-
-.icon:hover,
-.avatar:hover{
-transform:translateY(-2px);
-box-shadow:0 10px 25px rgba(15,23,42,.10);
-}
+.icon,.avatar{width:48px;height:48px;border-radius:14px;background:#182235;display:flex;align-items:center;justify-content:center}
 .right{display:flex;gap:10px}
-
-.card{
-background:var(--card);
-border:1px solid var(--border);
-border-radius:20px;
-padding:18px;
-box-shadow:0 8px 25px rgba(15,23,42,.06);
-margin-bottom:18px;
-}
-  
+.card{background:#182235;border-radius:18px;padding:16px;margin-bottom:16px;border:1px solid #253149}
 .greet{display:flex;justify-content:space-between;align-items:center}
-.small{
-color:var(--text2);
-}
-.balances{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:10px;
-margin-bottom:15px;
-align-items:stretch;
-}
-
-.bal{
-padding:28px 18px;
-min-height:120px;
-display:flex;
-flex-direction:column;
-justify-content:space-between;
-background:var(--card);
-border:1px solid var(--border);
-border-radius:22px;
-box-shadow:0 10px 25px rgba(15,23,42,.08);
-}
-.bal:first-child{
-border-right:1px solid var(--border);
-}
-.amount{
-font-size:28px;
-font-weight:650;
-margin:18px 0;
-letter-spacing:.5px;
-line-height:1;
-}
+.small{color:#9aa7bd;font-size:13px}
+.balances{display:grid;grid-template-columns:1fr 1fr}
+.bal{padding:14px}
+.bal:first-child{border-right:1px solid #293650}
+.amount{font-size:18px;font-weight:bold;margin:10px 0}
 .badge{
-display:inline-flex;
-align-items:center;
-justify-content:center;
-width:140px;
-height:38px;
-border-radius:12px;
-background:var(--primary);
-color:#fff;
+display:inline-block;
+padding:6px 10px;
+border-radius:10px;
+background:#1e3a8a;
+color:#dbeafe;
 font-size:12px;
-font-weight:400;
 cursor:pointer;
+transition:.3s;
 }
 
 .badge:hover{
-background:var(--primary-dark);
+background:#2563eb;
 transform:translateY(-2px);
 }
 .actions{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
 .btn{
-padding:14px;
-border-radius:16px;
+padding:18px;
+border-radius:14px;
 text-align:center;
-font-weight:500;
+font-weight:bold;
 cursor:pointer;
-border:1px solid transparent;
-transition:.25s;
-box-shadow:0 5px 15px rgba(15,23,42,.05);
+transition:.3s;
+user-select:none;
 }
 
 .btn:hover{
-transform:translateY(-2px);
-box-shadow:0 12px 24px rgba(15,23,42,.10);
+transform:translateY(-3px);
 }
 
 .btn:active{
 transform:scale(.97);
 }
-.primary{
-background:linear-gradient(135deg,#2563eb,#1d4ed8);
-color:#fff;
-}
-.secondary{
-background:var(--card2);
-border:1px solid var(--border);
-}
-.grid{
-display:grid;
-grid-template-columns:1fr 1fr;
-border:1px solid var(--border);
-border-radius:20px;
-overflow:hidden;
-background:var(--card);
-box-shadow:0 6px 18px rgba(15,23,42,.05);
-}
-.cell{
-padding:20px;
-border-right:1px solid var(--border);
-border-bottom:1px solid var(--border);
-}
+.primary{background:#2563eb}
+.secondary{background:#2a354b}
+.grid{display:grid;grid-template-columns:1fr 1fr;border:1px solid #2b3750;border-radius:16px;overflow:hidden}
+.cell{padding:18px;border-right:1px solid #2b3750;border-bottom:1px solid #2b3750}
 .cell:nth-child(2n){border-right:none}
   
 .chart{
@@ -244,12 +114,11 @@ top:0;
 left:-280px;
 width:260px;
 height:100%;
-background:var(--card);
-border-right:1px solid var(--border);
+background:#182235;
 z-index:1000;
 transition:.35s;
 overflow-y:auto;
-box-shadow:0 15px 35px rgba(15,23,42,.08);
+box-shadow:5px 0 20px rgba(0,0,0,.4);
 }
 
 .sidebar.show{
@@ -276,7 +145,7 @@ display:block;
 padding:25px 20px;
 font-size:28px;
 font-weight:bold;
-border-bottom:1px solid var(--border);
+border-bottom:1px solid #2b3750;
 }
 
 .side-header i{
@@ -299,7 +168,7 @@ gap:15px;
 padding:14px;
 margin-bottom:8px;
 border-radius:12px;
-color:var(--text);
+color:#fff;
 text-decoration:none;
 transition:.3s;
 }
@@ -327,16 +196,27 @@ color:#fff;
 .notification-panel{
 
 position:fixed;
+
 top:80px;
+
 right:-380px;
+
 width:340px;
+
 max-width:90%;
-background:var(--card);
-border:1px solid var(--border);
-border-radius:20px;
-box-shadow:0 15px 35px rgba(15,23,42,.10);
+
+background:#182235;
+
+border:1px solid #2b3750;
+
+border-radius:18px;
+
+box-shadow:0 15px 35px rgba(0,0,0,.45);
+
 transition:.35s;
+
 z-index:1200;
+
 overflow:hidden;
 
 }
@@ -357,7 +237,7 @@ justify-content:space-between;
 
 align-items:center;
 
-border-bottom:1px solid var(--border);
+border-bottom:1px solid #2b3750;
 
 font-weight:bold;
 
@@ -375,7 +255,7 @@ overflow-y:auto;
 
 padding:16px 18px;
 
-border-bottom:1px solid var(--border);
+border-bottom:1px solid #253149;
 
 cursor:pointer;
 
@@ -385,7 +265,7 @@ transition:.3s;
 
 .notification-item:hover{
 
-background:var(--card2);
+background:#1f2c45;
 
 }
 
@@ -441,7 +321,7 @@ gap:0;
 display:flex;
 align-items:center;
 padding:14px 0;
-border-bottom:1px solid var(--border);
+border-bottom:1px solid #2b3750;
 }
 
 .activity-item:last-child{
@@ -501,8 +381,8 @@ padding:10px 0;
 margin-bottom:4px;
 font-size:13px;
 font-weight:600;
-color:var(--text2);
-border-bottom:1px solid var(--border);
+color:#9aa7bd;
+border-bottom:1px solid #2b3750;
 }
 
 .activity-columns div:nth-child(1){
@@ -529,54 +409,6 @@ color:#f59e0b;
 .failed i{
 color:#ef4444;
 }
-
-body.light .icon,
-body.light .avatar{
-
-background:#fff;
-
-box-shadow:0 8px 20px rgba(15,23,42,.08);
-
-}
-
-body.light .bal{
-
-background:#fff;
-
-}
-
-body.light .grid{
-
-background:#fff;
-
-}
-
-body.light .chart{
-
-background:#fff;
-
-border-radius:18px;
-
-}
-
-body.light .small{
-
-font-weight:500;
-
-}
-
-body.light .amount{
-
-font-size:26px;
-
-}
-
-body.light .btn{
-
-box-shadow:0 10px 25px rgba(37,99,235,.12);
-
-}
-
 </style>
 </head>
 <body>
@@ -675,8 +507,8 @@ AUTO<span>PAY</span>
 
 <div class="right">
 
-<div class="icon" id="themeToggle">
-<i class="fas fa-moon" id="themeIcon"></i>
+<div class="icon">
+<i class="fas fa-moon"></i>
 </div>
 
 <div class="icon notify">
@@ -1307,34 +1139,6 @@ document.getElementById("completed").innerHTML =
 });
 
 }
-
-const themeToggle = document.getElementById("themeToggle");
-const themeIcon = document.getElementById("themeIcon");
-
-const savedTheme = localStorage.getItem("theme");
-
-if(savedTheme === "light"){
-    document.body.classList.add("light");
-    themeIcon.className = "fas fa-sun";
-}
-
-themeToggle.onclick = function(){
-
-    document.body.classList.toggle("light");
-
-    if(document.body.classList.contains("light")){
-
-        localStorage.setItem("theme","light");
-        themeIcon.className = "fas fa-sun";
-
-    }else{
-
-        localStorage.setItem("theme","dark");
-        themeIcon.className = "fas fa-moon";
-
-    }
-
-};
 </script>
 </body>
-  </html>
+</html>
