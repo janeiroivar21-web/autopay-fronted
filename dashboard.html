@@ -1063,6 +1063,8 @@ orderBy("createdAt","desc")
 
 onSnapshot(transactionsQuery,(snapshot)=>{
 
+const monthlyRevenue = [0,0,0,0,0,0];
+
 let totalTransactions=0;
 
 let completedAmount=0;
@@ -1075,6 +1077,24 @@ recentContainer.innerHTML = "";
 snapshot.forEach(doc=>{
 
 const data=doc.data();
+
+if((data.status || "").toUpperCase() === "SUCCESS"){
+
+const d = data.createdAt?.toDate();
+
+if(d){
+
+const month = d.getMonth();
+
+if(month >= 0 && month < 6){
+
+monthlyRevenue[month] += Number(data.amount || 0);
+
+}
+
+}
+
+}
 
 const date = data.createdAt?.toDate
     ? data.createdAt.toDate()
@@ -1145,6 +1165,10 @@ completedAmount += Number(data.amount||0);
 }
 
 });
+
+revenueChart.data.datasets[0].data = monthlyRevenue;
+
+revenueChart.update();
 
 document.getElementById("transactions").innerHTML =
 totalTransactions.toLocaleString();
