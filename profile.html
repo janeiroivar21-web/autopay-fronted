@@ -571,61 +571,71 @@ location.href="login.html";
 return;
 }
 
-currentUser=user;
+currentUser = user;
 
-const snap=await getDoc(doc(db,"users",user.uid));
+// Load cached merchant immediately
+const cached = JSON.parse(localStorage.getItem("merchant"));
 
-if(!snap.exists()){
-location.href="login.html";
-return;
+if(cached){
+    loadProfile(cached);
 }
 
-const data=snap.data();
+const snap = await getDoc(doc(db,"users",user.uid));
 
-// Avatar
+if(!snap.exists()){
+    location.href="login.html";
+    return;
+}
+
+const data = snap.data();
+
+// Update local cache
+localStorage.setItem("merchant", JSON.stringify(data));
+localStorage.setItem("merchantUid", user.uid);
+
+// Refresh UI with latest data
+loadProfile(data);
+
+function loadProfile(data){
+
 const initials=(data.fullName||"A").charAt(0).toUpperCase();
 
 document.getElementById("avatar").innerHTML=initials;
 document.getElementById("profileAvatar").innerHTML=initials;
 
-// Header
 document.getElementById("fullName").innerHTML=data.fullName||"";
 document.getElementById("merchantId").innerHTML=data.merchantId||"--";
 
-// Personal
 document.getElementById("name").value=data.fullName||"";
 document.getElementById("email").value=data.email||"";
 document.getElementById("phone").value=data.phone||"";
 
-// Business
 document.getElementById("businessName").value=data.businessName||"";
 document.getElementById("businessType").value=data.businessType||"";
 document.getElementById("website").value=data.website||"";
 
-// Balances
 document.getElementById("walletBalance").innerHTML=
 "KES "+Number(data.walletBalance||0).toLocaleString();
 
 document.getElementById("serviceBalance").innerHTML=
 "KES "+Number(data.serviceBalance||0).toLocaleString();
 
-// Joined Date
 if(data.createdAt){
 
-const joined=data.createdAt.toDate();
+const joined=data.createdAt.toDate
+? data.createdAt.toDate()
+: new Date(data.createdAt);
 
 document.getElementById("joinedDate").innerHTML=
 joined.toLocaleDateString("en-US",{
-
 day:"numeric",
 month:"short",
 year:"numeric"
-
 });
 
 }
 
-});
+}
 
 // Back Button
 document.getElementById("backBtn").onclick=()=>{
@@ -674,6 +684,16 @@ website
 }
 
 );
+
+const merchant = JSON.parse(localStorage.getItem("merchant")) || {};
+
+merchant.fullName = fullName;
+merchant.phone = phone;
+merchant.businessName = businessName;
+merchant.businessType = businessType;
+merchant.website = website;
+
+localStorage.setItem("merchant", JSON.stringify(merchant));
 
 document.getElementById("loading").style.display="none";
 
