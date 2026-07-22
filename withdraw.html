@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<title>Withdraw - AUTOPAY</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<style>
+
+/* CSS will be added next */
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#0c1424;
+color:#fff;
+transition:.3s;
+}
+
+.container{
+max-width:430px;
+margin:auto;
+padding:18px;
+padding-bottom:90px;
+}
+
+.top{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:22px;
+}
+
+.back-btn,
+.avatar{
+width:48px;
+height:48px;
+background:#182235;
+border:1px solid #253149;
+border-radius:14px;
+display:flex;
+align-items:center;
+justify-content:center;
+cursor:pointer;
+transition:.3s;
+}
+
+.back-btn:hover,
+.avatar:hover{
+transform:translateY(-2px);
+}
+
+.title{
+display:flex;
+align-items:center;
+gap:10px;
+font-size:22px;
+font-weight:bold;
+}
+
+.title i{
+color:#2563eb;
+}
+
+.balance-card{
+display:grid;
+grid-template-columns:1fr auto 1fr;
+align-items:center;
+background:#182235;
+border:1px solid #253149;
+border-radius:18px;
+padding:20px;
+margin-bottom:20px;
+}
+
+.balance-item{
+text-align:center;
+}
+
+.balance-item span{
+display:block;
+font-size:13px;
+color:#94a3b8;
+margin-bottom:8px;
+}
+
+.balance-item h2{
+font-size:24px;
+}
+
+.divider{
+width:1px;
+height:60px;
+background:#2b3750;
+}
+
+.form-card,
+.history-card{
+background:#182235;
+border:1px solid #253149;
+border-radius:18px;
+padding:20px;
+margin-bottom:20px;
+}
+
+.form-card h3,
+.history-title{
+margin-bottom:18px;
+font-size:18px;
+}
+
+.form-card label{
+display:block;
+margin:16px 0 8px;
+font-size:14px;
+color:#94a3b8;
+}
+
+.form-card input,
+.form-card select{
+width:100%;
+padding:15px;
+border:none;
+outline:none;
+border-radius:14px;
+background:#111827;
+border:1px solid #2b3750;
+color:#fff;
+font-size:15px;
+}
+
+.form-card input:focus,
+.form-card select:focus{
+border-color:#2563eb;
+}
+
+.summary{
+margin-top:18px;
+padding:16px;
+background:#111827;
+border-radius:14px;
+border:1px solid #2b3750;
+}
+
+.summary div{
+display:flex;
+justify-content:space-between;
+padding:10px 0;
+}
+
+.summary div:first-child{
+border-bottom:1px solid #2b3750;
+}
+
+.summary span{
+color:#94a3b8;
+}
+
+.summary strong{
+font-size:16px;
+}
+
+#withdrawBtn{
+width:100%;
+margin-top:20px;
+padding:16px;
+border:none;
+border-radius:14px;
+background:#2563eb;
+color:#fff;
+font-size:16px;
+font-weight:bold;
+cursor:pointer;
+transition:.3s;
+}
+
+#withdrawBtn:hover{
+background:#1d4ed8;
+transform:translateY(-2px);
+}
+
+.history-item{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:15px 0;
+border-bottom:1px solid #2b3750;
+}
+
+.history-item:last-child{
+border-bottom:none;
+}
+
+.history-left h4{
+font-size:15px;
+margin-bottom:5px;
+}
+
+.history-left span{
+font-size:12px;
+color:#94a3b8;
+}
+
+.history-right{
+text-align:right;
+}
+
+.history-right strong{
+display:block;
+margin-bottom:5px;
+}
+
+.badge{
+display:inline-block;
+padding:6px 12px;
+border-radius:20px;
+font-size:12px;
+font-weight:bold;
+}
+
+.badge.pending{
+background:#78350f;
+color:#fbbf24;
+}
+
+.badge.success{
+background:#14532d;
+color:#4ade80;
+}
+
+.badge.failed{
+background:#7f1d1d;
+color:#f87171;
+}
+
+.loading{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+display:none;
+align-items:center;
+justify-content:center;
+flex-direction:column;
+background:rgba(0,0,0,.65);
+z-index:999;
+}
+
+.loader{
+width:60px;
+height:60px;
+border:5px solid rgba(255,255,255,.2);
+border-top:5px solid #2563eb;
+border-radius:50%;
+animation:spin 1s linear infinite;
+margin-bottom:18px;
+}
+
+@keyframes spin{
+100%{
+transform:rotate(360deg);
+}
+}
+
+.popup{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+display:none;
+align-items:center;
+justify-content:center;
+background:rgba(0,0,0,.65);
+z-index:1000;
+}
+
+.popup-card{
+width:90%;
+max-width:340px;
+background:#182235;
+border-radius:20px;
+padding:30px;
+text-align:center;
+}
+
+.popup-card i{
+font-size:60px;
+color:#22c55e;
+margin-bottom:18px;
+}
+
+.popup-card h2{
+margin-bottom:10px;
+}
+
+.popup-card p{
+color:#94a3b8;
+line-height:1.6;
+margin-bottom:20px;
+}
+
+.popup-card button{
+width:100%;
+padding:15px;
+border:none;
+border-radius:14px;
+background:#2563eb;
+color:#fff;
+font-size:15px;
+font-weight:bold;
+cursor:pointer;
+}
+
+/* Light Mode */
+
+body.light{
+background:#f5f7fb;
+color:#111827;
+}
+
+body.light .balance-card,
+body.light .form-card,
+body.light .history-card,
+body.light .popup-card,
+body.light .back-btn,
+body.light .avatar{
+background:#fff;
+border-color:#dbe2ea;
+color:#111827;
+}
+
+body.light .divider,
+body.light .history-item{
+border-color:#e5e7eb;
+}
+
+body.light .balance-item span,
+body.light .form-card label,
+body.light .summary span,
+body.light .history-left span,
+body.light .popup-card p{
+color:#64748b;
+}
+
+body.light .form-card input,
+body.light .form-card select,
+body.light .summary{
+background:#f8fafc;
+border-color:#dbe2ea;
+color:#111827;
+}
+
+@media(max-width:480px){
+
+.balance-item h2{
+font-size:20px;
+}
+
+.title{
+font-size:20px;
+}
+
+}
+</style>
+
+</head>
+<body>
+
+<div class="container">
+
+<!-- Header -->
+
+<div class="top">
+
+<div class="back-btn" id="backBtn">
+<i class="fas fa-arrow-left"></i>
+</div>
+
+<div class="title">
+<i class="fas fa-money-bill-transfer"></i>
+<span>Withdraw</span>
+</div>
+
+<div class="avatar" id="avatar">
+AP
+</div>
+
+</div>
+
+<!-- Balance Card -->
+
+<div class="balance-card">
+
+<div class="balance-item">
+
+<span>Wallet Balance</span>
+
+<h2 id="walletBalance">
+KES 0
+</h2>
+
+</div>
+
+<div class="divider"></div>
+
+<div class="balance-item">
+
+<span>Service Balance</span>
+
+<h2 id="serviceBalance">
+KES 0
+</h2>
+
+</div>
+
+</div>
+
+<!-- Withdraw Form -->
+
+<div class="form-card">
+
+<h3>Request Withdrawal</h3>
+
+<label>Payment Account</label>
+
+<select id="paymentAccount">
+
+<option value="">
+Select Payment Account
+</option>
+
+</select>
+
+<label>Withdrawal Amount (KES)</label>
+
+<input
+type="number"
+id="amount"
+placeholder="Enter amount">
+
+<div class="summary">
+
+<div>
+
+<span>Withdrawal Fee (10%)</span>
+
+<strong id="fee">
+KES 0
+</strong>
+
+</div>
+
+<div>
+
+<span>You Will Receive</span>
+
+<strong id="receive">
+KES 0
+</strong>
+
+</div>
+
+</div>
+
+<button id="withdrawBtn">
+
+<i class="fas fa-paper-plane"></i>
+
+Request Withdrawal
+
+</button>
+
+</div>
+
+<!-- Recent Withdrawals -->
+
+<div class="history-card">
+
+<div class="history-title">
+
+Recent Withdrawals
+
+</div>
+
+<div id="withdrawHistory">
+
+</div>
+
+</div>
+
+</div>
+
+<!-- Loading -->
+
+<div class="loading" id="loading">
+
+<div class="loader"></div>
+
+<p>Processing withdrawal...</p>
+
+</div>
+
+<!-- Success Popup -->
+
+<div class="popup" id="successPopup">
+
+<div class="popup-card">
+
+<i class="fas fa-circle-check"></i>
+
+<h2>Request Submitted</h2>
+
+<p>
+
+Your withdrawal request has been received and is awaiting processing.
+
+</p>
+
+<button id="closePopup">
+
+Continue
+
+</button>
+
+</div>
+
+</div>
+<script type="module">
+
+import { auth, db } from "./firebase.js";
+
+import {
+onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
+
+import {
+doc,
+getDoc,
+updateDoc,
+collection,
+query,
+where,
+orderBy,
+onSnapshot,
+getDocs,
+addDoc,
+serverTimestamp,
+increment
+} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
+
+let currentUser;
+let walletBalance=0;
+let merchantId="";
+
+// Theme
+if(localStorage.getItem("theme")==="light"){
+document.body.classList.add("light");
+}
+
+// Authentication
+onAuthStateChanged(auth,async(user)=>{
+
+if(!user){
+location.href="login.html";
+return;
+}
+
+currentUser=user;
+
+const snap=await getDoc(doc(db,"users",user.uid));
+
+if(!snap.exists()){
+location.href="login.html";
+return;
+}
+
+const data=snap.data();
+
+merchantId=data.merchantId;
+
+walletBalance=Number(data.walletBalance||0);
+
+document.getElementById("walletBalance").innerHTML=
+"KES "+walletBalance.toLocaleString();
+
+document.getElementById("serviceBalance").innerHTML=
+"KES "+Number(data.serviceBalance||0).toLocaleString();
+
+document.getElementById("avatar").innerHTML=
+(data.fullName||"A").charAt(0).toUpperCase();
+
+loadAccounts();
+
+loadWithdrawals();
+
+});
+
+// Back
+document.getElementById("backBtn").onclick=()=>history.back();
+
+// Load Payment Accounts
+async function loadAccounts(){
+
+const q=query(
+
+collection(db,"paymentAccounts"),
+
+where("merchantId","==",merchantId)
+
+);
+
+const snapshot=await getDocs(q);
+
+const select=document.getElementById("paymentAccount");
+
+snapshot.forEach(docSnap=>{
+
+const data=docSnap.data();
+
+select.innerHTML+=`
+<option value="${docSnap.id}">
+${data.businessName} (${data.accountNumber})
+</option>
+`;
+
+});
+
+}
+
+// Calculate Fee
+document.getElementById("amount").addEventListener("input",()=>{
+
+const amount=Number(document.getElementById("amount").value||0);
+
+const fee=amount*0.10;
+
+const receive=amount-fee;
+
+document.getElementById("fee").innerHTML=
+"KES "+fee.toLocaleString();
+
+document.getElementById("receive").innerHTML=
+"KES "+receive.toLocaleString();
+
+});
+
+// Withdraw
+document.getElementById("withdrawBtn").onclick=async()=>{
+
+const account=document.getElementById("paymentAccount").value;
+
+const amount=Number(document.getElementById("amount").value);
+
+if(!account){
+
+alert("Select a payment account.");
+
+return;
+
+}
+
+if(amount<=0){
+
+alert("Enter a valid amount.");
+
+return;
+
+}
+
+if(amount>walletBalance){
+
+alert("Insufficient wallet balance.");
+
+return;
+
+}
+
+document.getElementById("loading").style.display="flex";
+
+try{
+
+await addDoc(collection(db,"withdrawals"),{
+
+merchantId,
+
+uid:currentUser.uid,
+
+accountId:account,
+
+amount,
+
+fee:amount*0.10,
+
+netAmount:amount-(amount*0.10),
+
+status:"Pending",
+
+createdAt:serverTimestamp()
+
+});
+
+// Deduct wallet
+await updateDoc(doc(db,"users",currentUser.uid),{
+
+walletBalance:increment(-amount)
+
+});
+
+walletBalance-=amount;
+
+document.getElementById("walletBalance").innerHTML=
+"KES "+walletBalance.toLocaleString();
+
+document.getElementById("loading").style.display="none";
+
+document.getElementById("successPopup").style.display="flex";
+
+document.getElementById("amount").value="";
+
+document.getElementById("fee").innerHTML="KES 0";
+
+document.getElementById("receive").innerHTML="KES 0";
+
+}catch(error){
+
+document.getElementById("loading").style.display="none";
+
+alert(error.message);
+
+}
+
+};
+
+// History
+function loadWithdrawals(){
+
+const q=query(
+
+collection(db,"withdrawals"),
+
+where("merchantId","==",merchantId),
+
+orderBy("createdAt","desc")
+
+);
+
+onSnapshot(q,(snapshot)=>{
+
+const history=document.getElementById("withdrawHistory");
+
+history.innerHTML="";
+
+if(snapshot.empty){
+
+history.innerHTML=`
+<p style="text-align:center;color:#94a3b8;">
+No withdrawals found.
+</p>
+`;
+
+return;
+
+}
+
+snapshot.forEach(docSnap=>{
+
+const data=docSnap.data();
+
+let badge="pending";
+
+if((data.status||"").toUpperCase()=="SUCCESS"){
+
+badge="success";
+
+}else if((data.status||"").toUpperCase()=="FAILED"){
+
+badge="failed";
+
+}
+
+const date=data.createdAt?.toDate()
+?.toLocaleDateString()||"";
+
+history.innerHTML+=`
+
+<div class="history-item">
+
+<div class="history-left">
+
+<h4>Withdrawal</h4>
+
+<span>${date}</span>
+
+</div>
+
+<div class="history-right">
+
+<strong>
+KES ${Number(data.amount).toLocaleString()}
+</strong>
+
+<span class="badge ${badge}">
+${data.status}
+</span>
+
+</div>
+
+</div>
+
+`;
+
+});
+
+});
+
+}
+
+// Close Popup
+document.getElementById("closePopup").onclick=()=>{
+
+document.getElementById("successPopup").style.display="none";
+
+};
+
+</script>
+</body>
+</html>
