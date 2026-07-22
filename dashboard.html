@@ -7,7 +7,16 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
-body{background:#0c1424;color:#fff}
+body{
+background:#0c1424;
+color:#fff;
+transition:.3s;
+}
+
+body.light{
+background:#f5f7fb;
+color:#111827;
+}
 .container{max-width:430px;margin:auto;padding:14px}
 .top{display:flex;justify-content:space-between;align-items:center;margin:8px 0 18px}
 
@@ -420,6 +429,91 @@ color:#f59e0b;
 .failed i{
 color:#ef4444;
 }
+
+/* ================= LIGHT MODE ================= */
+
+body.light .card,
+body.light .bal,
+body.light .grid,
+body.light .sidebar,
+body.light .notification-panel,
+body.light .icon,
+body.light .avatar{
+
+background:#ffffff;
+border:1px solid #dbe2ea;
+color:#111827;
+
+}
+
+body.light .cell{
+
+border-color:#dbe2ea;
+
+}
+
+body.light .small,
+body.light .activity-columns,
+body.light .activity-time{
+
+color:#64748b;
+
+}
+
+body.light .activity-item{
+
+border-bottom:1px solid #e5e7eb;
+
+}
+
+body.light .secondary{
+
+background:#f3f4f6;
+color:#111827;
+
+}
+
+body.light .logo{
+
+color:#111827;
+
+}
+
+body.light .side-menu a{
+
+color:#111827;
+
+}
+
+body.light .side-menu a.active{
+
+color:#fff;
+
+}
+
+body.light .notification-item{
+
+border-bottom:1px solid #e5e7eb;
+
+}
+
+body.light .notification-item:hover{
+
+background:#f3f4f6;
+
+}
+
+body.light .float{
+
+box-shadow:0 10px 25px rgba(37,99,235,.25);
+
+}
+
+body.light .dot{
+
+border:2px solid #fff;
+
+}
 </style>
 </head>
 <body>
@@ -550,10 +644,8 @@ Good Morning
 
 </div>
 
-<div class="icon">
-
-<i class="fas fa-pen"></i>
-
+<div class="icon" id="themeToggle">
+<i class="fas fa-moon" id="themeIcon"></i>
 </div>
 
 </div>
@@ -1179,6 +1271,37 @@ document.getElementById("completed").innerHTML =
 });
 
 }
+
+const themeToggle = document.getElementById("themeToggle");
+const themeIcon = document.getElementById("themeIcon");
+
+if(localStorage.getItem("theme") === "light"){
+
+document.body.classList.add("light");
+
+themeIcon.className = "fas fa-sun";
+
+}
+
+themeToggle.onclick = ()=>{
+
+document.body.classList.toggle("light");
+
+if(document.body.classList.contains("light")){
+
+themeIcon.className="fas fa-sun";
+
+localStorage.setItem("theme","light");
+
+}else{
+
+themeIcon.className="fas fa-moon";
+
+localStorage.setItem("theme","dark");
+
+}
+
+};
 </script>
 </body>
 </html>
