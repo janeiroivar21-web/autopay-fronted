@@ -432,15 +432,12 @@ KES 0
 
 <h3>Request Withdrawal</h3>
 
-<label>Payment Account</label>
+<label>M-Pesa Phone Number</label>
 
-<select id="paymentAccount">
-
-<option value="">
-Select Payment Account
-</option>
-
-</select>
+<input
+type="tel"
+id="phone"
+placeholder="254712345678">
 
 <label>Withdrawal Amount (KES)</label>
 
@@ -511,6 +508,48 @@ Recent Withdrawals
 
 </div>
 
+<!-- Confirm Withdrawal Popup -->
+
+<div class="popup" id="confirmPopup">
+
+<div class="popup-card">
+
+<h2>Confirm Withdrawal</h2>
+
+<div style="text-align:left;margin:20px 0;line-height:2;">
+
+<p><strong>Phone:</strong> <span id="confirmPhone"></span></p>
+
+<p><strong>Amount:</strong> KES <span id="confirmAmount"></span></p>
+
+<p><strong>Fee:</strong> KES <span id="confirmFee"></span></p>
+
+<p><strong>You Will Receive:</strong> KES <span id="confirmNet"></span></p>
+
+</div>
+
+<div style="display:flex;gap:10px;">
+
+<button id="cancelWithdraw"
+style="flex:1;background:#6b7280;">
+
+Cancel
+
+</button>
+
+<button id="confirmWithdraw"
+style="flex:1;">
+
+Confirm
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+  
 <!-- Success Popup -->
 
 <div class="popup" id="successPopup">
@@ -553,7 +592,6 @@ query,
 where,
 orderBy,
 onSnapshot,
-getDocs,
 addDoc,
 serverTimestamp,
 increment
@@ -589,6 +627,8 @@ const data=snap.data();
 
 merchantId=data.merchantId;
 
+document.getElementById("phone").value = data.phone || "";
+
 walletBalance=Number(data.walletBalance||0);
 
 document.getElementById("walletBalance").innerHTML=
@@ -600,7 +640,6 @@ document.getElementById("serviceBalance").innerHTML=
 document.getElementById("avatar").innerHTML=
 (data.fullName||"A").charAt(0).toUpperCase();
 
-loadAccounts();
 
 loadWithdrawals();
 
@@ -609,34 +648,6 @@ loadWithdrawals();
 // Back
 document.getElementById("backBtn").onclick=()=>history.back();
 
-// Load Payment Accounts
-async function loadAccounts(){
-
-const q=query(
-
-collection(db,"paymentAccounts"),
-
-where("merchantId","==",merchantId)
-
-);
-
-const snapshot=await getDocs(q);
-
-const select=document.getElementById("paymentAccount");
-
-snapshot.forEach(docSnap=>{
-
-const data=docSnap.data();
-
-select.innerHTML+=`
-<option value="${docSnap.id}">
-${data.businessName} (${data.accountNumber})
-</option>
-`;
-
-});
-
-}
 
 // Calculate Fee
 document.getElementById("amount").addEventListener("input",()=>{
@@ -654,105 +665,59 @@ document.getElementById("receive").innerHTML=
 "KES "+receive.toLocaleString();
 
 });
+let withdrawData={};
 
-// Withdraw
-document.getElementById("withdrawBtn").onclick=async()=>{
+document.getElementById("withdrawBtn").onclick=()=>{
 
-const account=document.getElementById("paymentAccount").value;
-
+const phone=document.getElementById("phone").value.trim();
 const amount=Number(document.getElementById("amount").value);
 
-if(!account){
-
-alert("Select a payment account.");
-
+if(phone===""){
+alert("Enter your M-Pesa phone number.");
 return;
+}
 
+if(!/^254(7|1)\d{8}$/.test(phone)){
+alert("Enter a valid M-Pesa phone number.");
+return;
 }
 
 if(amount<=0){
-
 alert("Enter a valid amount.");
-
 return;
-
 }
 
 if(amount>walletBalance){
-
 alert("Insufficient wallet balance.");
-
 return;
-
 }
 
-document.getElementById("loading").style.display="flex";
+const fee=amount*0.10;
+const netAmount=amount-fee;
 
-try{
-
-await addDoc(collection(db,"withdrawals"),{
-
-merchantId,
-
-uid:currentUser.uid,
-
-accountId:account,
-
+withdrawData={
+phone,
 amount,
+fee,
+netAmount
+};
 
-fee:amount*0.10,
+document.getElementById("confirmPhone").innerHTML=phone;
+document.getElementById("confirmAmount").innerHTML=amount.toLocaleString();
+document.getElementById("confirmFee").innerHTML=fee.toLocaleString();
+document.getElementById("confirmNet").innerHTML=netAmount.toLocaleString();
 
-netAmount:amount-(amount*0.10),
-
-status:"Pending",
-
-createdAt:serverTimestamp()
-
-});
-
-// Deduct wallet
-await updateDoc(doc(db,"users",currentUser.uid),{
-
-walletBalance:increment(-amount)
-
-});
-
-walletBalance-=amount;
-
-document.getElementById("walletBalance").innerHTML=
-"KES "+walletBalance.toLocaleString();
-
-document.getElementById("loading").style.display="none";
-
-document.getElementById("successPopup").style.display="flex";
-
-document.getElementById("amount").value="";
-
-document.getElementById("fee").innerHTML="KES 0";
-
-document.getElementById("receive").innerHTML="KES 0";
-
-}catch(error){
-
-document.getElementById("loading").style.display="none";
-
-alert(error.message);
-
-}
+document.getElementById("confirmPopup").style.display="flex";
 
 };
 
-// History
+// Load Withdrawal History
 function loadWithdrawals(){
 
 const q=query(
-
 collection(db,"withdrawals"),
-
 where("merchantId","==",merchantId),
-
 orderBy("createdAt","desc")
-
 );
 
 onSnapshot(q,(snapshot)=>{
@@ -780,40 +745,27 @@ const data=docSnap.data();
 let badge="pending";
 
 if((data.status||"").toUpperCase()=="SUCCESS"){
-
 badge="success";
-
 }else if((data.status||"").toUpperCase()=="FAILED"){
-
 badge="failed";
-
 }
 
-const date=data.createdAt?.toDate()
-?.toLocaleDateString()||"";
+const date=data.createdAt?.toDate()?.toLocaleString()||"";
 
 history.innerHTML+=`
 
 <div class="history-item">
 
 <div class="history-left">
-
-<h4>Withdrawal</h4>
-
+<h4>${data.phone}</h4>
 <span>${date}</span>
-
 </div>
 
 <div class="history-right">
-
-<strong>
-KES ${Number(data.amount).toLocaleString()}
-</strong>
-
+<strong>KES ${Number(data.amount).toLocaleString()}</strong>
 <span class="badge ${badge}">
 ${data.status}
 </span>
-
 </div>
 
 </div>
@@ -826,6 +778,69 @@ ${data.status}
 
 }
 
+document.getElementById("cancelWithdraw").onclick=()=>{
+
+document.getElementById("confirmPopup").style.display="none";
+
+};
+
+document.getElementById("confirmWithdraw").onclick=async()=>{
+
+document.getElementById("confirmPopup").style.display="none";
+
+document.getElementById("loading").style.display="flex";
+
+try{
+
+await addDoc(collection(db,"withdrawals"),{
+
+merchantId,
+uid:currentUser.uid,
+
+phone:withdrawData.phone,
+
+amount:withdrawData.amount,
+
+fee:withdrawData.fee,
+
+netAmount:withdrawData.netAmount,
+
+status:"Pending",
+
+createdAt:serverTimestamp()
+
+});
+
+await updateDoc(doc(db,"users",currentUser.uid),{
+
+walletBalance:increment(-withdrawData.amount)
+
+});
+
+walletBalance-=withdrawData.amount;
+
+document.getElementById("walletBalance").innerHTML=
+"KES "+walletBalance.toLocaleString();
+
+document.getElementById("loading").style.display="none";
+
+document.getElementById("successPopup").style.display="flex";
+
+document.getElementById("amount").value="";
+
+document.getElementById("fee").innerHTML="KES 0";
+
+document.getElementById("receive").innerHTML="KES 0";
+
+}catch(error){
+
+document.getElementById("loading").style.display="none";
+
+alert(error.message);
+
+}
+
+};
 // Close Popup
 document.getElementById("closePopup").onclick=()=>{
 
@@ -835,4 +850,4 @@ document.getElementById("successPopup").style.display="none";
 
 </script>
 </body>
-</html>
+  </html>
