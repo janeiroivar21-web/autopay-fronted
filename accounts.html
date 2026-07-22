@@ -585,11 +585,29 @@ let deleteId = "";
 let editId = null;
 
 // Authenticate User
+let accountsLoaded = false;
+
 onAuthStateChanged(auth, async(user)=>{
 
     if(!user){
         location.href="login.html";
         return;
+    }
+
+    // Load cached merchant immediately
+    const cached = JSON.parse(localStorage.getItem("merchant"));
+
+    if(cached){
+
+        merchantId = cached.merchantId || "";
+
+        document.getElementById("avatar").innerHTML =
+        (cached.fullName || "A").charAt(0).toUpperCase();
+
+        if(merchantId){
+            loadAccounts();
+        }
+
     }
 
     const snap = await getDoc(doc(db,"users",user.uid));
@@ -601,12 +619,14 @@ onAuthStateChanged(auth, async(user)=>{
 
     const userData = snap.data();
 
+    // Update cache
+    localStorage.setItem("merchant",JSON.stringify(userData));
+    localStorage.setItem("merchantUid",user.uid);
+
     merchantId = userData.merchantId;
 
     document.getElementById("avatar").innerHTML =
-    userData.fullName.charAt(0).toUpperCase();
-
-    loadAccounts();
+    (userData.fullName || "A").charAt(0).toUpperCase();
 
 });
 
@@ -616,12 +636,13 @@ document.getElementById("backBtn").onclick=()=>history.back();
 // Open Modal
 document.getElementById("addAccount").onclick=()=>{
 
-editId=null;
+editId = null;
+
+clearForm();
 
 document.getElementById("accountModal").style.display="flex";
 
 };
-
 // Close Modal
 document.getElementById("closeModal").onclick=()=>{
 
@@ -706,13 +727,17 @@ bankName,
 
 accountNumber,
 
-status:"Active",
-
-default:false,
-
-createdAt:serverTimestamp()
+status:"Active"
 
 };
+
+if(!editId){
+
+data.default = false;
+
+data.createdAt = serverTimestamp();
+
+}
 
 if(editId){
 
@@ -734,6 +759,8 @@ function clearForm(){
 
 document.getElementById("accountType").value="";
 
+document.getElementById("accountType").dispatchEvent(new Event("change"));
+
 document.getElementById("businessName").value="";
 
 document.getElementById("bankName").value="";
@@ -748,6 +775,10 @@ document.getElementById("numberLabel").innerHTML="Till Number";
 
 // Load Accounts
 function loadAccounts(){
+
+if(accountsLoaded || !merchantId) return;
+
+accountsLoaded = true;
 
 const q=query(
 
