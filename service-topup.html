@@ -647,35 +647,57 @@ onAuthStateChanged(auth, async(user)=>{
 
     if(!user){
 
-        window.location.href = "login.html";
+        window.location.href="login.html";
         return;
 
     }
 
     userId = user.uid;
 
+    // Load cached merchant immediately
+    const cached = JSON.parse(localStorage.getItem("merchant"));
+
+    if(cached){
+        loadMerchant(cached);
+    }
+
     const snap = await getDoc(doc(db,"users",user.uid));
 
     if(!snap.exists()){
 
-        window.location.href = "login.html";
+        window.location.href="login.html";
         return;
 
     }
 
     const data = snap.data();
 
-    merchantPhone = data.phone;
+    // Update cache
+    localStorage.setItem("merchant",JSON.stringify(data));
+    localStorage.setItem("merchantUid",user.uid);
 
-    document.getElementById("phone").value = merchantPhone;
-
-    document.getElementById("serviceBalance").innerHTML =
-    "KES " + Number(data.serviceBalance || 0).toLocaleString();
-
-    document.getElementById("avatar").innerHTML =
-    data.fullName.charAt(0).toUpperCase();
+    loadMerchant(data);
 
 });
+
+function loadMerchant(data){
+
+    merchantPhone = data.phone || "";
+
+    document.getElementById("phone").value =
+    merchantPhone;
+
+    document.getElementById("serviceBalance").innerHTML =
+    "KES " +
+    Number(data.serviceBalance || 0).toLocaleString(undefined,{
+        minimumFractionDigits:2,
+        maximumFractionDigits:2
+    });
+
+    document.getElementById("avatar").innerHTML =
+    (data.fullName || "A").charAt(0).toUpperCase();
+
+    }
 
 // Back Button
 document.getElementById("backBtn").onclick = ()=>{
@@ -733,6 +755,8 @@ document.getElementById("loading").style.display="flex";
 
 try{
 
+const token = await auth.currentUser.getIdToken();
+
 const response = await fetch(
 
 BACKEND_URL + "/api/stk-push",
@@ -742,9 +766,8 @@ BACKEND_URL + "/api/stk-push",
 method:"POST",
 
 headers:{
-
-"Content-Type":"application/json"
-
+"Content-Type":"application/json",
+"Authorization":`Bearer ${token}`
 },
 
 body:JSON.stringify({
@@ -794,6 +817,8 @@ const timer = setInterval(async()=>{
 
 try{
 
+const token = await auth.currentUser.getIdToken();
+
 const response = await fetch(
 
 BACKEND_URL + "/api/check-status",
@@ -803,9 +828,8 @@ BACKEND_URL + "/api/check-status",
 method:"POST",
 
 headers:{
-
-"Content-Type":"application/json"
-
+"Content-Type":"application/json",
+"Authorization":`Bearer ${token}`
 },
 
 body:JSON.stringify({
@@ -824,12 +848,28 @@ if(result.status === "SUCCESS"){
 
 clearInterval(timer);
 
+// Refresh merchant data
+const snap = await getDoc(doc(db,"users",userId));
+
+if(snap.exists()){
+
+const merchant = snap.data();
+
+localStorage.setItem(
+    "merchant",
+    JSON.stringify(merchant)
+);
+
+loadMerchant(merchant);
+
+}
+
 document.getElementById("loading").style.display="none";
 
 document.getElementById("successPopup").style.display="flex";
 
 }
-
+    
 if(result.status === "FAILED"){
 
 clearInterval(timer);
