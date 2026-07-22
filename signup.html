@@ -259,25 +259,26 @@ return;
 
 try{
 
-const q=query(
-collection(db,"users"),
-where("username","==",username)
+const q = query(
+collection(db,"usernames"),
+where("__name__", "==", username)
 );
 
-const existing=await getDocs(q);
+const existing = await getDocs(q);
 
-if(!existing.empty){
-showPopup(
-"Username Taken",
-"Please choose another username.",
-false
-);
+if (!existing.empty) {
 
-btn.disabled = false;
-btn.innerHTML = "Create Merchant Account";
+    showPopup(
+        "Username Taken",
+        "Please choose another username.",
+        false
+    );
 
-return;
-}
+    btn.disabled = false;
+    btn.innerHTML = "Create Merchant Account";
+
+    return;
+    }
 
 const userCredential=
 await createUserWithEmailAndPassword(
@@ -357,16 +358,6 @@ throw e;
 
 }
 
-await setDoc(doc(db,"usernames",username),{
-
-uid:uid,
-
-email:email,
-
-createdAt:serverTimestamp()
-
-});
-
 showPopup(
 "Success",
 "Merchant account created successfully."
@@ -395,4 +386,4 @@ false
 </script>
 
 </body>
-    </html>
+</html>
