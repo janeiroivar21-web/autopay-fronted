@@ -670,7 +670,7 @@ async function loadMerchant() {
         const token = await currentUser.getIdToken();
 
         const response = await fetch(
-            `https://autopay-backend-1y64.onrender.com/api/merchant/${currentUser.uid}`,
+    `${API_BASE}/api/merchant/${currentUser.uid}`,
             {
                 headers: {
                     Authorization: `Bearer ${token}`
@@ -776,7 +776,7 @@ BACKEND URL
 */
 
 const API_BASE =
-"https://autopay-backend-1y64.onrender.com";
+"https://autopay.co.ke";
 
 /*
 =========================================
