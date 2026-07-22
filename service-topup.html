@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Service Topup - AUTOPAY</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<style>
+
+/* CSS will be added in the next step */
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#0c1424;
+color:#fff;
+transition:.3s;
+}
+
+.container{
+max-width:430px;
+margin:auto;
+padding:18px;
+padding-bottom:80px;
+}
+
+.top{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:25px;
+}
+
+.back-btn,
+.profile{
+width:48px;
+height:48px;
+background:#182235;
+border:1px solid #253149;
+border-radius:14px;
+display:flex;
+align-items:center;
+justify-content:center;
+cursor:pointer;
+transition:.3s;
+}
+
+.back-btn:hover,
+.profile:hover{
+transform:translateY(-2px);
+}
+
+.title{
+font-size:28px;
+font-weight:bold;
+}
+
+.title i{
+color:#2563eb;
+margin-right:8px;
+}
+
+.title span{
+color:#2563eb;
+}
+
+.balance-card{
+background:#182235;
+border:1px solid #253149;
+border-radius:20px;
+padding:22px;
+margin-bottom:22px;
+}
+
+.balance-title{
+font-size:14px;
+color:#9aa7bd;
+}
+
+.balance-amount{
+font-size:34px;
+font-weight:bold;
+margin:12px 0;
+}
+
+.balance-note{
+font-size:13px;
+color:#94a3b8;
+line-height:1.5;
+}
+
+.section-title{
+font-size:15px;
+font-weight:bold;
+margin-bottom:12px;
+}
+
+.quick-grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:12px;
+margin-bottom:22px;
+}
+
+.quick-btn{
+padding:16px;
+border:none;
+border-radius:14px;
+background:#182235;
+border:1px solid #253149;
+color:#fff;
+font-weight:bold;
+cursor:pointer;
+transition:.3s;
+}
+
+.quick-btn:hover{
+background:#2563eb;
+}
+
+.quick-btn.active{
+background:#2563eb;
+}
+
+.form-card{
+background:#182235;
+border:1px solid #253149;
+border-radius:20px;
+padding:20px;
+margin-bottom:22px;
+}
+
+.input-group{
+margin-bottom:20px;
+}
+
+.input-group label{
+display:block;
+margin-bottom:8px;
+font-size:14px;
+color:#9aa7bd;
+}
+
+.input-box{
+display:flex;
+align-items:center;
+gap:12px;
+background:#111827;
+border:1px solid #2b3750;
+border-radius:14px;
+padding:15px;
+}
+
+.input-box i{
+color:#2563eb;
+}
+
+.input-box span{
+font-weight:bold;
+}
+
+.input-box input{
+flex:1;
+background:none;
+border:none;
+outline:none;
+font-size:16px;
+color:#fff;
+}
+
+.payment-box{
+display:flex;
+justify-content:space-between;
+align-items:center;
+background:#111827;
+border:1px solid #2b3750;
+border-radius:16px;
+padding:16px;
+margin-bottom:22px;
+}
+
+.payment-left{
+display:flex;
+gap:14px;
+align-items:center;
+}
+
+.payment-left i{
+font-size:28px;
+color:#22c55e;
+}
+
+.payment-left h4{
+margin-bottom:4px;
+}
+
+.payment-left small{
+color:#9aa7bd;
+}
+
+.payment-box .fa-circle-check{
+color:#22c55e;
+font-size:22px;
+}
+
+.topup-btn{
+width:100%;
+padding:18px;
+border:none;
+border-radius:14px;
+background:#2563eb;
+color:#fff;
+font-size:16px;
+font-weight:bold;
+cursor:pointer;
+transition:.3s;
+}
+
+.topup-btn:hover{
+transform:translateY(-2px);
+background:#1d4ed8;
+}
+
+.info-card{
+background:#182235;
+border:1px solid #253149;
+border-radius:18px;
+padding:20px;
+}
+
+.info-card h3{
+margin-bottom:14px;
+}
+
+.info-card ul{
+padding-left:18px;
+}
+
+.info-card li{
+margin-bottom:10px;
+color:#9aa7bd;
+line-height:1.5;
+}
+
+.loading{
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.65);
+display:none;
+align-items:center;
+justify-content:center;
+flex-direction:column;
+z-index:999;
+}
+
+.loader{
+width:60px;
+height:60px;
+border:5px solid rgba(255,255,255,.2);
+border-top:5px solid #2563eb;
+border-radius:50%;
+animation:spin 1s linear infinite;
+margin-bottom:20px;
+}
+
+@keyframes spin{
+
+100%{
+transform:rotate(360deg);
+}
+
+}
+
+.popup{
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.65);
+display:none;
+align-items:center;
+justify-content:center;
+z-index:1000;
+}
+
+.popup-card{
+background:#182235;
+width:90%;
+max-width:340px;
+border-radius:20px;
+padding:28px;
+text-align:center;
+}
+
+.popup-card i{
+font-size:60px;
+margin-bottom:15px;
+}
+
+#successPopup i{
+color:#22c55e;
+}
+
+#failedPopup i{
+color:#ef4444;
+}
+
+.popup-card h2{
+margin-bottom:12px;
+}
+
+.popup-card p{
+color:#9aa7bd;
+margin-bottom:22px;
+line-height:1.5;
+}
+
+.popup-card button{
+width:100%;
+padding:15px;
+border:none;
+border-radius:14px;
+background:#2563eb;
+color:#fff;
+font-size:16px;
+font-weight:bold;
+cursor:pointer;
+}
+
+body.light{
+background:#f5f7fb;
+color:#111827;
+}
+
+body.light .balance-card,
+body.light .form-card,
+body.light .info-card,
+body.light .popup-card,
+body.light .back-btn,
+body.light .profile,
+body.light .quick-btn{
+background:#fff;
+border-color:#dbe2ea;
+color:#111827;
+}
+
+body.light .input-box,
+body.light .payment-box{
+background:#f9fafb;
+border-color:#dbe2ea;
+}
+
+body.light input{
+color:#111827;
+}
+
+body.light .balance-title,
+body.light .balance-note,
+body.light .input-group label,
+body.light .payment-left small,
+body.light .info-card li{
+color:#64748b;
+}
+
+</style>
+
+</head>
+<body>
+
+<div class="container">
+
+    <!-- Header -->
+    <div class="top">
+
+        <div class="back-btn" id="backBtn">
+            <i class="fas fa-arrow-left"></i>
+        </div>
+
+        <div class="title">
+            <i class="fas fa-bolt"></i>
+            <span>AUTOPAY</span>
+        </div>
+
+        <div class="profile" id="avatar">
+            AC
+        </div>
+
+    </div>
+
+
+    <!-- Balance Card -->
+
+    <div class="balance-card">
+
+        <div class="balance-title">
+            Service Balance
+        </div>
+
+        <div class="balance-amount" id="serviceBalance">
+            KES 0.00
+        </div>
+
+        <div class="balance-note">
+            Use your service balance to process transactions and API requests.
+        </div>
+
+    </div>
+
+
+    <!-- Quick Amount -->
+
+    <div class="section-title">
+        Quick Select
+    </div>
+
+    <div class="quick-grid">
+
+        <button class="quick-btn" data-amount="100">
+            KES 100
+        </button>
+
+        <button class="quick-btn" data-amount="250">
+            KES 250
+        </button>
+
+        <button class="quick-btn" data-amount="500">
+            KES 500
+        </button>
+
+        <button class="quick-btn" data-amount="1000">
+            KES 1,000
+        </button>
+
+    </div>
+
+
+    <!-- Topup Form -->
+
+    <div class="form-card">
+
+        <div class="input-group">
+
+            <label>
+                Topup Amount
+            </label>
+
+            <div class="input-box">
+
+                <span>KES</span>
+
+                <input
+                    type="number"
+                    id="amount"
+                    placeholder="Enter amount">
+
+            </div>
+
+        </div>
+
+
+        <div class="input-group">
+
+            <label>
+                Merchant Phone Number
+            </label>
+
+            <div class="input-box">
+
+                <i class="fas fa-phone"></i>
+
+                <input
+                    type="text"
+                    id="phone"
+                    readonly>
+
+            </div>
+
+        </div>
+
+
+        <div class="payment-box">
+
+            <div class="payment-left">
+
+                <i class="fas fa-mobile-screen-button"></i>
+
+                <div>
+
+                    <h4>M-Pesa STK Push</h4>
+
+                    <small>
+                        Pay securely using M-Pesa
+                    </small>
+
+                </div>
+
+            </div>
+
+            <i class="fas fa-circle-check"></i>
+
+        </div>
+
+
+        <button class="topup-btn" id="topupBtn">
+
+            <i class="fas fa-wallet"></i>
+
+            Top Up Service Balance
+
+        </button>
+
+    </div>
+
+
+    <!-- Information -->
+
+    <div class="info-card">
+
+        <h3>
+            Before You Continue
+        </h3>
+
+        <ul>
+
+            <li>
+                Minimum topup amount is KES 10.
+            </li>
+
+            <li>
+                Confirm the payment on your phone.
+            </li>
+
+            <li>
+                Service balance updates automatically after payment.
+            </li>
+
+            <li>
+                Do not close this page while payment is processing.
+            </li>
+
+        </ul>
+
+    </div>
+
+
+</div>
+
+
+<!-- Loading -->
+
+<div class="loading" id="loading">
+
+    <div class="loader"></div>
+
+    <p>
+        Waiting for M-Pesa payment...
+    </p>
+
+</div>
+
+
+<!-- Success Popup -->
+
+<div class="popup" id="successPopup">
+
+    <div class="popup-card">
+
+        <i class="fas fa-circle-check"></i>
+
+        <h2>
+            Payment Successful
+        </h2>
+
+        <p>
+
+            Your Service Balance has been updated successfully.
+
+        </p>
+
+        <button id="successBtn">
+
+            Back to Dashboard
+
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- Failed Popup -->
+
+<div class="popup" id="failedPopup">
+
+    <div class="popup-card">
+
+        <i class="fas fa-circle-xmark"></i>
+
+        <h2>
+
+            Payment Failed
+
+        </h2>
+
+        <p id="failedMessage">
+
+            Payment could not be completed.
+
+        </p>
+
+        <button id="retryBtn">
+
+            Try Again
+
+        </button>
+
+    </div>
+
+</div>
+<script type="module">
+
+import { auth, db } from "./firebase.js";
+
+import {
+onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
+
+import {
+doc,
+getDoc,
+updateDoc,
+increment
+} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
+
+const BACKEND_URL = "https://autopay-backend-1y64.onrender.com";
+
+let merchantPhone = "";
+let userId = "";
+let checkoutRequestId = "";
+
+// Authenticate user
+onAuthStateChanged(auth, async(user)=>{
+
+    if(!user){
+
+        window.location.href = "login.html";
+        return;
+
+    }
+
+    userId = user.uid;
+
+    const snap = await getDoc(doc(db,"users",user.uid));
+
+    if(!snap.exists()){
+
+        window.location.href = "login.html";
+        return;
+
+    }
+
+    const data = snap.data();
+
+    merchantPhone = data.phone;
+
+    document.getElementById("phone").value = merchantPhone;
+
+    document.getElementById("serviceBalance").innerHTML =
+    "KES " + Number(data.serviceBalance || 0).toLocaleString();
+
+    document.getElementById("avatar").innerHTML =
+    data.fullName.charAt(0).toUpperCase();
+
+});
+
+// Back Button
+document.getElementById("backBtn").onclick = ()=>{
+
+history.back();
+
+};
+
+// Quick Amount Buttons
+document.querySelectorAll(".quick-btn").forEach(btn=>{
+
+btn.onclick = ()=>{
+
+document.querySelectorAll(".quick-btn").forEach(b=>b.classList.remove("active"));
+
+btn.classList.add("active");
+
+document.getElementById("amount").value =
+btn.dataset.amount;
+
+};
+
+});
+
+// Topup Button
+document.getElementById("topupBtn").onclick = startTopup;
+
+// Success Button
+document.getElementById("successBtn").onclick = ()=>{
+
+window.location.href = "dashboard.html";
+
+};
+
+// Retry Button
+document.getElementById("retryBtn").onclick = ()=>{
+
+document.getElementById("failedPopup").style.display="none";
+
+};
+
+async function startTopup(){
+
+const amount = Number(document.getElementById("amount").value);
+
+if(amount < 10){
+
+alert("Minimum topup amount is KES 10");
+
+return;
+
+}
+
+document.getElementById("loading").style.display="flex";
+
+try{
+
+const response = await fetch(
+
+BACKEND_URL + "/api/stk-push",
+
+{
+
+method:"POST",
+
+headers:{
+
+"Content-Type":"application/json"
+
+},
+
+body:JSON.stringify({
+
+phone:merchantPhone,
+
+amount:amount,
+
+balanceType:"service",
+
+uid:userId
+
+})
+
+}
+
+);
+
+const result = await response.json();
+
+if(!result.success){
+
+throw new Error(result.message);
+
+}
+
+checkoutRequestId = result.checkoutRequestId;
+
+checkStatus();
+
+}catch(error){
+
+document.getElementById("loading").style.display="none";
+
+document.getElementById("failedMessage").innerHTML =
+error.message;
+
+document.getElementById("failedPopup").style.display="flex";
+
+}
+
+}
+
+async function checkStatus(){
+
+const timer = setInterval(async()=>{
+
+try{
+
+const response = await fetch(
+
+BACKEND_URL + "/api/check-status",
+
+{
+
+method:"POST",
+
+headers:{
+
+"Content-Type":"application/json"
+
+},
+
+body:JSON.stringify({
+
+checkoutRequestId
+
+})
+
+}
+
+);
+
+const result = await response.json();
+
+if(result.status === "SUCCESS"){
+
+clearInterval(timer);
+
+document.getElementById("loading").style.display="none";
+
+document.getElementById("successPopup").style.display="flex";
+
+}
+
+if(result.status === "FAILED"){
+
+clearInterval(timer);
+
+document.getElementById("loading").style.display="none";
+
+document.getElementById("failedMessage").innerHTML =
+result.message || "Payment failed.";
+
+document.getElementById("failedPopup").style.display="flex";
+
+}
+
+}catch(error){
+
+console.log(error);
+
+}
+
+},3000);
+
+}
+
+// Light/Dark Theme
+if(localStorage.getItem("theme")==="light"){
+
+document.body.classList.add("light");
+
+}
+
+</script>
+</body>
+</html>
