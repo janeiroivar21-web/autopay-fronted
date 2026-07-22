@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>AUTOPAY Gateway</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<link rel="stylesheet" href="gateway.css">
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- Header -->
+
+    <div class="top">
+
+        <div class="back-btn" id="backBtn">
+            <i class="fas fa-arrow-left"></i>
+        </div>
+
+        <div class="title">
+            <i class="fas fa-bolt"></i>
+            <span>AUTOPAY Gateway</span>
+        </div>
+
+        <div class="avatar" id="avatar">
+            AP
+        </div>
+
+    </div>
+
+    <!-- Gateway Status -->
+
+    <div class="status-card">
+
+        <div class="status-left">
+
+            <h2>Gateway Status</h2>
+
+            <p id="gatewayStatus">
+                Online
+            </p>
+
+        </div>
+
+        <div class="status-right">
+
+            <span class="status-badge">
+                LIVE
+            </span>
+
+        </div>
+
+    </div>
+
+    <!-- Merchant Information -->
+
+    <div class="section">
+
+        <h3>Merchant Details</h3>
+
+        <div class="info-card">
+
+            <div class="info-row">
+
+                <span>Merchant ID</span>
+
+                <strong id="merchantId">
+                    Loading...
+                </strong>
+
+            </div>
+
+            <div class="info-row">
+
+                <span>Business Name</span>
+
+                <strong id="businessName">
+                    Loading...
+                </strong>
+
+            </div>
+
+            <div class="info-row">
+
+                <span>Account Status</span>
+
+                <strong id="accountStatus">
+                    Active
+                </strong>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- API Endpoints -->
+
+    <div class="section">
+
+        <h3>API Endpoints</h3>
+
+        <div class="endpoint-card">
+
+            <label>STK Push</label>
+
+            <div class="endpoint-box">
+
+                <span id="stkEndpoint">
+                    https://autopay.co.ke/api/stk-push
+                </span>
+
+                <button id="copyStk">
+                    Copy
+                </button>
+
+            </div>
+
+        </div>
+
+        <div class="endpoint-card">
+
+            <label>Check Status</label>
+
+            <div class="endpoint-box">
+
+                <span id="statusEndpoint">
+                    https://autopay.co.ke/api/check-status
+                </span>
+
+                <button id="copyStatus">
+                    Copy
+                </button>
+
+            </div>
+
+        </div>
+
+        <div class="endpoint-card">
+
+            <label>Webhook URL</label>
+
+            <div class="endpoint-box">
+
+                <span id="webhookEndpoint">
+                    https://autopay.co.ke/api/webhook
+                </span>
+
+                <button id="copyWebhook">
+                    Copy
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Integration -->
+
+    <div class="section">
+
+        <h3>Integration</h3>
+
+        <div class="integration-card">
+
+            <button id="phpBtn">
+                PHP Example
+            </button>
+
+            <button id="nodeBtn">
+                Node.js Example
+            </button>
+
+            <button id="javascriptBtn">
+                JavaScript Example
+            </button>
+
+        </div>
+
+    </div>
+
+    <!-- Sandbox -->
+
+    <div class="section">
+
+        <h3>Gateway Test</h3>
+
+        <div class="sandbox-card">
+
+            <input
+            type="text"
+            id="testPhone"
+            placeholder="254712345678">
+
+            <input
+            type="number"
+            id="testAmount"
+            placeholder="Amount">
+
+            <button id="testGateway">
+
+                Send Test STK Push
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script type="module" src="gateway.js">
+import { auth, db } from "./firebase.js";
+
+import {
+    onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
+
+import {
+    doc,
+    getDoc
+} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
+
+const API_BASE = "https://autopay.co.ke";
+
+// Theme
+if(localStorage.getItem("theme")==="light"){
+    document.body.classList.add("light");
+}
+
+// Back button
+document.getElementById("backBtn").onclick = () => history.back();
+
+// Authentication
+onAuthStateChanged(auth, async(user)=>{
+
+    if(!user){
+        location.href = "login.html";
+        return;
+    }
+
+    try{
+
+        const snap = await getDoc(doc(db,"users",user.uid));
+
+        if(!snap.exists()){
+            location.href="login.html";
+            return;
+        }
+
+        const merchant = snap.data();
+
+        localStorage.setItem("merchant",JSON.stringify(merchant));
+        localStorage.setItem("merchantUid",user.uid);
+
+        document.getElementById("merchantId").innerText =
+        merchant.merchantId || "--";
+
+        document.getElementById("businessName").innerText =
+        merchant.fullName || "--";
+
+        document.getElementById("accountStatus").innerText =
+        merchant.accountStatus || "Active";
+
+        document.getElementById("avatar").innerText =
+        (merchant.fullName || "A")
+        .charAt(0)
+        .toUpperCase();
+
+    }catch(error){
+
+        console.error(error);
+
+        alert("Unable to load merchant information.");
+
+    }
+
+});
+
+// Copy Helper
+function copyText(text){
+
+    navigator.clipboard.writeText(text);
+
+    alert("Copied successfully.");
+
+}
+
+// Copy Buttons
+document.getElementById("copyStk").onclick = () =>
+copyText(document.getElementById("stkEndpoint").innerText);
+
+document.getElementById("copyStatus").onclick = () =>
+copyText(document.getElementById("statusEndpoint").innerText);
+
+document.getElementById("copyWebhook").onclick = () =>
+copyText(document.getElementById("webhookEndpoint").innerText);
+
+// Test STK Push
+document.getElementById("testGateway").onclick = async ()=>{
+
+    const phone =
+    document.getElementById("testPhone").value.trim();
+
+    const amount =
+    Number(document.getElementById("testAmount").value);
+
+    if(phone===""){
+
+        alert("Enter phone number");
+
+        return;
+
+    }
+
+    if(amount<=0){
+
+        alert("Enter a valid amount");
+
+        return;
+
+    }
+
+    const btn =
+    document.getElementById("testGateway");
+
+    btn.disabled = true;
+
+    btn.innerHTML = "Sending...";
+
+    try{
+
+        const response = await fetch(
+            API_BASE + "/api/stk-push",
+            {
+                method:"POST",
+                headers:{
+                    "Content-Type":"application/json"
+                },
+                body:JSON.stringify({
+                    phone,
+                    amount
+                })
+            }
+        );
+
+        const result = await response.json();
+
+        if(result.success){
+
+            alert(
+                "STK Push sent successfully."
+            );
+
+        }else{
+
+            alert(
+                result.message || "STK Push failed."
+            );
+
+        }
+
+    }catch(error){
+
+        console.error(error);
+
+        alert("Network error.");
+
+    }
+
+    btn.disabled = false;
+
+    btn.innerHTML = "Send Test STK Push";
+
+};
+</script>
+</body>
+</html>
