@@ -525,6 +525,8 @@ let allTransactions=[];
 let currentFilter="ALL";
 
 // Authentication
+let transactionsLoaded = false;
+
 onAuthStateChanged(auth,async(user)=>{
 
 if(!user){
@@ -532,21 +534,39 @@ location.href="login.html";
 return;
 }
 
-const snap=await getDoc(doc(db,"users",user.uid));
+// Load cached merchant immediately
+const cached = JSON.parse(localStorage.getItem("merchant"));
+
+if(cached){
+
+merchantId = cached.merchantId || "";
+
+document.getElementById("avatar").innerHTML =
+(cached.fullName || "A").charAt(0).toUpperCase();
+
+if(merchantId){
+loadTransactions();
+}
+
+}
+
+const snap = await getDoc(doc(db,"users",user.uid));
 
 if(!snap.exists()){
 location.href="login.html";
 return;
 }
 
-const userData=snap.data();
+const userData = snap.data();
 
-merchantId=userData.merchantId;
+// Update cache
+localStorage.setItem("merchant",JSON.stringify(userData));
+localStorage.setItem("merchantUid",user.uid);
 
-document.getElementById("avatar").innerHTML=
-(userData.fullName||"A").charAt(0).toUpperCase();
+merchantId = userData.merchantId;
 
-loadTransactions();
+document.getElementById("avatar").innerHTML =
+(userData.fullName || "A").charAt(0).toUpperCase();
 
 });
 
@@ -555,6 +575,10 @@ document.getElementById("backBtn").onclick=()=>history.back();
 
 // Load Transactions
 function loadTransactions(){
+
+if(transactionsLoaded || !merchantId) return;
+
+transactionsLoaded = true;
 
 const q=query(
 
