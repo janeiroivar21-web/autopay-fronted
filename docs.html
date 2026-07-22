@@ -379,6 +379,27 @@ https://autopay.co.ke/api
 
     </div>
 
+    <div class="card">
+
+<h2>API Status</h2>
+
+<p>
+Current Environment:
+<strong style="color:#22c55e;">LIVE</strong>
+</p>
+
+<p>
+Base URL:
+<strong>https://autopay.co.ke</strong>
+</p>
+
+<p>
+API Version:
+<strong>v1</strong>
+</p>
+
+    </div>
+
     <!-- Authentication -->
 
     <div class="card">
@@ -402,6 +423,26 @@ Copy
 </button>
 
 </div>
+
+    </div>
+
+    <div class="card">
+
+<h2>Authentication Flow</h2>
+
+<ol style="padding-left:20px;line-height:2;">
+
+<li>Create your AUTOPAY merchant account.</li>
+
+<li>Generate your Live API Key.</li>
+
+<li>Include your Secret Key in the Authorization header.</li>
+
+<li>Use the API endpoints hosted on <strong>https://autopay.co.ke/api</strong>.</li>
+
+<li>Receive payment confirmation through Webhook or Check Status.</li>
+
+</ol>
 
     </div>
 
@@ -666,6 +707,52 @@ Copy
 
     </div>
 
+    <div class="card">
+
+<h2>API Tester</h2>
+
+<p>
+
+Use the Health endpoint to verify that the AUTOPAY API is online.
+
+</p>
+
+<div class="code-box">
+
+<pre id="healthExample">
+
+GET https://autopay.co.ke/health
+
+</pre>
+
+<button onclick="copyCode('healthExample')">
+
+Copy
+
+</button>
+
+</div>
+
+    </div>
+
+    <div class="card">
+
+<h2>Payment Flow</h2>
+
+<p>1. Merchant sends an STK Push request.</p>
+
+<p>2. Customer receives the M-Pesa payment prompt.</p>
+
+<p>3. Customer enters their M-Pesa PIN.</p>
+
+<p>4. AUTOPAY processes the payment.</p>
+
+<p>5. Your webhook receives the payment notification.</p>
+
+<p>6. Verify the payment using the Check Status endpoint if needed.</p>
+
+    </div>
+
     <!-- Support -->
 
     <div class="card">
@@ -684,6 +771,24 @@ Copy
             support@autopay.co.ke
 
         </p>
+
+    </div>
+
+    <div style="text-align:center;margin-top:40px;color:#94a3b8;">
+
+<hr style="margin-bottom:20px;border-color:#253149;">
+
+<p>
+
+AUTOPAY Developer API v1.0
+
+</p>
+
+<p>
+
+© 2026 AUTOPAY Technologies. All rights reserved.
+
+</p>
 
     </div>
 
