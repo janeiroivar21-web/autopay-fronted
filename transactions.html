@@ -1,671 +1,508 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AUTOPAY | Transactions</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<title>Transactions - AUTOPAY</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
 <style>
 
-/* CSS WILL BE ADDED IN THE NEXT MESSAGE */
+/* CSS will be added next */
 *{
 margin:0;
 padding:0;
 box-sizing:border-box;
-font-family:'Inter',sans-serif;
+font-family:Arial,sans-serif;
 }
 
 body{
-background:#f5f7fb;
-display:flex;
-color:#1f2937;
-}
-
-a{
-text-decoration:none;
-}
-
-/* Sidebar */
-
-.sidebar{
-width:250px;
-height:100vh;
-background:#fff;
-border-right:1px solid #e5e7eb;
-position:fixed;
-left:0;
-top:0;
-overflow:auto;
-}
-
-.logo{
-padding:25px;
-font-size:26px;
-font-weight:800;
-color:#2563eb;
-text-align:center;
-border-bottom:1px solid #eee;
-}
-
-.sidebar a{
-display:block;
-padding:15px 22px;
-color:#475569;
-font-weight:600;
-transition:.25s;
-}
-
-.sidebar a:hover{
-background:#eff6ff;
-color:#2563eb;
-}
-
-.sidebar a.active{
-background:#2563eb;
+background:#0c1424;
 color:#fff;
+transition:.3s;
 }
 
-/* Main */
-
-.main{
-margin-left:250px;
-width:calc(100% - 250px);
-padding:25px;
+.container{
+max-width:430px;
+margin:auto;
+padding:18px;
+padding-bottom:90px;
 }
 
-.topbar{
+.top{
 display:flex;
 justify-content:space-between;
 align-items:center;
-margin-bottom:25px;
+margin-bottom:22px;
 }
 
-.topbar h2{
-font-size:30px;
-font-weight:800;
-}
-
-.topbar p{
-color:#64748b;
-margin-top:5px;
-}
-
-.top-actions{
+.back-btn,
+.avatar{
+width:48px;
+height:48px;
+background:#182235;
+border:1px solid #253149;
+border-radius:14px;
 display:flex;
-gap:10px;
-}
-
-.top-actions button{
-padding:12px 18px;
-border:none;
-border-radius:12px;
-background:#2563eb;
-color:white;
+align-items:center;
+justify-content:center;
 cursor:pointer;
-font-weight:600;
-transition:.2s;
+transition:.3s;
 }
 
-.top-actions button:hover{
+.back-btn:hover,
+.avatar:hover{
 transform:translateY(-2px);
 }
 
-/* Summary */
+.title{
+display:flex;
+align-items:center;
+gap:10px;
+font-size:22px;
+font-weight:bold;
+}
 
-.summary{
+.title i{
+color:#2563eb;
+}
+
+.summary-grid{
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-gap:18px;
-margin-bottom:25px;
+grid-template-columns:repeat(2,1fr);
+gap:14px;
+margin-bottom:20px;
 }
 
 .summary-card{
-background:white;
+background:#182235;
+border:1px solid #253149;
 border-radius:18px;
-padding:20px;
-box-shadow:0 8px 25px rgba(0,0,0,.05);
+padding:18px;
 }
 
-.summary-card span{
-font-size:14px;
-color:#64748b;
+.summary-card .label{
+font-size:12px;
+color:#94a3b8;
+margin-bottom:8px;
 }
 
 .summary-card h2{
-margin-top:10px;
-font-size:28px;
-font-weight:800;
-color:#2563eb;
+font-size:24px;
 }
 
-/* Filters */
+.summary-card.success{
+border-left:4px solid #22c55e;
+}
 
-.filters{
+.summary-card.pending{
+border-left:4px solid #f59e0b;
+}
+
+.summary-card.failed{
+border-left:4px solid #ef4444;
+}
+
+.search-card{
+position:relative;
+margin-bottom:18px;
+}
+
+.search-card input{
+width:100%;
+padding:15px 48px 15px 15px;
+background:#182235;
+border:1px solid #253149;
+border-radius:14px;
+color:#fff;
+font-size:15px;
+outline:none;
+}
+
+.search-card input:focus{
+border-color:#2563eb;
+}
+
+.search-card i{
+position:absolute;
+right:18px;
+top:16px;
+color:#94a3b8;
+}
+
+.filter-row{
 display:flex;
-gap:15px;
-margin-bottom:25px;
-flex-wrap:wrap;
+gap:10px;
+overflow-x:auto;
+margin-bottom:18px;
+padding-bottom:5px;
 }
 
-.filters input{
-flex:1;
-min-width:220px;
-padding:14px;
-border-radius:12px;
-border:1px solid #d1d5db;
-font-size:15px;
+.filter-row::-webkit-scrollbar{
+display:none;
 }
 
-.filters select{
-padding:14px;
-border-radius:12px;
-border:1px solid #d1d5db;
-font-size:15px;
+.filter-btn{
+padding:10px 18px;
+border:none;
+border-radius:30px;
+background:#182235;
+border:1px solid #253149;
+color:#fff;
+cursor:pointer;
+white-space:nowrap;
+transition:.3s;
 }
 
-/* Transaction Card */
+.filter-btn.active{
+background:#2563eb;
+border-color:#2563eb;
+}
 
 .transaction-card{
-background:white;
-padding:20px;
+background:#182235;
+border:1px solid #253149;
 border-radius:18px;
-margin-bottom:18px;
-box-shadow:0 8px 25px rgba(0,0,0,.05);
-transition:.25s;
+padding:16px;
+margin-bottom:14px;
 cursor:pointer;
+transition:.3s;
 }
 
 .transaction-card:hover{
-transform:translateY(-2px);
+transform:translateY(-3px);
 }
 
-.transaction-header{
+.transaction-top{
 display:flex;
 justify-content:space-between;
 align-items:center;
-margin-bottom:15px;
+margin-bottom:12px;
 }
 
-.transaction-title{
-font-size:18px;
-font-weight:700;
-}
-
-.transaction-date{
-font-size:13px;
-color:#64748b;
-margin-top:4px;
-}
-
-.status{
-padding:7px 15px;
-border-radius:50px;
-font-size:12px;
-font-weight:700;
-}
-
-.success{
-background:#dcfce7;
-color:#15803d;
-}
-
-.pending{
-background:#fef3c7;
-color:#a16207;
-}
-
-.failed{
-background:#fee2e2;
-color:#dc2626;
-}
-
-.refunded{
-background:#dbeafe;
-color:#2563eb;
-}
-
-.transaction-body{
-display:grid;
-grid-template-columns:repeat(2,1fr);
-gap:12px;
-margin-top:15px;
-}
-
-.item{
-background:#f8fafc;
-padding:12px;
-border-radius:12px;
-}
-
-.item small{
-display:block;
-color:#64748b;
-margin-bottom:6px;
-}
-
-.item strong{
+.reference{
+font-weight:bold;
 font-size:15px;
 }
 
 .amount{
-font-size:24px;
-font-weight:800;
-color:#16a34a;
-margin-top:15px;
+font-size:20px;
+font-weight:bold;
 }
 
-/* Loading */
-
-.loading{
-text-align:center;
-padding:40px;
-color:#64748b;
+.transaction-info{
+display:flex;
+justify-content:space-between;
+margin-top:8px;
+font-size:13px;
+color:#94a3b8;
 }
 
-/* Empty State */
+.status{
+display:inline-flex;
+align-items:center;
+gap:6px;
+padding:6px 12px;
+border-radius:20px;
+font-size:12px;
+font-weight:bold;
+}
+
+.status.success{
+background:#14532d;
+color:#4ade80;
+}
+
+.status.pending{
+background:#78350f;
+color:#fbbf24;
+}
+
+.status.failed{
+background:#7f1d1d;
+color:#f87171;
+}
 
 .empty-state{
 text-align:center;
-padding:60px 20px;
+padding:60px 25px;
+color:#94a3b8;
 }
 
-.empty-state img{
-opacity:.8;
-margin-bottom:20px;
+.empty-state i{
+font-size:70px;
+margin-bottom:18px;
+color:#2563eb;
 }
-
-.empty-state h3{
-font-size:24px;
-margin-bottom:10px;
-}
-
-.empty-state p{
-color:#64748b;
-}
-
-/* Modal */
 
 .modal{
-display:none;
 position:fixed;
-left:0;
 top:0;
+left:0;
 width:100%;
 height:100%;
-background:rgba(0,0,0,.45);
+display:none;
 justify-content:center;
 align-items:center;
-z-index:999;
+background:rgba(0,0,0,.65);
+z-index:1000;
 }
 
-.modal-content{
-background:white;
-width:95%;
-max-width:500px;
+.modal-card{
+width:92%;
+max-width:380px;
+background:#182235;
 border-radius:20px;
-padding:25px;
-animation:popup .25s;
+overflow:hidden;
 }
 
-@keyframes popup{
-
-from{
-opacity:0;
-transform:scale(.9);
+.modal-header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:18px;
+border-bottom:1px solid #253149;
 }
 
-to{
-opacity:1;
-transform:scale(1);
+.modal-header i{
+cursor:pointer;
+font-size:20px;
 }
 
+.modal-body{
+padding:20px;
 }
 
-#closeModal{
-float:right;
-font-size:30px;
+.detail-row{
+display:flex;
+justify-content:space-between;
+padding:12px 0;
+border-bottom:1px solid #253149;
+}
+
+.detail-row:last-child{
+border-bottom:none;
+}
+
+.copy-btn{
+width:100%;
+padding:14px;
+margin-top:20px;
+background:#2563eb;
+border:none;
+border-radius:12px;
+color:#fff;
+font-size:15px;
+font-weight:bold;
 cursor:pointer;
 }
 
-/* Mobile */
-
-@media(max-width:900px){
-
-.sidebar{
-display:none;
+body.light{
+background:#f5f7fb;
+color:#111827;
 }
 
-.main{
-margin-left:0;
-width:100%;
-padding:18px;
+body.light .summary-card,
+body.light .search-card input,
+body.light .transaction-card,
+body.light .modal-card,
+body.light .back-btn,
+body.light .avatar{
+background:#fff;
+border-color:#dbe2ea;
+color:#111827;
 }
 
-.transaction-body{
-grid-template-columns:1fr;
+body.light .summary-card .label,
+body.light .transaction-info{
+color:#64748b;
 }
 
-.summary{
-grid-template-columns:1fr;
+body.light .detail-row{
+border-color:#e5e7eb;
 }
 
-.topbar{
-flex-direction:column;
-align-items:flex-start;
-gap:15px;
+body.light .filter-btn{
+background:#fff;
+border-color:#dbe2ea;
+color:#111827;
 }
 
-.top-actions{
-width:100%;
+body.light .filter-btn.active{
+background:#2563eb;
+color:#fff;
+border-color:#2563eb;
 }
 
-.top-actions button{
-flex:1;
+@media(max-width:500px){
+
+.summary-grid{
+grid-template-columns:1fr 1fr;
 }
 
-.filters{
-flex-direction:column;
+.title{
+font-size:20px;
 }
 
-.filters input,
-.filters select{
-width:100%;
+.amount{
+font-size:18px;
 }
 
 }
-
 </style>
 
 </head>
-
 <body>
 
-<div class="sidebar">
+<div class="container">
 
-<div class="logo">
+<!-- Header -->
 
-⚡ AUTOPAY
+<div class="top">
 
+<div class="back-btn" id="backBtn">
+<i class="fas fa-arrow-left"></i>
 </div>
 
-<a href="dashboard.html">
-🏠 Dashboard
-</a>
-
-<a class="active" href="transactions.html">
-💳 Transactions
-</a>
-
-<a href="wallet.html">
-👛 Wallet
-</a>
-
-<a href="payment-accounts.html">
-🏦 Payment Accounts
-</a>
-
-<a href="payment-links.html">
-🔗 Payment Links
-</a>
-
-<a href="api-keys.html">
-🔑 API Keys
-</a>
-
-<a href="api-logs.html">
-📄 API Logs
-</a>
-
-<a href="documentation.html">
-📖 Documentation
-</a>
-
-<a href="profile.html">
-👤 Profile
-</a>
-
-<a href="settings.html">
-⚙ Settings
-</a>
-
-<a id="logoutBtn" href="#">
-
-🚪 Logout
-
-</a>
-
+<div class="title">
+<i class="fas fa-money-check-dollar"></i>
+<span>Transactions</span>
 </div>
 
-<div class="main">
-
-<div class="topbar">
-
-<div>
-
-<h2>
-
-Transactions
-
-</h2>
-
-<p>
-
-View all merchant transactions
-
-</p>
-
-</div>
-
-<div class="top-actions">
-
-<button id="refreshBtn">
-
-🔄 Refresh
-
-</button>
-
-<button id="exportBtn">
-
-📤 Export CSV
-
-</button>
-
+<div class="avatar" id="avatar">
+AP
 </div>
 
 </div>
 
-<div class="summary">
+<!-- Summary -->
+
+<div class="summary-grid">
 
 <div class="summary-card">
 
-<span>
+<div class="label">TOTAL</div>
 
-Processed
-
-</span>
-
-<h2 id="processedCount">
-
-0
-
-</h2>
+<h2 id="totalTransactions">0</h2>
 
 </div>
 
-<div class="summary-card">
+<div class="summary-card success">
 
-<span>
+<div class="label">SUCCESS</div>
 
-Fees Earned
-
-</span>
-
-<h2 id="feesEarned">
-
-Ksh 0.00
-
-</h2>
+<h2 id="successTransactions">0</h2>
 
 </div>
 
-<div class="summary-card">
+<div class="summary-card pending">
 
-<span>
+<div class="label">PENDING</div>
 
-Failed
-
-</span>
-
-<h2 id="failedCount">
-
-0
-
-</h2>
+<h2 id="pendingTransactions">0</h2>
 
 </div>
 
-<div class="summary-card">
+<div class="summary-card failed">
 
-<span>
+<div class="label">FAILED</div>
 
-Total Volume
-
-</span>
-
-<h2 id="totalVolume">
-
-Ksh 0.00
-
-</h2>
+<h2 id="failedTransactions">0</h2>
 
 </div>
 
 </div>
 
-<div class="filters">
+<!-- Search -->
+
+<div class="search-card">
 
 <input
-
-id="searchInput"
-
 type="text"
+id="searchInput"
+placeholder="Search by reference or phone...">
 
-placeholder="Search transaction ID, phone or reference">
+<i class="fas fa-search"></i>
 
-<select id="statusFilter">
+</div>
 
-<option value="All">
+<!-- Filter -->
 
-All Status
+<div class="filter-row">
 
-</option>
+<button class="filter-btn active" data-filter="ALL">
+All
+</button>
 
-<option value="Success">
-
+<button class="filter-btn" data-filter="SUCCESS">
 Success
+</button>
 
-</option>
-
-<option value="Pending">
-
+<button class="filter-btn" data-filter="PENDING">
 Pending
+</button>
 
-</option>
-
-<option value="Failed">
-
+<button class="filter-btn" data-filter="FAILED">
 Failed
-
-</option>
-
-<option value="Refunded">
-
-Refunded
-
-</option>
-
-</select>
+</button>
 
 </div>
 
-<div
-id="loading"
-class="loading">
+<!-- Transactions -->
 
-Loading transactions...
+<div id="transactionList">
 
 </div>
 
-<div
-id="emptyState"
-class="empty-state"
-style="display:none;">
+</div>
 
-<img
-src="https://cdn-icons-png.flaticon.com/512/4076/4076549.png"
-width="120">
+<!-- Empty State -->
 
-<h3>
+<div class="empty-state" id="emptyState" style="display:none;">
 
-No Transactions Found
+<i class="fas fa-receipt"></i>
 
-</h3>
+<h2>No Transactions</h2>
 
 <p>
 
-Your completed payments will appear here.
+Your payment transactions will appear here.
 
 </p>
 
 </div>
 
-<div
-id="transactionsList">
+<!-- Transaction Details -->
 
-<!-- Transaction cards will appear here -->
+<div class="modal" id="detailsModal">
+
+<div class="modal-card">
+
+<div class="modal-header">
+
+<h3>Transaction Details</h3>
+
+<i class="fas fa-times" id="closeModal"></i>
 
 </div>
 
-</div>
-
-<div
-id="transactionModal"
-class="modal">
-
-<div class="modal-content">
-
-<span
-id="closeModal">
-
-×
-
-</span>
-
-<h2>
-
-Transaction Details
-
-</h2>
-
-<div
-id="modalContent">
+<div class="modal-body" id="detailsContent">
 
 </div>
 
 </div>
 
 </div>
-
-<!-- FIREBASE SCRIPT WILL BE ADDED IN THE NEXT MESSAGE -->
 <script type="module">
 
 import { auth, db } from "./firebase.js";
 
 import {
-onAuthStateChanged,
-signOut
+onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
 
 import {
@@ -678,44 +515,45 @@ orderBy,
 onSnapshot
 } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
 
-const transactionsList=document.getElementById("transactionsList");
-const loading=document.getElementById("loading");
-const emptyState=document.getElementById("emptyState");
-
-const processedCount=document.getElementById("processedCount");
-const failedCount=document.getElementById("failedCount");
-const feesEarned=document.getElementById("feesEarned");
-const totalVolume=document.getElementById("totalVolume");
+// Theme
+if(localStorage.getItem("theme")==="light"){
+document.body.classList.add("light");
+}
 
 let merchantId="";
 let allTransactions=[];
+let currentFilter="ALL";
 
+// Authentication
 onAuthStateChanged(auth,async(user)=>{
 
 if(!user){
-
-window.location.href="login.html";
-
+location.href="login.html";
 return;
-
 }
 
-const userSnap=await getDoc(doc(db,"users",user.uid));
+const snap=await getDoc(doc(db,"users",user.uid));
 
-if(!userSnap.exists()){
-
-alert("Merchant profile not found.");
-
+if(!snap.exists()){
+location.href="login.html";
 return;
-
 }
 
-merchantId=userSnap.data().merchantId;
+const userData=snap.data();
+
+merchantId=userData.merchantId;
+
+document.getElementById("avatar").innerHTML=
+(userData.fullName||"A").charAt(0).toUpperCase();
 
 loadTransactions();
 
 });
 
+// Back
+document.getElementById("backBtn").onclick=()=>history.back();
+
+// Load Transactions
 function loadTransactions(){
 
 const q=query(
@@ -730,113 +568,152 @@ orderBy("createdAt","desc")
 
 onSnapshot(q,(snapshot)=>{
 
-loading.style.display="none";
-
-transactionsList.innerHTML="";
-
 allTransactions=[];
 
-let processed=0;
-
+let success=0;
+let pending=0;
 let failed=0;
-
-let fees=0;
-
-let volume=0;
-
-if(snapshot.empty){
-
-emptyState.style.display="block";
-
-return;
-
-}
-
-emptyState.style.display="none";
 
 snapshot.forEach(docSnap=>{
 
 const data=docSnap.data();
 
+data.id=docSnap.id;
+
 allTransactions.push(data);
 
-if(data.status==="Success"){
+switch((data.status||"").toUpperCase()){
 
-processed++;
+case "SUCCESS":
+success++;
+break;
 
-}
-
-if(data.status==="Failed"){
-
+case "FAILED":
 failed++;
+break;
+
+default:
+pending++;
 
 }
 
-fees+=Number(data.fee||0);
+});
 
-volume+=Number(data.amount||0);
+document.getElementById("totalTransactions").innerHTML=
+allTransactions.length;
 
-transactionsList.innerHTML+=`
+document.getElementById("successTransactions").innerHTML=
+success;
 
-<div class="transaction-card">
+document.getElementById("pendingTransactions").innerHTML=
+pending;
 
-<div class="transaction-header">
+document.getElementById("failedTransactions").innerHTML=
+failed;
+
+renderTransactions();
+
+});
+
+}
+
+// Search
+document.getElementById("searchInput")
+.addEventListener("input",renderTransactions);
+
+// Filters
+document.querySelectorAll(".filter-btn")
+.forEach(btn=>{
+
+btn.onclick=function(){
+
+document.querySelectorAll(".filter-btn")
+.forEach(b=>b.classList.remove("active"));
+
+this.classList.add("active");
+
+currentFilter=this.dataset.filter;
+
+renderTransactions();
+
+};
+
+});
+
+// Render
+function renderTransactions(){
+
+const list=document.getElementById("transactionList");
+
+const empty=document.getElementById("emptyState");
+
+const search=document
+.getElementById("searchInput")
+.value
+.toLowerCase();
+
+list.innerHTML="";
+
+const filtered=allTransactions.filter(tx=>{
+
+const status=(tx.status||"").toUpperCase();
+
+const ref=(tx.checkoutRequestId||"").toLowerCase();
+
+const phone=(tx.phone||"").toLowerCase();
+
+const matchesSearch=
+ref.includes(search)||phone.includes(search);
+
+const matchesFilter=
+currentFilter==="ALL"||status===currentFilter;
+
+return matchesSearch&&matchesFilter;
+
+});
+
+if(filtered.length===0){
+
+empty.style.display="block";
+
+return;
+
+}
+
+empty.style.display="none";
+
+filtered.forEach(tx=>{
+
+const status=(tx.status||"PENDING").toUpperCase();
+
+let css="pending";
+
+if(status==="SUCCESS") css="success";
+
+if(status==="FAILED") css="failed";
+
+const date=tx.createdAt?.toDate
+?tx.createdAt.toDate().toLocaleString()
+:"";
+
+list.innerHTML+=`
+
+<div class="transaction-card"
+onclick="showDetails('${tx.id}')">
+
+<div class="transaction-top">
 
 <div>
 
-<div class="transaction-title">
+<div class="reference">
 
-${data.method||"Payment"}
-
-</div>
-
-<div class="transaction-date">
-
-${data.createdAt?.toDate().toLocaleString()||""}
+${tx.checkoutRequestId||tx.id.substring(0,10)}
 
 </div>
 
-</div>
+<div class="transaction-info">
 
-<div class="status ${data.status.toLowerCase()}">
-
-${data.status}
-
-</div>
-
-</div>
-
-<div class="transaction-body">
-
-<div class="item">
-
-<small>Transaction ID</small>
-
-<strong>${data.transactionId}</strong>
-
-</div>
-
-<div class="item">
-
-<small>Customer</small>
-
-<strong>${data.customerName||"N/A"}</strong>
-
-</div>
-
-<div class="item">
-
-<small>Phone</small>
-
-<strong>${data.phone}</strong>
-
-</div>
-
-<div class="item">
-
-<small>Reference</small>
-
-<strong>${data.reference||"-"}</strong>
+${tx.phone||""}
 
 </div>
 
@@ -844,7 +721,21 @@ ${data.status}
 
 <div class="amount">
 
-Ksh ${Number(data.amount).toLocaleString()}
+KES ${Number(tx.amount||0).toLocaleString()}
+
+</div>
+
+</div>
+
+<div class="transaction-info">
+
+<span>${date}</span>
+
+<span class="status ${css}">
+
+${status}
+
+</span>
 
 </div>
 
@@ -854,101 +745,119 @@ Ksh ${Number(data.amount).toLocaleString()}
 
 });
 
-processedCount.innerHTML=processed;
-
-failedCount.innerHTML=failed;
-
-feesEarned.innerHTML="Ksh "+fees.toLocaleString();
-
-totalVolume.innerHTML="Ksh "+volume.toLocaleString();
-
-});
-
 }
 
-document.getElementById("searchInput").addEventListener("input",function(){
+// Modal
+window.showDetails=function(id){
 
-const keyword=this.value.toLowerCase();
+const tx=allTransactions.find(t=>t.id===id);
 
-const cards=document.querySelectorAll(".transaction-card");
+if(!tx) return;
 
-cards.forEach(card=>{
+document.getElementById("detailsContent").innerHTML=`
 
-const text=card.innerText.toLowerCase();
+<div class="detail-row">
 
-card.style.display=text.includes(keyword)?"block":"none";
+<span>Reference</span>
 
-});
+<strong>
 
-});
+${tx.checkoutRequestId||tx.id}
 
-document.getElementById("statusFilter").addEventListener("change",function(){
+</strong>
 
-const status=this.value;
+</div>
 
-const cards=document.querySelectorAll(".transaction-card");
+<div class="detail-row">
 
-cards.forEach(card=>{
+<span>Phone</span>
 
-if(status==="All"){
+<strong>
 
-card.style.display="block";
+${tx.phone||"--"}
 
-return;
+</strong>
 
-}
+</div>
 
-card.style.display=
+<div class="detail-row">
 
-card.innerText.includes(status)
+<span>Amount</span>
 
-?"block"
+<strong>
 
-:"none";
+KES ${Number(tx.amount||0).toLocaleString()}
 
-});
+</strong>
 
-});
+</div>
 
-document.getElementById("refreshBtn").onclick=function(){
+<div class="detail-row">
 
-location.reload();
+<span>Status</span>
+
+<strong>
+
+${tx.status||"--"}
+
+</strong>
+
+</div>
+
+<div class="detail-row">
+
+<span>Merchant Request</span>
+
+<strong>
+
+${tx.merchantRequestId||"--"}
+
+</strong>
+
+</div>
+
+<button
+class="copy-btn"
+onclick="copyReference('${tx.checkoutRequestId||tx.id}')">
+
+Copy Reference
+
+</button>
+
+`;
+
+document.getElementById("detailsModal").style.display="flex";
 
 };
 
-document.getElementById("exportBtn").onclick=function(){
+// Close Modal
+document.getElementById("closeModal").onclick=()=>{
 
-let csv="Transaction ID,Customer,Phone,Amount,Status\n";
-
-allTransactions.forEach(t=>{
-
-csv+=`${t.transactionId},${t.customerName},${t.phone},${t.amount},${t.status}\n`;
-
-});
-
-const blob=new Blob([csv],{type:"text/csv"});
-
-const a=document.createElement("a");
-
-a.href=URL.createObjectURL(blob);
-
-a.download="transactions.csv";
-
-a.click();
+document.getElementById("detailsModal").style.display="none";
 
 };
 
-document.getElementById("logoutBtn").onclick=async function(e){
+window.onclick=function(e){
 
-e.preventDefault();
+const modal=document.getElementById("detailsModal");
 
-await signOut(auth);
+if(e.target===modal){
 
-window.location.href="login.html";
+modal.style.display="none";
+
+}
+
+};
+
+// Copy
+window.copyReference=function(ref){
+
+navigator.clipboard.writeText(ref);
+
+alert("Reference copied.");
 
 };
 
 </script>
-
 </body>
-  </html>
+</html>
