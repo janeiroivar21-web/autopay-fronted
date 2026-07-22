@@ -868,6 +868,25 @@ return;
 
 }
 
+// Load cached merchant first
+const cached = JSON.parse(localStorage.getItem("merchant"));
+
+if(cached){
+
+document.getElementById("greeting").innerHTML =
+greet + ", " + cached.fullName.split(" ")[0];
+
+document.getElementById("walletBalance").innerHTML =
+"KES " + Number(cached.walletBalance || 0).toLocaleString();
+
+document.getElementById("serviceBalance").innerHTML =
+"KES " + Number(cached.serviceBalance || 0).toLocaleString();
+
+document.getElementById("avatar").innerHTML =
+cached.fullName.charAt(0).toUpperCase();
+
+}
+
 try{
 
 const snap = await getDoc(doc(db,"users",user.uid));
@@ -880,6 +899,9 @@ return;
 }
 
 const data = snap.data();
+
+// Save merchant locally
+localStorage.setItem("merchant", JSON.stringify(data));
 
 loadProcessingActivity(data.merchantId);
 
