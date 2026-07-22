@@ -9,12 +9,130 @@
 
 <style>
 /* Information Card */
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Inter',sans-serif;
+}
+
+body{
+background:#f5f7fb;
+color:#1e293b;
+min-height:100vh;
+}
+
+/* Header */
+
+.header{
+height:65px;
+background:#2563eb;
+color:#fff;
+display:flex;
+align-items:center;
+padding:0 18px;
+font-size:20px;
+font-weight:700;
+box-shadow:0 2px 12px rgba(0,0,0,.08);
+}
+
+.header a{
+color:#fff;
+text-decoration:none;
+font-size:24px;
+margin-right:16px;
+}
+
+/* Container */
+
+.container{
+max-width:550px;
+margin:25px auto;
+padding:15px;
+}
+
+/* Cards */
+
+.card{
+background:#fff;
+border-radius:18px;
+padding:22px;
+margin-bottom:20px;
+box-shadow:0 8px 25px rgba(0,0,0,.06);
+}
+
+.balanceTitle{
+font-size:14px;
+color:#64748b;
+margin-bottom:10px;
+}
+
+.balance{
+font-size:34px;
+font-weight:700;
+color:#2563eb;
+}
+
+.balance small{
+font-size:16px;
+}
+
+/* Form */
+
+label{
+display:block;
+margin-top:18px;
+margin-bottom:8px;
+font-size:14px;
+font-weight:600;
+color:#334155;
+}
+
+input{
+width:100%;
+padding:15px;
+border:1px solid #dbe2ea;
+border-radius:14px;
+font-size:15px;
+outline:none;
+transition:.25s;
+background:#fff;
+}
+
+input:focus{
+border-color:#2563eb;
+box-shadow:0 0 0 3px rgba(37,99,235,.15);
+}
+
+/* Summary */
+
+.summary{
+margin-top:20px;
+padding:18px;
+background:#eff6ff;
+border-radius:14px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+.summary span:first-child{
+color:#64748b;
+font-size:15px;
+}
+
+.summary strong{
+font-size:22px;
+color:#2563eb;
+}
+
+/* Information Card */
 
 .info-card{
 display:flex;
 gap:15px;
 align-items:flex-start;
-margin-top:20px;
+margin-top:22px;
 padding:18px;
 background:#111827;
 border:1px solid #2b3750;
@@ -29,31 +147,35 @@ border-radius:14px;
 display:flex;
 align-items:center;
 justify-content:center;
-font-size:20px;
+font-size:22px;
+color:#fff;
 flex-shrink:0;
 }
 
 .info-text h4{
 font-size:16px;
 margin-bottom:8px;
+color:#fff;
 }
 
 .info-text p{
 font-size:14px;
-color:#94a3b8;
 line-height:1.6;
+color:#94a3b8;
 }
+
+/* Button */
 
 #topupBtn{
 width:100%;
-margin-top:22px;
+margin-top:24px;
 padding:16px;
 border:none;
 border-radius:14px;
 background:#2563eb;
 color:#fff;
 font-size:16px;
-font-weight:bold;
+font-weight:700;
 cursor:pointer;
 transition:.3s;
 }
@@ -63,23 +185,139 @@ background:#1d4ed8;
 transform:translateY(-2px);
 }
 
+#topupBtn:disabled{
+opacity:.6;
+cursor:not-allowed;
+transform:none;
+}
+
+/* Note */
+
+.note{
+margin-top:18px;
+display:flex;
+align-items:center;
+justify-content:center;
+gap:8px;
+font-size:14px;
+color:#64748b;
+}
+
+/* Loader */
+
+.loader{
+position:fixed;
+top:0;
+left:0;
+right:0;
+bottom:0;
+display:none;
+align-items:center;
+justify-content:center;
+flex-direction:column;
+background:rgba(255,255,255,.95);
+z-index:9999;
+}
+
+.spinner{
+width:60px;
+height:60px;
+border:6px solid #dbeafe;
+border-top:6px solid #2563eb;
+border-radius:50%;
+animation:spin 1s linear infinite;
+margin-bottom:18px;
+}
+
+@keyframes spin{
+100%{
+transform:rotate(360deg);
+}
+}
+
+.loader p{
+font-size:16px;
+font-weight:600;
+}
+
+/* Popup */
+
+.popup{
+position:fixed;
+left:50%;
+bottom:25px;
+transform:translateX(-50%);
+background:#fff;
+width:90%;
+max-width:360px;
+padding:20px;
+border-radius:18px;
+box-shadow:0 10px 35px rgba(0,0,0,.18);
+display:none;
+z-index:10000;
+animation:popup .25s ease;
+}
+
+@keyframes popup{
+
+from{
+opacity:0;
+transform:translate(-50%,20px);
+}
+
+to{
+opacity:1;
+transform:translate(-50%,0);
+}
+
+}
+
+.popupTitle{
+font-size:18px;
+font-weight:700;
+margin-bottom:10px;
+color:#2563eb;
+}
+
+#popupMessage{
+font-size:15px;
+line-height:1.6;
+color:#475569;
+}
+
+.popup button{
+width:100%;
+margin-top:18px;
+padding:14px;
+border:none;
+border-radius:12px;
+background:#2563eb;
+color:#fff;
+font-size:15px;
+font-weight:700;
+cursor:pointer;
+}
+
+.popup button:hover{
+background:#1d4ed8;
+}
+
 /* Confirmation Popup */
 
 .popup-details{
-margin:20px 0;
+margin:18px 0;
 padding:18px;
 background:#111827;
 border:1px solid #2b3750;
 border-radius:14px;
-text-align:left;
 }
 
 .popup-details p{
 display:flex;
 justify-content:space-between;
-align-items:center;
 padding:12px 0;
-margin:0;
+font-size:15px;
+color:#fff;
 }
 
 .popup-details p:not(:last-child){
@@ -94,20 +332,56 @@ margin-top:20px;
 
 .popup-buttons button{
 flex:1;
-padding:15px;
+padding:14px;
 border:none;
-border-radius:14px;
-cursor:pointer;
+border-radius:12px;
 font-size:15px;
-font-weight:bold;
+font-weight:700;
+cursor:pointer;
 }
 
 .secondary-btn{
-background:#475569;
+background:#64748b;
 color:#fff;
 }
 
+/* Responsive */
+
+@media(max-width:480px){
+
+.header{
+font-size:18px;
+}
+
+.balance{
+font-size:28px;
+}
+
+.summary strong{
+font-size:18px;
+}
+
+.container{
+padding:12px;
+}
+
+.card{
+padding:18px;
+}
+
+}
+
 /* Light Theme */
+
+body.light{
+background:#f5f7fb;
+color:#1e293b;
+}
+
+body.light .card,
+body.light .popup{
+background:#fff;
+}
 
 body.light .info-card,
 body.light .popup-details{
@@ -115,11 +389,16 @@ background:#f8fafc;
 border-color:#dbe2ea;
 }
 
+body.light .info-text h4{
+color:#1e293b;
+}
+
 body.light .info-text p{
 color:#64748b;
 }
 
 body.light .popup-details p{
+color:#1e293b;
 border-color:#e5e7eb;
 }
 </style>
@@ -157,7 +436,7 @@ M-Pesa Number
 <input
 type="tel"
 id="phone"
-placeholder="07XXXXXXXX">
+placeholder="254712345678"
 
 <label>
 Amount (KES)
@@ -404,25 +683,47 @@ async function topupWallet() {
     const amount =
         Number(document.getElementById("amount").value);
 
-    if (!phone) {
+    if(!/^254(7|1)\d{8}$/.test(phone)){
 
-        showPopup(
-            "Phone Required",
-            "Enter your M-Pesa number."
-        );
+    showPopup(
+        "Invalid Number",
+        "Enter a valid M-Pesa number in the format 254712345678."
+    );
 
-        return;
+    return;
 
-    }
+        }
 
-    if (!amount || amount < 1) {
+    if(!amount){
 
-        showPopup(
-            "Invalid Amount",
-            "Enter a valid amount."
-        );
+    showPopup(
+        "Invalid Amount",
+        "Enter a valid amount."
+    );
 
-        return;
+    return;
+
+}
+
+if(amount < 10){
+
+    showPopup(
+        "Minimum Amount",
+        "Minimum wallet top up is KES 10."
+    );
+
+    return;
+
+}
+
+if(amount > 300000){
+
+    showPopup(
+        "Maximum Amount",
+        "Maximum wallet top up is KES 300,000."
+    );
+
+    return;
 
     }
 
@@ -430,6 +731,11 @@ async function topupWallet() {
 
         document.getElementById("loader").style.display =
             "flex";
+
+        document.getElementById("topupBtn").disabled = true;
+
+document.getElementById("topupBtn").innerHTML =
+"Processing...";
 
         const token =
             await currentUser.getIdToken();
@@ -472,6 +778,11 @@ async function topupWallet() {
 
             document.getElementById("loader").style.display =
                 "none";
+
+            document.getElementById("topupBtn").disabled = false;
+
+document.getElementById("topupBtn").innerHTML =
+"Top Up Wallet";
 
             showPopup(
                 "Payment Failed",
@@ -582,10 +893,14 @@ async function checkPaymentStatus(checkoutRequestId) {
 
                 await loadMerchant();
 
-                showPopup(
-                    "Payment Successful",
-                    "Your wallet has been credited successfully."
-                );
+document.getElementById("amount").value = "";
+
+document.getElementById("receiveAmount").textContent = "0";
+
+showPopup(
+    "Payment Successful",
+    "Your wallet has been credited successfully."
+);
 
             }
 
