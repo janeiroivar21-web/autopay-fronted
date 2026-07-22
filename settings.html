@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Settings - AUTOPAY</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<style>
+
+/* CSS will be added next */
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#0c1424;
+color:#fff;
+transition:.3s;
+}
+
+.container{
+max-width:430px;
+margin:auto;
+padding:18px;
+padding-bottom:90px;
+}
+
+.top{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:24px;
+}
+
+.back-btn,
+.avatar{
+width:48px;
+height:48px;
+background:#182235;
+border:1px solid #253149;
+border-radius:14px;
+display:flex;
+align-items:center;
+justify-content:center;
+cursor:pointer;
+transition:.3s;
+}
+
+.back-btn:hover,
+.avatar:hover{
+transform:translateY(-2px);
+}
+
+.title{
+display:flex;
+align-items:center;
+gap:10px;
+font-size:22px;
+font-weight:bold;
+}
+
+.title i{
+color:#2563eb;
+}
+
+.section-card{
+background:#182235;
+border:1px solid #253149;
+border-radius:18px;
+padding:20px;
+margin-bottom:20px;
+}
+
+.section-title{
+font-size:17px;
+font-weight:bold;
+margin-bottom:20px;
+}
+
+.setting-item{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:16px 0;
+border-bottom:1px solid #2b3750;
+}
+
+.setting-item:last-child{
+border-bottom:none;
+}
+
+.setting-item h3{
+font-size:15px;
+margin-bottom:4px;
+}
+
+.setting-item p{
+font-size:13px;
+color:#94a3b8;
+line-height:1.5;
+}
+
+.switch{
+position:relative;
+display:inline-block;
+width:52px;
+height:30px;
+}
+
+.switch input{
+display:none;
+}
+
+.slider{
+position:absolute;
+cursor:pointer;
+top:0;
+left:0;
+right:0;
+bottom:0;
+background:#4b5563;
+transition:.3s;
+border-radius:30px;
+}
+
+.slider:before{
+content:"";
+position:absolute;
+height:22px;
+width:22px;
+left:4px;
+bottom:4px;
+background:white;
+transition:.3s;
+border-radius:50%;
+}
+
+input:checked + .slider{
+background:#2563eb;
+}
+
+input:checked + .slider:before{
+transform:translateX(22px);
+}
+
+.menu-btn{
+width:100%;
+padding:16px;
+margin-bottom:12px;
+border:none;
+border-radius:14px;
+background:#111827;
+border:1px solid #2b3750;
+color:#fff;
+font-size:15px;
+display:flex;
+align-items:center;
+gap:12px;
+cursor:pointer;
+transition:.3s;
+}
+
+.menu-btn:last-child{
+margin-bottom:0;
+}
+
+.menu-btn:hover{
+background:#1f2937;
+transform:translateY(-2px);
+}
+
+.menu-btn i{
+color:#2563eb;
+width:20px;
+text-align:center;
+}
+
+.info-row{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:14px 0;
+border-bottom:1px solid #2b3750;
+}
+
+.info-row:last-child{
+border-bottom:none;
+}
+
+.info-row span{
+color:#94a3b8;
+}
+
+.save-btn{
+width:100%;
+padding:17px;
+border:none;
+border-radius:15px;
+background:#2563eb;
+color:#fff;
+font-size:16px;
+font-weight:bold;
+cursor:pointer;
+transition:.3s;
+}
+
+.save-btn:hover{
+background:#1d4ed8;
+transform:translateY(-2px);
+}
+
+.loading{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,.65);
+display:none;
+align-items:center;
+justify-content:center;
+flex-direction:column;
+z-index:999;
+}
+
+.loader{
+width:60px;
+height:60px;
+border:5px solid rgba(255,255,255,.2);
+border-top:5px solid #2563eb;
+border-radius:50%;
+animation:spin 1s linear infinite;
+margin-bottom:20px;
+}
+
+@keyframes spin{
+
+100%{
+transform:rotate(360deg);
+}
+
+}
+
+.popup{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+display:none;
+align-items:center;
+justify-content:center;
+background:rgba(0,0,0,.65);
+z-index:1000;
+}
+
+.popup-card{
+background:#182235;
+width:90%;
+max-width:340px;
+border-radius:20px;
+padding:30px;
+text-align:center;
+}
+
+.popup-card i{
+font-size:60px;
+color:#22c55e;
+margin-bottom:18px;
+}
+
+.popup-card h2{
+margin-bottom:10px;
+}
+
+.popup-card p{
+color:#94a3b8;
+margin-bottom:22px;
+line-height:1.6;
+}
+
+.popup-card button{
+width:100%;
+padding:15px;
+border:none;
+border-radius:14px;
+background:#2563eb;
+color:#fff;
+font-size:15px;
+font-weight:bold;
+cursor:pointer;
+}
+
+/* LIGHT MODE */
+
+body.light{
+background:#f5f7fb;
+color:#111827;
+}
+
+body.light .section-card,
+body.light .popup-card,
+body.light .back-btn,
+body.light .avatar{
+background:#fff;
+border-color:#dbe2ea;
+color:#111827;
+}
+
+body.light .setting-item{
+border-color:#e5e7eb;
+}
+
+body.light .setting-item p,
+body.light .info-row span{
+color:#64748b;
+}
+
+body.light .menu-btn{
+background:#f8fafc;
+border-color:#dbe2ea;
+color:#111827;
+}
+
+body.light .menu-btn:hover{
+background:#eef2ff;
+}
+
+body.light .info-row{
+border-color:#e5e7eb;
+}
+</style>
+
+</head>
+<body>
+
+<div class="container">
+
+    <!-- Header -->
+
+    <div class="top">
+
+        <div class="back-btn" id="backBtn">
+            <i class="fas fa-arrow-left"></i>
+        </div>
+
+        <div class="title">
+            <i class="fas fa-gear"></i>
+            <span>Settings</span>
+        </div>
+
+        <div class="avatar" id="avatar">
+            AC
+        </div>
+
+    </div>
+
+    <!-- Appearance -->
+
+    <div class="section-card">
+
+        <div class="section-title">
+            Appearance
+        </div>
+
+        <div class="setting-item">
+
+            <div>
+
+                <h3>Dark Mode</h3>
+
+                <p>Switch between light and dark theme.</p>
+
+            </div>
+
+            <label class="switch">
+
+                <input type="checkbox" id="themeSwitch">
+
+                <span class="slider"></span>
+
+            </label>
+
+        </div>
+
+    </div>
+
+    <!-- Notifications -->
+
+    <div class="section-card">
+
+        <div class="section-title">
+            Notifications
+        </div>
+
+        <div class="setting-item">
+
+            <div>
+
+                <h3>Email Notifications</h3>
+
+                <p>Receive payment updates by email.</p>
+
+            </div>
+
+            <label class="switch">
+
+                <input type="checkbox" id="emailNotifications">
+
+                <span class="slider"></span>
+
+            </label>
+
+        </div>
+
+        <div class="setting-item">
+
+            <div>
+
+                <h3>SMS Notifications</h3>
+
+                <p>Receive important alerts via SMS.</p>
+
+            </div>
+
+            <label class="switch">
+
+                <input type="checkbox" id="smsNotifications">
+
+                <span class="slider"></span>
+
+            </label>
+
+        </div>
+
+    </div>
+
+    <!-- Security -->
+
+    <div class="section-card">
+
+        <div class="section-title">
+            Security
+        </div>
+
+        <button class="menu-btn" id="changePassword">
+
+            <i class="fas fa-lock"></i>
+
+            Change Password
+
+        </button>
+
+        <button class="menu-btn" id="logout">
+
+            <i class="fas fa-right-from-bracket"></i>
+
+            Logout
+
+        </button>
+
+    </div>
+
+    <!-- About -->
+
+    <div class="section-card">
+
+        <div class="section-title">
+            About AUTOPAY
+        </div>
+
+        <div class="info-row">
+
+            <span>Version</span>
+
+            <strong>1.0.0</strong>
+
+        </div>
+
+        <div class="info-row">
+
+            <span>Environment</span>
+
+            <strong>Production</strong>
+
+        </div>
+
+        <div class="info-row">
+
+            <span>Support</span>
+
+            <strong>support@autopay.co.ke</strong>
+
+        </div>
+
+    </div>
+
+    <!-- Save -->
+
+    <button class="save-btn" id="saveSettings">
+
+        <i class="fas fa-floppy-disk"></i>
+
+        Save Settings
+
+    </button>
+
+</div>
+
+<!-- Loading -->
+
+<div class="loading" id="loading">
+
+    <div class="loader"></div>
+
+    <p>Saving settings...</p>
+
+</div>
+
+<!-- Success Popup -->
+
+<div class="popup" id="successPopup">
+
+    <div class="popup-card">
+
+        <i class="fas fa-circle-check"></i>
+
+        <h2>Settings Saved</h2>
+
+        <p>
+
+            Your preferences have been updated successfully.
+
+        </p>
+
+        <button id="closePopup">
+
+            Continue
+
+        </button>
+
+    </div>
+
+</div>
+<script type="module">
+
+import { auth, db } from "./firebase.js";
+
+import {
+onAuthStateChanged,
+signOut,
+sendPasswordResetEmail
+} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
+
+import {
+doc,
+getDoc,
+setDoc
+} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
+
+let currentUser=null;
+let userEmail="";
+
+// Theme
+if(localStorage.getItem("theme")==="light"){
+document.body.classList.add("light");
+document.getElementById("themeSwitch").checked=true;
+}
+
+// Authentication
+onAuthStateChanged(auth,async(user)=>{
+
+if(!user){
+location.href="login.html";
+return;
+}
+
+currentUser=user;
+userEmail=user.email;
+
+const snap=await getDoc(doc(db,"users",user.uid));
+
+if(!snap.exists()){
+location.href="login.html";
+return;
+}
+
+const data=snap.data();
+
+const initials=(data.fullName||"A").charAt(0).toUpperCase();
+
+document.getElementById("avatar").innerHTML=initials;
+
+// Load saved settings
+const settingsSnap=await getDoc(doc(db,"settings",user.uid));
+
+if(settingsSnap.exists()){
+
+const settings=settingsSnap.data();
+
+document.getElementById("emailNotifications").checked=
+settings.emailNotifications||false;
+
+document.getElementById("smsNotifications").checked=
+settings.smsNotifications||false;
+
+}
+
+});
+
+// Back
+document.getElementById("backBtn").onclick=()=>history.back();
+
+// Theme Switch
+document.getElementById("themeSwitch").addEventListener("change",function(){
+
+if(this.checked){
+
+document.body.classList.remove("light");
+localStorage.setItem("theme","dark");
+
+}else{
+
+document.body.classList.add("light");
+localStorage.setItem("theme","light");
+
+}
+
+});
+
+// Save Settings
+document.getElementById("saveSettings").onclick=async()=>{
+
+if(!currentUser) return;
+
+document.getElementById("loading").style.display="flex";
+
+try{
+
+await setDoc(doc(db,"settings",currentUser.uid),{
+
+emailNotifications:
+document.getElementById("emailNotifications").checked,
+
+smsNotifications:
+document.getElementById("smsNotifications").checked,
+
+updatedAt:new Date()
+
+});
+
+document.getElementById("loading").style.display="none";
+
+document.getElementById("successPopup").style.display="flex";
+
+}catch(error){
+
+document.getElementById("loading").style.display="none";
+
+alert(error.message);
+
+}
+
+};
+
+// Close Popup
+document.getElementById("closePopup").onclick=()=>{
+
+document.getElementById("successPopup").style.display="none";
+
+};
+
+// Logout
+document.getElementById("logout").onclick=async()=>{
+
+if(!confirm("Are you sure you want to logout?")) return;
+
+await signOut(auth);
+
+location.href="login.html";
+
+};
+
+// Password Reset
+document.getElementById("changePassword").onclick=async()=>{
+
+if(!userEmail){
+alert("Unable to get your email address.");
+return;
+}
+
+try{
+
+await sendPasswordResetEmail(auth,userEmail);
+
+alert(
+"Password reset link has been sent to your email."
+);
+
+}catch(error){
+
+alert(error.message);
+
+}
+
+};
+
+</script>
+</body>
+</html>

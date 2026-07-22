@@ -1,0 +1,1051 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>API Keys - AUTOPAY</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<style>
+
+/* CSS will be added next */
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#0c1424;
+color:#fff;
+transition:.3s;
+}
+
+.container{
+max-width:430px;
+margin:auto;
+padding:18px;
+padding-bottom:90px;
+}
+
+.top{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:24px;
+}
+
+.back-btn,
+.avatar{
+width:48px;
+height:48px;
+background:#182235;
+border:1px solid #253149;
+border-radius:14px;
+display:flex;
+align-items:center;
+justify-content:center;
+cursor:pointer;
+transition:.3s;
+}
+
+.back-btn:hover,
+.avatar:hover{
+transform:translateY(-2px);
+}
+
+.title{
+display:flex;
+align-items:center;
+gap:10px;
+font-size:22px;
+font-weight:bold;
+}
+
+.title i{
+color:#2563eb;
+}
+
+.summary-card{
+background:#182235;
+border:1px solid #253149;
+border-radius:20px;
+padding:20px;
+margin-bottom:20px;
+}
+
+.summary-title{
+font-size:15px;
+font-weight:bold;
+margin-bottom:18px;
+}
+
+.summary-grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:14px;
+}
+
+.summary-item{
+background:#111827;
+border:1px solid #2b3750;
+border-radius:14px;
+padding:16px;
+text-align:center;
+}
+
+.summary-item span{
+display:block;
+font-size:13px;
+color:#94a3b8;
+margin-bottom:8px;
+}
+
+.summary-item h2{
+font-size:22px;
+}
+
+.notice-card{
+display:flex;
+gap:15px;
+background:#182235;
+border:1px solid #253149;
+border-left:4px solid #2563eb;
+border-radius:18px;
+padding:18px;
+margin-bottom:22px;
+}
+
+.notice-card i{
+font-size:30px;
+color:#2563eb;
+margin-top:3px;
+}
+
+.notice-card h3{
+margin-bottom:6px;
+}
+
+.notice-card p{
+font-size:14px;
+line-height:1.6;
+color:#94a3b8;
+}
+
+.section-title{
+font-size:15px;
+font-weight:bold;
+margin-bottom:14px;
+}
+
+.key-card{
+background:#182235;
+border:1px solid #253149;
+border-radius:18px;
+padding:18px;
+margin-bottom:18px;
+transition:.3s;
+}
+
+.key-card:hover{
+transform:translateY(-2px);
+}
+
+.key-header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:18px;
+}
+
+.key-header h3{
+font-size:18px;
+margin-bottom:6px;
+}
+
+.badge{
+display:inline-block;
+padding:6px 12px;
+border-radius:20px;
+font-size:12px;
+font-weight:bold;
+}
+
+.live{
+background:#16a34a;
+color:#fff;
+}
+
+.test{
+background:#f59e0b;
+color:#fff;
+}
+
+.key-section{
+margin-bottom:16px;
+}
+
+.key-section label{
+display:block;
+margin-bottom:8px;
+font-size:13px;
+color:#94a3b8;
+}
+
+.key-box{
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:10px;
+background:#111827;
+border:1px solid #2b3750;
+border-radius:12px;
+padding:12px;
+}
+
+.key-box span{
+flex:1;
+font-size:13px;
+overflow:hidden;
+white-space:nowrap;
+text-overflow:ellipsis;
+}
+
+.key-box button{
+background:#2563eb;
+border:none;
+color:#fff;
+padding:8px 12px;
+border-radius:10px;
+cursor:pointer;
+font-size:13px;
+}
+
+.key-footer{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-top:15px;
+padding-top:15px;
+border-top:1px solid #2b3750;
+font-size:13px;
+color:#94a3b8;
+}
+
+.footer-actions{
+display:flex;
+gap:8px;
+}
+
+.footer-actions button{
+border:none;
+padding:10px 14px;
+border-radius:10px;
+cursor:pointer;
+font-size:13px;
+font-weight:bold;
+}
+
+.regenerate{
+background:#2563eb;
+color:#fff;
+}
+
+.delete{
+background:#ef4444;
+color:#fff;
+}
+
+.fab{
+position:fixed;
+right:22px;
+bottom:24px;
+width:62px;
+height:62px;
+background:#2563eb;
+border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:24px;
+cursor:pointer;
+box-shadow:0 10px 25px rgba(37,99,235,.35);
+transition:.3s;
+}
+
+.fab:hover{
+transform:scale(1.08);
+}
+
+.modal{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+display:none;
+align-items:center;
+justify-content:center;
+background:rgba(0,0,0,.6);
+padding:20px;
+z-index:999;
+}
+
+.modal-card{
+width:100%;
+max-width:360px;
+background:#182235;
+border-radius:20px;
+padding:22px;
+}
+
+.modal-header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:18px;
+}
+
+.modal-header i{
+font-size:20px;
+cursor:pointer;
+}
+
+.input-group{
+margin-bottom:18px;
+}
+
+.input-group label{
+display:block;
+margin-bottom:8px;
+font-size:14px;
+color:#94a3b8;
+}
+
+.input-group input,
+.input-group select{
+width:100%;
+padding:15px;
+border:none;
+outline:none;
+border-radius:14px;
+background:#111827;
+border:1px solid #2b3750;
+color:#fff;
+font-size:15px;
+}
+
+.modal button{
+width:100%;
+padding:15px;
+border:none;
+border-radius:14px;
+font-size:15px;
+font-weight:bold;
+cursor:pointer;
+margin-top:10px;
+}
+
+#createKey{
+background:#2563eb;
+color:#fff;
+}
+
+#confirmDelete{
+background:#ef4444;
+color:#fff;
+}
+
+#cancelDelete{
+background:#374151;
+color:#fff;
+}
+
+.empty{
+text-align:center;
+padding:55px 20px;
+background:#182235;
+border:1px dashed #334155;
+border-radius:18px;
+}
+
+.empty i{
+font-size:55px;
+color:#64748b;
+margin-bottom:15px;
+}
+
+.empty h3{
+margin-bottom:10px;
+}
+
+.empty p{
+color:#94a3b8;
+line-height:1.6;
+}
+
+/* LIGHT MODE */
+
+body.light{
+background:#f5f7fb;
+color:#111827;
+}
+
+body.light .summary-card,
+body.light .notice-card,
+body.light .key-card,
+body.light .modal-card,
+body.light .back-btn,
+body.light .avatar,
+body.light .empty{
+background:#fff;
+border-color:#dbe2ea;
+color:#111827;
+}
+
+body.light .summary-item{
+background:#f8fafc;
+border-color:#dbe2ea;
+}
+
+body.light .key-box,
+body.light input,
+body.light select{
+background:#f9fafb;
+border-color:#dbe2ea;
+color:#111827;
+}
+
+body.light .summary-item span,
+body.light .notice-card p,
+body.light .key-section label,
+body.light .key-footer,
+body.light .empty p{
+color:#64748b;
+}
+</style>
+
+</head>
+<body>
+
+<div class="container">
+
+    <!-- Header -->
+
+    <div class="top">
+
+        <div class="back-btn" id="backBtn">
+            <i class="fas fa-arrow-left"></i>
+        </div>
+
+        <div class="title">
+            <i class="fas fa-key"></i>
+            <span>API Keys</span>
+        </div>
+
+        <div class="avatar" id="avatar">
+            AC
+        </div>
+
+    </div>
+
+    <!-- Summary -->
+
+    <div class="summary-card">
+
+        <div class="summary-title">
+            API Key Overview
+        </div>
+
+        <div class="summary-grid">
+
+            <div class="summary-item">
+                <span>Total Keys</span>
+                <h2 id="totalKeys">0</h2>
+            </div>
+
+            <div class="summary-item">
+                <span>Live</span>
+                <h2 id="liveKeys">0</h2>
+            </div>
+
+            <div class="summary-item">
+                <span>Test</span>
+                <h2 id="testKeys">0</h2>
+            </div>
+
+            <div class="summary-item">
+                <span>Active</span>
+                <h2 id="activeKeys">0</h2>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Security Notice -->
+
+    <div class="notice-card">
+
+        <i class="fas fa-shield-halved"></i>
+
+        <div>
+
+            <h3>Security Notice</h3>
+
+            <p>
+                Keep your Secret API Key private. Never expose it in frontend JavaScript or mobile applications.
+            </p>
+
+        </div>
+
+    </div>
+
+    <!-- API Keys -->
+
+    <div class="section-title">
+        Your API Keys
+    </div>
+
+    <div id="keysContainer">
+
+        <!-- API Keys Loaded Here -->
+
+    </div>
+
+</div>
+
+<!-- Floating Generate Button -->
+
+<div class="fab" id="generateKey">
+
+    <i class="fas fa-plus"></i>
+
+</div>
+
+<!-- Generate API Key Modal -->
+
+<div class="modal" id="keyModal">
+
+    <div class="modal-card">
+
+        <div class="modal-header">
+
+            <h2>Generate API Key</h2>
+
+            <i class="fas fa-times" id="closeModal"></i>
+
+        </div>
+
+        <div class="input-group">
+
+            <label>Environment</label>
+
+            <select id="environment">
+
+                <option value="Live">Live</option>
+
+                <option value="Test">Test</option>
+
+            </select>
+
+        </div>
+
+        <div class="input-group">
+
+            <label>Key Name</label>
+
+            <input
+            type="text"
+            id="keyName"
+            placeholder="Payments API">
+
+        </div>
+
+        <button id="createKey">
+
+            Generate API Key
+
+        </button>
+
+    </div>
+
+</div>
+
+<!-- Delete Confirmation -->
+
+<div class="modal" id="deleteModal">
+
+    <div class="modal-card">
+
+        <h2>Delete API Key?</h2>
+
+        <p>
+            This action cannot be undone.
+        </p>
+
+        <button id="confirmDelete">
+
+            Delete Key
+
+        </button>
+
+        <button id="cancelDelete">
+
+            Cancel
+
+        </button>
+
+    </div>
+
+</div>
+
+<!-- API Key Card Template (Firestore will generate these) -->
+
+<!--
+
+<div class="key-card">
+
+    <div class="key-header">
+
+        <div>
+
+            <h3>Payments API</h3>
+
+            <span class="badge live">LIVE</span>
+
+        </div>
+
+    </div>
+
+    <div class="key-section">
+
+        <label>Public Key</label>
+
+        <div class="key-box">
+            <span>pk_live_xxxxxxxxxxxxxxxxx</span>
+            <button>Copy</button>
+        </div>
+
+    </div>
+
+    <div class="key-section">
+
+        <label>Secret Key</label>
+
+        <div class="key-box">
+            <span>••••••••••••••••••••••</span>
+            <button>Show</button>
+        </div>
+
+    </div>
+
+    <div class="key-footer">
+
+        <span>Created: 20 Jul 2026</span>
+
+        <div>
+
+            <button>Regenerate</button>
+
+            <button>Delete</button>
+
+        </div>
+
+    </div>
+
+</div>
+
+-->
+<script type="module">
+
+import { auth, db } from "./firebase.js";
+
+import {
+onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
+
+import {
+doc,
+getDoc,
+collection,
+addDoc,
+deleteDoc,
+updateDoc,
+getDocs,
+query,
+where,
+onSnapshot,
+serverTimestamp
+} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
+
+let merchantId = "";
+let deleteId = "";
+
+// Authentication
+onAuthStateChanged(auth, async(user)=>{
+
+if(!user){
+
+location.href="login.html";
+return;
+
+}
+
+const snap = await getDoc(doc(db,"users",user.uid));
+
+if(!snap.exists()){
+
+location.href="login.html";
+return;
+
+}
+
+const userData = snap.data();
+
+merchantId = userData.merchantId;
+
+document.getElementById("avatar").innerHTML =
+userData.fullName.charAt(0).toUpperCase();
+
+loadKeys();
+
+});
+
+// Back Button
+document.getElementById("backBtn").onclick=()=>history.back();
+
+// Open Modal
+document.getElementById("generateKey").onclick=()=>{
+
+document.getElementById("keyModal").style.display="flex";
+
+};
+
+// Close Modal
+document.getElementById("closeModal").onclick=()=>{
+
+document.getElementById("keyModal").style.display="none";
+
+};
+
+// Generate Random String
+function randomString(length=32){
+
+const chars="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+let text="";
+
+for(let i=0;i<length;i++){
+
+text+=chars.charAt(Math.floor(Math.random()*chars.length));
+
+}
+
+return text;
+
+}
+
+// Generate API Key
+document.getElementById("createKey").onclick=async()=>{
+
+const environment=
+document.getElementById("environment").value;
+
+const name=
+document.getElementById("keyName").value.trim();
+
+if(name===""){
+
+alert("Enter API key name");
+
+return;
+
+}
+
+const prefix=environment.toLowerCase();
+
+const publicKey=`pk_${prefix}_${randomString(32)}`;
+
+const secretKey=`sk_${prefix}_${randomString(48)}`;
+
+await addDoc(collection(db,"apiKeys"),{
+
+merchantId,
+
+name,
+
+environment,
+
+publicKey,
+
+secretKey,
+
+status:"Active",
+
+createdAt:serverTimestamp()
+
+});
+
+document.getElementById("keyModal").style.display="none";
+
+document.getElementById("keyName").value="";
+
+};
+
+// Load API Keys
+function loadKeys(){
+
+const q=query(
+
+collection(db,"apiKeys"),
+
+where("merchantId","==",merchantId)
+
+);
+
+onSnapshot(q,(snapshot)=>{
+
+const container=document.getElementById("keysContainer");
+
+container.innerHTML="";
+
+let total=0;
+let live=0;
+let test=0;
+let active=0;
+
+if(snapshot.empty){
+
+container.innerHTML=`
+
+<div class="empty">
+
+<i class="fas fa-key"></i>
+
+<h3>No API Keys</h3>
+
+<p>
+
+Generate your first API key to integrate AUTOPAY into your application.
+
+</p>
+
+</div>
+
+`;
+
+}
+
+snapshot.forEach(docSnap=>{
+
+const data=docSnap.data();
+
+total++;
+
+if(data.environment==="Live") live++;
+if(data.environment==="Test") test++;
+if(data.status==="Active") active++;
+
+const badge=data.environment==="Live"
+?'<span class="badge live">LIVE</span>'
+:'<span class="badge test">TEST</span>';
+
+container.innerHTML+=`
+
+<div class="key-card">
+
+<div class="key-header">
+
+<div>
+
+<h3>${data.name}</h3>
+
+${badge}
+
+</div>
+
+</div>
+
+<div class="key-section">
+
+<label>Public Key</label>
+
+<div class="key-box">
+
+<span id="pub_${docSnap.id}">
+
+${data.publicKey}
+
+</span>
+
+<button onclick="copyKey('pub_${docSnap.id}')">
+
+Copy
+
+</button>
+
+</div>
+
+</div>
+
+<div class="key-section">
+
+<label>Secret Key</label>
+
+<div class="key-box">
+
+<span id="sec_${docSnap.id}" data-key="${data.secretKey}">
+
+••••••••••••••••••••••••••
+
+</span>
+
+<button onclick="toggleSecret('sec_${docSnap.id}',this)">
+
+Show
+
+</button>
+
+</div>
+
+</div>
+
+<div class="key-footer">
+
+<span>
+
+${data.environment} • ${data.status}
+
+</span>
+
+<div class="footer-actions">
+
+<button
+class="regenerate"
+onclick="regenerateKey('${docSnap.id}')">
+
+Regenerate
+
+</button>
+
+<button
+class="delete"
+onclick="deleteKey('${docSnap.id}')">
+
+Delete
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+`;
+
+});
+
+document.getElementById("totalKeys").innerHTML=total;
+
+document.getElementById("liveKeys").innerHTML=live;
+
+document.getElementById("testKeys").innerHTML=test;
+
+document.getElementById("activeKeys").innerHTML=active;
+
+});
+
+}
+
+// Copy Key
+window.copyKey=function(id){
+
+navigator.clipboard.writeText(
+
+document.getElementById(id).dataset.key ||
+
+document.getElementById(id).innerText
+
+);
+
+alert("Copied");
+
+};
+
+// Show / Hide Secret
+window.toggleSecret=function(id,button){
+
+const el=document.getElementById(id);
+
+if(button.innerHTML==="Show"){
+
+el.innerHTML=el.dataset.key;
+
+button.innerHTML="Hide";
+
+}else{
+
+el.innerHTML="••••••••••••••••••••••••••";
+
+button.innerHTML="Show";
+
+}
+
+};
+
+// Delete
+window.deleteKey=function(id){
+
+deleteId=id;
+
+document.getElementById("deleteModal").style.display="flex";
+
+};
+
+document.getElementById("cancelDelete").onclick=()=>{
+
+document.getElementById("deleteModal").style.display="none";
+
+};
+
+document.getElementById("confirmDelete").onclick=async()=>{
+
+await deleteDoc(doc(db,"apiKeys",deleteId));
+
+document.getElementById("deleteModal").style.display="none";
+
+};
+
+// Regenerate
+window.regenerateKey=async(id)=>{
+
+const publicKey=`pk_live_${randomString(32)}`;
+
+const secretKey=`sk_live_${randomString(48)}`;
+
+await updateDoc(doc(db,"apiKeys",id),{
+
+publicKey,
+
+secretKey
+
+});
+
+alert("API Key regenerated.");
+
+};
+
+// Theme
+if(localStorage.getItem("theme")==="light"){
+
+document.body.classList.add("light");
+
+}
+
+</script>
+</body>
+</html>

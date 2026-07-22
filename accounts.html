@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Payment Accounts - AUTOPAY</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<style>
+
+/* CSS will be added next */
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#0c1424;
+color:#fff;
+transition:.3s;
+}
+
+.container{
+max-width:430px;
+margin:auto;
+padding:18px;
+padding-bottom:90px;
+}
+
+.top{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:24px;
+}
+
+.back-btn,
+.avatar{
+width:48px;
+height:48px;
+background:#182235;
+border:1px solid #253149;
+border-radius:14px;
+display:flex;
+align-items:center;
+justify-content:center;
+cursor:pointer;
+transition:.3s;
+}
+
+.back-btn:hover,
+.avatar:hover{
+transform:translateY(-2px);
+}
+
+.title{
+font-size:22px;
+font-weight:bold;
+display:flex;
+align-items:center;
+gap:8px;
+}
+
+.title i{
+color:#2563eb;
+}
+
+.summary-card{
+background:#182235;
+border:1px solid #253149;
+border-radius:20px;
+padding:20px;
+margin-bottom:22px;
+}
+
+.summary-title{
+font-size:15px;
+font-weight:bold;
+margin-bottom:18px;
+}
+
+.summary-grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:14px;
+}
+
+.summary-item{
+background:#111827;
+border:1px solid #2b3750;
+border-radius:14px;
+padding:16px;
+text-align:center;
+}
+
+.summary-item span{
+display:block;
+font-size:13px;
+color:#94a3b8;
+margin-bottom:8px;
+}
+
+.summary-item h2{
+font-size:22px;
+}
+
+.section-title{
+font-size:15px;
+font-weight:bold;
+margin-bottom:15px;
+}
+
+.account-card{
+background:#182235;
+border:1px solid #253149;
+border-radius:18px;
+padding:18px;
+margin-bottom:15px;
+transition:.3s;
+}
+
+.account-card:hover{
+transform:translateY(-2px);
+}
+
+.account-top{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:15px;
+}
+
+.account-type{
+display:flex;
+align-items:center;
+gap:10px;
+font-size:18px;
+font-weight:bold;
+}
+
+.account-type i{
+color:#2563eb;
+}
+
+.default-badge{
+background:#22c55e;
+padding:6px 12px;
+border-radius:20px;
+font-size:12px;
+font-weight:bold;
+}
+
+.account-info{
+display:grid;
+gap:10px;
+margin-bottom:18px;
+}
+
+.info-row{
+display:flex;
+justify-content:space-between;
+font-size:14px;
+}
+
+.info-label{
+color:#94a3b8;
+}
+
+.account-actions{
+display:grid;
+grid-template-columns:1fr 1fr 1fr;
+gap:10px;
+}
+
+.action-btn{
+padding:12px;
+border:none;
+border-radius:12px;
+cursor:pointer;
+font-weight:bold;
+transition:.3s;
+}
+
+.action-btn:hover{
+transform:translateY(-2px);
+}
+
+.default-btn{
+background:#2563eb;
+color:#fff;
+}
+
+.edit-btn{
+background:#f59e0b;
+color:#fff;
+}
+
+.delete-btn{
+background:#ef4444;
+color:#fff;
+}
+
+.fab{
+position:fixed;
+bottom:25px;
+right:22px;
+width:62px;
+height:62px;
+background:#2563eb;
+border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:24px;
+cursor:pointer;
+box-shadow:0 10px 25px rgba(37,99,235,.4);
+transition:.3s;
+}
+
+.fab:hover{
+transform:scale(1.08);
+}
+
+.modal{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,.6);
+display:none;
+align-items:center;
+justify-content:center;
+padding:20px;
+z-index:999;
+}
+
+.modal-card{
+width:100%;
+max-width:360px;
+background:#182235;
+border-radius:20px;
+padding:22px;
+}
+
+.modal-header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:18px;
+}
+
+.modal-header i{
+cursor:pointer;
+font-size:22px;
+}
+
+.input-group{
+margin-bottom:18px;
+}
+
+.input-group label{
+display:block;
+margin-bottom:8px;
+font-size:14px;
+color:#9aa7bd;
+}
+
+.input-group input,
+.input-group select{
+width:100%;
+padding:15px;
+border-radius:14px;
+border:1px solid #2b3750;
+background:#111827;
+color:#fff;
+outline:none;
+font-size:15px;
+}
+
+.modal button{
+width:100%;
+padding:16px;
+border:none;
+border-radius:14px;
+font-size:15px;
+font-weight:bold;
+cursor:pointer;
+margin-top:10px;
+transition:.3s;
+}
+
+#saveAccount{
+background:#2563eb;
+color:#fff;
+}
+
+#confirmDelete{
+background:#ef4444;
+color:#fff;
+}
+
+#cancelDelete{
+background:#374151;
+color:#fff;
+}
+
+.empty{
+text-align:center;
+padding:50px 20px;
+background:#182235;
+border:1px dashed #334155;
+border-radius:18px;
+}
+
+.empty i{
+font-size:50px;
+color:#64748b;
+margin-bottom:15px;
+}
+
+.empty h3{
+margin-bottom:10px;
+}
+
+.empty p{
+color:#94a3b8;
+line-height:1.6;
+}
+
+body.light{
+background:#f5f7fb;
+color:#111827;
+}
+
+body.light .summary-card,
+body.light .account-card,
+body.light .modal-card,
+body.light .back-btn,
+body.light .avatar,
+body.light .empty{
+background:#fff;
+border-color:#dbe2ea;
+color:#111827;
+}
+
+body.light .summary-item{
+background:#f8fafc;
+border-color:#dbe2ea;
+}
+
+body.light .input-group input,
+body.light .input-group select{
+background:#f9fafb;
+border-color:#dbe2ea;
+color:#111827;
+}
+
+body.light .info-label,
+body.light .summary-item span,
+body.light .input-group label,
+body.light .empty p{
+color:#64748b;
+}
+
+</style>
+
+</head>
+<body>
+
+<div class="container">
+
+    <!-- Header -->
+
+    <div class="top">
+
+        <div class="back-btn" id="backBtn">
+            <i class="fas fa-arrow-left"></i>
+        </div>
+
+        <div class="title">
+            <i class="fas fa-building-columns"></i>
+            <span>Payment Accounts</span>
+        </div>
+
+        <div class="avatar" id="avatar">
+            AC
+        </div>
+
+    </div>
+
+    <!-- Summary Card -->
+
+    <div class="summary-card">
+
+        <div class="summary-title">
+            Payment Accounts
+        </div>
+
+        <div class="summary-grid">
+
+            <div class="summary-item">
+                <span>Total Accounts</span>
+                <h2 id="totalAccounts">0</h2>
+            </div>
+
+            <div class="summary-item">
+                <span>Default</span>
+                <h2 id="defaultType">None</h2>
+            </div>
+
+            <div class="summary-item">
+                <span>Active</span>
+                <h2 id="activeAccounts">0</h2>
+            </div>
+
+            <div class="summary-item">
+                <span>Inactive</span>
+                <h2 id="inactiveAccounts">0</h2>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Accounts -->
+
+    <div class="section-title">
+
+        Your Payment Accounts
+
+    </div>
+
+    <div id="accountsContainer">
+
+        <!-- Firestore Accounts Here -->
+
+    </div>
+
+</div>
+
+<!-- Floating Button -->
+
+<div class="fab" id="addAccount">
+
+    <i class="fas fa-plus"></i>
+
+</div>
+
+<!-- Add Account Modal -->
+
+<div class="modal" id="accountModal">
+
+    <div class="modal-card">
+
+        <div class="modal-header">
+
+            <h2>Add Payment Account</h2>
+
+            <i class="fas fa-times" id="closeModal"></i>
+
+        </div>
+
+        <div class="input-group">
+
+            <label>Account Type</label>
+
+            <select id="accountType">
+
+                <option value="">Select Type</option>
+
+                <option value="Till">M-PESA Till</option>
+
+                <option value="Paybill">M-PESA Paybill</option>
+
+                <option value="Bank">Bank Account</option>
+
+            </select>
+
+        </div>
+
+        <div class="input-group">
+
+            <label>Business Name</label>
+
+            <input
+            type="text"
+            id="businessName"
+            placeholder="Business Name">
+
+        </div>
+
+        <div class="input-group" id="bankField" style="display:none;">
+
+            <label>Bank Name</label>
+
+            <input
+            type="text"
+            id="bankName"
+            placeholder="KCB Bank">
+
+        </div>
+
+        <div class="input-group">
+
+            <label id="numberLabel">
+
+                Till Number
+
+            </label>
+
+            <input
+            type="text"
+            id="accountNumber"
+            placeholder="Enter Number">
+
+        </div>
+
+        <button id="saveAccount">
+
+            Save Payment Account
+
+        </button>
+
+    </div>
+
+</div>
+
+<!-- Delete Confirmation -->
+
+<div class="modal" id="deleteModal">
+
+    <div class="modal-card">
+
+        <h2>Delete Account?</h2>
+
+        <p>
+
+            This payment account will be removed permanently.
+
+        </p>
+
+        <button id="confirmDelete">
+
+            Delete
+
+        </button>
+
+        <button id="cancelDelete">
+
+            Cancel
+
+        </button>
+
+    </div>
+
+</div>
+<script type="module">
+
+import { auth, db } from "./firebase.js";
+
+import {
+onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
+
+import {
+doc,
+getDoc,
+getDocs,
+collection,
+addDoc,
+updateDoc,
+deleteDoc,
+onSnapshot,
+query,
+where,
+serverTimestamp
+} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
+
+let merchantId = "";
+let deleteId = "";
+let editId = null;
+
+// Authenticate User
+onAuthStateChanged(auth, async(user)=>{
+
+    if(!user){
+        location.href="login.html";
+        return;
+    }
+
+    const snap = await getDoc(doc(db,"users",user.uid));
+
+    if(!snap.exists()){
+        location.href="login.html";
+        return;
+    }
+
+    const userData = snap.data();
+
+    merchantId = userData.merchantId;
+
+    document.getElementById("avatar").innerHTML =
+    userData.fullName.charAt(0).toUpperCase();
+
+    loadAccounts();
+
+});
+
+// Back
+document.getElementById("backBtn").onclick=()=>history.back();
+
+// Open Modal
+document.getElementById("addAccount").onclick=()=>{
+
+editId=null;
+
+document.getElementById("accountModal").style.display="flex";
+
+};
+
+// Close Modal
+document.getElementById("closeModal").onclick=()=>{
+
+document.getElementById("accountModal").style.display="none";
+
+};
+
+// Change Fields
+document.getElementById("accountType").onchange=function(){
+
+const type=this.value;
+
+const bankField=document.getElementById("bankField");
+
+const label=document.getElementById("numberLabel");
+
+if(type==="Bank"){
+
+bankField.style.display="block";
+label.innerHTML="Account Number";
+
+}else if(type==="Paybill"){
+
+bankField.style.display="none";
+label.innerHTML="Paybill Number";
+
+}else{
+
+bankField.style.display="none";
+label.innerHTML="Till Number";
+
+}
+
+};
+
+// Save Account
+document.getElementById("saveAccount").onclick=saveAccount;
+
+async function saveAccount(){
+
+const type=document.getElementById("accountType").value;
+
+const businessName=document.getElementById("businessName").value.trim();
+
+const bankName=document.getElementById("bankName").value.trim();
+
+const accountNumber=document.getElementById("accountNumber").value.trim();
+
+if(type===""){
+
+alert("Select account type");
+
+return;
+
+}
+
+if(businessName===""){
+
+alert("Enter business name");
+
+return;
+
+}
+
+if(accountNumber===""){
+
+alert("Enter account number");
+
+return;
+
+}
+
+const data={
+
+merchantId,
+
+type,
+
+businessName,
+
+bankName,
+
+accountNumber,
+
+status:"Active",
+
+default:false,
+
+createdAt:serverTimestamp()
+
+};
+
+if(editId){
+
+await updateDoc(doc(db,"paymentAccounts",editId),data);
+
+}else{
+
+await addDoc(collection(db,"paymentAccounts"),data);
+
+}
+
+document.getElementById("accountModal").style.display="none";
+
+clearForm();
+
+}
+
+function clearForm(){
+
+document.getElementById("accountType").value="";
+
+document.getElementById("businessName").value="";
+
+document.getElementById("bankName").value="";
+
+document.getElementById("accountNumber").value="";
+
+document.getElementById("bankField").style.display="none";
+
+document.getElementById("numberLabel").innerHTML="Till Number";
+
+}
+
+// Load Accounts
+function loadAccounts(){
+
+const q=query(
+
+collection(db,"paymentAccounts"),
+
+where("merchantId","==",merchantId)
+
+);
+
+onSnapshot(q,(snapshot)=>{
+
+const container=document.getElementById("accountsContainer");
+
+container.innerHTML="";
+
+let total=0;
+
+let active=0;
+
+let inactive=0;
+
+let defaultType="None";
+
+if(snapshot.empty){
+
+container.innerHTML=`
+<div class="empty">
+
+<i class="fas fa-building-columns"></i>
+
+<h3>No Payment Accounts</h3>
+
+<p>Add your first payment account to start receiving payments.</p>
+
+</div>
+`;
+
+}
+
+snapshot.forEach(account=>{
+
+const data=account.data();
+
+total++;
+
+if(data.status==="Active") active++;
+else inactive++;
+
+if(data.default) defaultType=data.type;
+
+let icon="fa-store";
+
+if(data.type==="Bank") icon="fa-building-columns";
+
+if(data.type==="Paybill") icon="fa-file-invoice";
+
+container.innerHTML+=`
+
+<div class="account-card">
+
+<div class="account-top">
+
+<div class="account-type">
+
+<i class="fas ${icon}"></i>
+
+${data.type}
+
+</div>
+
+${data.default?'<span class="default-badge">DEFAULT</span>':''}
+
+</div>
+
+<div class="account-info">
+
+<div class="info-row">
+
+<span class="info-label">Business</span>
+
+<span>${data.businessName}</span>
+
+</div>
+
+${data.bankName?`
+
+<div class="info-row">
+
+<span class="info-label">Bank</span>
+
+<span>${data.bankName}</span>
+
+</div>
+
+`:''}
+
+<div class="info-row">
+
+<span class="info-label">Number</span>
+
+<span>${data.accountNumber}</span>
+
+</div>
+
+<div class="info-row">
+
+<span class="info-label">Status</span>
+
+<span>${data.status}</span>
+
+</div>
+
+</div>
+
+<div class="account-actions">
+
+<button
+class="action-btn default-btn"
+onclick="setDefault('${account.id}')">
+
+Default
+
+</button>
+
+<button
+class="action-btn edit-btn"
+onclick="editAccount('${account.id}')">
+
+Edit
+
+</button>
+
+<button
+class="action-btn delete-btn"
+onclick="deleteAccount('${account.id}')">
+
+Delete
+
+</button>
+
+</div>
+
+</div>
+
+`;
+
+});
+
+document.getElementById("totalAccounts").innerHTML=total;
+
+document.getElementById("activeAccounts").innerHTML=active;
+
+document.getElementById("inactiveAccounts").innerHTML=inactive;
+
+document.getElementById("defaultType").innerHTML=defaultType;
+
+});
+
+}
+
+// Set Default
+window.setDefault=async(id)=>{
+
+const q=query(
+collection(db,"paymentAccounts"),
+where("merchantId","==",merchantId)
+);
+
+const snap=await getDocs(q);
+
+for(const d of snap.docs){
+
+await updateDoc(d.ref,{
+default:false
+});
+
+}
+
+await updateDoc(doc(db,"paymentAccounts",id),{
+default:true
+});
+
+};
+
+// Edit
+window.editAccount=async(id)=>{
+
+const snap=await getDoc(doc(db,"paymentAccounts",id));
+
+const data=snap.data();
+
+editId=id;
+
+document.getElementById("accountType").value=data.type;
+document.getElementById("businessName").value=data.businessName;
+document.getElementById("bankName").value=data.bankName||"";
+document.getElementById("accountNumber").value=data.accountNumber;
+
+document.getElementById("accountModal").style.display="flex";
+
+};
+
+// Delete
+window.deleteAccount=(id)=>{
+
+deleteId=id;
+
+document.getElementById("deleteModal").style.display="flex";
+
+};
+
+document.getElementById("cancelDelete").onclick=()=>{
+
+document.getElementById("deleteModal").style.display="none";
+
+};
+
+document.getElementById("confirmDelete").onclick=async()=>{
+
+await deleteDoc(doc(db,"paymentAccounts",deleteId));
+
+document.getElementById("deleteModal").style.display="none";
+
+};
+
+// Theme
+if(localStorage.getItem("theme")==="light"){
+
+document.body.classList.add("light");
+
+}
+
+</script>
+</body>
+</html>

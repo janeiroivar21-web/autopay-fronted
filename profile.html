@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Profile - AUTOPAY</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<style>
+
+/* CSS will be added next */
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#0c1424;
+color:#fff;
+transition:.3s;
+}
+
+.container{
+max-width:430px;
+margin:auto;
+padding:18px;
+padding-bottom:90px;
+}
+
+.top{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:24px;
+}
+
+.back-btn,
+.avatar{
+width:48px;
+height:48px;
+background:#182235;
+border:1px solid #253149;
+border-radius:14px;
+display:flex;
+align-items:center;
+justify-content:center;
+cursor:pointer;
+transition:.3s;
+}
+
+.back-btn:hover,
+.avatar:hover{
+transform:translateY(-2px);
+}
+
+.title{
+display:flex;
+align-items:center;
+gap:10px;
+font-size:22px;
+font-weight:bold;
+}
+
+.title i{
+color:#2563eb;
+}
+
+.profile-card{
+background:#182235;
+border:1px solid #253149;
+border-radius:20px;
+padding:25px;
+text-align:center;
+margin-bottom:22px;
+}
+
+.profile-avatar{
+width:90px;
+height:90px;
+margin:auto;
+margin-bottom:18px;
+background:#2563eb;
+border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:32px;
+font-weight:bold;
+color:#fff;
+}
+
+.profile-card h2{
+margin-bottom:8px;
+}
+
+.profile-card p{
+color:#94a3b8;
+margin-bottom:14px;
+font-size:14px;
+}
+
+.status{
+display:inline-flex;
+align-items:center;
+gap:8px;
+padding:8px 16px;
+border-radius:20px;
+font-size:13px;
+font-weight:bold;
+}
+
+.status.active{
+background:#16a34a;
+color:#fff;
+}
+
+.status i{
+font-size:10px;
+}
+
+.section-card{
+background:#182235;
+border:1px solid #253149;
+border-radius:18px;
+padding:20px;
+margin-bottom:20px;
+}
+
+.section-title{
+font-size:16px;
+font-weight:bold;
+margin-bottom:18px;
+}
+
+.input-group{
+margin-bottom:18px;
+}
+
+.input-group:last-child{
+margin-bottom:0;
+}
+
+.input-group label{
+display:block;
+margin-bottom:8px;
+font-size:14px;
+color:#94a3b8;
+}
+
+.input-group input{
+width:100%;
+padding:15px;
+background:#111827;
+border:1px solid #2b3750;
+border-radius:14px;
+outline:none;
+font-size:15px;
+color:#fff;
+}
+
+.input-group input:focus{
+border-color:#2563eb;
+}
+
+.info-row{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:14px 0;
+border-bottom:1px solid #2b3750;
+}
+
+.info-row:last-child{
+border-bottom:none;
+}
+
+.info-row span{
+color:#94a3b8;
+}
+
+.save-btn{
+width:100%;
+padding:17px;
+border:none;
+border-radius:15px;
+background:#2563eb;
+color:#fff;
+font-size:16px;
+font-weight:bold;
+cursor:pointer;
+transition:.3s;
+}
+
+.save-btn:hover{
+background:#1d4ed8;
+transform:translateY(-2px);
+}
+
+.loading{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,.65);
+display:none;
+align-items:center;
+justify-content:center;
+flex-direction:column;
+z-index:999;
+}
+
+.loader{
+width:60px;
+height:60px;
+border:5px solid rgba(255,255,255,.2);
+border-top:5px solid #2563eb;
+border-radius:50%;
+animation:spin 1s linear infinite;
+margin-bottom:18px;
+}
+
+@keyframes spin{
+
+100%{
+transform:rotate(360deg);
+}
+
+}
+
+.popup{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+display:none;
+align-items:center;
+justify-content:center;
+background:rgba(0,0,0,.65);
+z-index:1000;
+}
+
+.popup-card{
+width:90%;
+max-width:340px;
+background:#182235;
+border-radius:20px;
+padding:28px;
+text-align:center;
+}
+
+.popup-card i{
+font-size:60px;
+color:#22c55e;
+margin-bottom:15px;
+}
+
+.popup-card h2{
+margin-bottom:10px;
+}
+
+.popup-card p{
+color:#94a3b8;
+line-height:1.6;
+margin-bottom:20px;
+}
+
+.popup-card button{
+width:100%;
+padding:15px;
+background:#2563eb;
+border:none;
+border-radius:14px;
+color:#fff;
+font-size:15px;
+font-weight:bold;
+cursor:pointer;
+}
+
+/* LIGHT MODE */
+
+body.light{
+background:#f5f7fb;
+color:#111827;
+}
+
+body.light .profile-card,
+body.light .section-card,
+body.light .popup-card,
+body.light .back-btn,
+body.light .avatar{
+background:#fff;
+border-color:#dbe2ea;
+color:#111827;
+}
+
+body.light .input-group input{
+background:#f9fafb;
+border-color:#dbe2ea;
+color:#111827;
+}
+
+body.light .input-group label,
+body.light .profile-card p,
+body.light .info-row span{
+color:#64748b;
+}
+
+body.light .info-row{
+border-color:#e5e7eb;
+}
+</style>
+
+</head>
+<body>
+
+<div class="container">
+
+    <!-- Header -->
+
+    <div class="top">
+
+        <div class="back-btn" id="backBtn">
+            <i class="fas fa-arrow-left"></i>
+        </div>
+
+        <div class="title">
+            <i class="fas fa-user"></i>
+            <span>Profile</span>
+        </div>
+
+        <div class="avatar" id="avatar">
+            AC
+        </div>
+
+    </div>
+
+    <!-- Profile Card -->
+
+    <div class="profile-card">
+
+        <div class="profile-avatar" id="profileAvatar">
+            AC
+        </div>
+
+        <h2 id="fullName">
+            Loading...
+        </h2>
+
+        <p id="merchantId">
+            Merchant ID
+        </p>
+
+        <div class="status active">
+
+            <i class="fas fa-circle"></i>
+
+            Active Merchant
+
+        </div>
+
+    </div>
+
+    <!-- Personal Information -->
+
+    <div class="section-card">
+
+        <div class="section-title">
+
+            Personal Information
+
+        </div>
+
+        <div class="input-group">
+
+            <label>Full Name</label>
+
+            <input
+            type="text"
+            id="name">
+
+        </div>
+
+        <div class="input-group">
+
+            <label>Email Address</label>
+
+            <input
+            type="email"
+            id="email"
+            readonly>
+
+        </div>
+
+        <div class="input-group">
+
+            <label>Phone Number</label>
+
+            <input
+            type="text"
+            id="phone">
+
+        </div>
+
+    </div>
+
+    <!-- Business Information -->
+
+    <div class="section-card">
+
+        <div class="section-title">
+
+            Business Information
+
+        </div>
+
+        <div class="input-group">
+
+            <label>Business Name</label>
+
+            <input
+            type="text"
+            id="businessName">
+
+        </div>
+
+        <div class="input-group">
+
+            <label>Business Type</label>
+
+            <input
+            type="text"
+            id="businessType">
+
+        </div>
+
+        <div class="input-group">
+
+            <label>Website</label>
+
+            <input
+            type="text"
+            id="website">
+
+        </div>
+
+    </div>
+
+    <!-- Account Information -->
+
+    <div class="section-card">
+
+        <div class="section-title">
+
+            Account Information
+
+        </div>
+
+        <div class="info-row">
+
+            <span>Wallet Balance</span>
+
+            <strong id="walletBalance">
+                KES 0
+            </strong>
+
+        </div>
+
+        <div class="info-row">
+
+            <span>Service Balance</span>
+
+            <strong id="serviceBalance">
+                KES 0
+            </strong>
+
+        </div>
+
+        <div class="info-row">
+
+            <span>Account Created</span>
+
+            <strong id="joinedDate">
+                --
+            </strong>
+
+        </div>
+
+    </div>
+
+    <!-- Save Button -->
+
+    <button class="save-btn" id="saveProfile">
+
+        <i class="fas fa-floppy-disk"></i>
+
+        Save Changes
+
+    </button>
+
+</div>
+
+<!-- Loading -->
+
+<div class="loading" id="loading">
+
+    <div class="loader"></div>
+
+    <p>Updating profile...</p>
+
+</div>
+
+<!-- Success Popup -->
+
+<div class="popup" id="successPopup">
+
+    <div class="popup-card">
+
+        <i class="fas fa-circle-check"></i>
+
+        <h2>Profile Updated</h2>
+
+        <p>
+
+            Your profile has been updated successfully.
+
+        </p>
+
+        <button id="closePopup">
+
+            Continue
+
+        </button>
+
+    </div>
+
+</div>
+<script type="module">
+
+import { auth, db } from "./firebase.js";
+
+import {
+onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
+
+import {
+doc,
+getDoc,
+updateDoc
+} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
+
+// Theme
+if(localStorage.getItem("theme")==="light"){
+document.body.classList.add("light");
+}
+
+let currentUser=null;
+
+// Authentication
+onAuthStateChanged(auth, async(user)=>{
+
+if(!user){
+location.href="login.html";
+return;
+}
+
+currentUser=user;
+
+const snap=await getDoc(doc(db,"users",user.uid));
+
+if(!snap.exists()){
+location.href="login.html";
+return;
+}
+
+const data=snap.data();
+
+// Avatar
+const initials=(data.fullName||"A").charAt(0).toUpperCase();
+
+document.getElementById("avatar").innerHTML=initials;
+document.getElementById("profileAvatar").innerHTML=initials;
+
+// Header
+document.getElementById("fullName").innerHTML=data.fullName||"";
+document.getElementById("merchantId").innerHTML=data.merchantId||"--";
+
+// Personal
+document.getElementById("name").value=data.fullName||"";
+document.getElementById("email").value=data.email||"";
+document.getElementById("phone").value=data.phone||"";
+
+// Business
+document.getElementById("businessName").value=data.businessName||"";
+document.getElementById("businessType").value=data.businessType||"";
+document.getElementById("website").value=data.website||"";
+
+// Balances
+document.getElementById("walletBalance").innerHTML=
+"KES "+Number(data.walletBalance||0).toLocaleString();
+
+document.getElementById("serviceBalance").innerHTML=
+"KES "+Number(data.serviceBalance||0).toLocaleString();
+
+// Joined Date
+if(data.createdAt){
+
+const joined=data.createdAt.toDate();
+
+document.getElementById("joinedDate").innerHTML=
+joined.toLocaleDateString("en-US",{
+
+day:"numeric",
+month:"short",
+year:"numeric"
+
+});
+
+}
+
+});
+
+// Back Button
+document.getElementById("backBtn").onclick=()=>{
+
+history.back();
+
+};
+
+// Save Profile
+document.getElementById("saveProfile").onclick=saveProfile;
+
+async function saveProfile(){
+
+if(!currentUser) return;
+
+const fullName=document.getElementById("name").value.trim();
+const phone=document.getElementById("phone").value.trim();
+const businessName=document.getElementById("businessName").value.trim();
+const businessType=document.getElementById("businessType").value.trim();
+const website=document.getElementById("website").value.trim();
+
+if(fullName===""){
+
+alert("Full name is required.");
+
+return;
+
+}
+
+document.getElementById("loading").style.display="flex";
+
+try{
+
+await updateDoc(
+
+doc(db,"users",currentUser.uid),
+
+{
+
+fullName,
+phone,
+businessName,
+businessType,
+website
+
+}
+
+);
+
+document.getElementById("loading").style.display="none";
+
+document.getElementById("fullName").innerHTML=fullName;
+
+const initials=fullName.charAt(0).toUpperCase();
+
+document.getElementById("avatar").innerHTML=initials;
+document.getElementById("profileAvatar").innerHTML=initials;
+
+document.getElementById("successPopup").style.display="flex";
+
+}catch(error){
+
+document.getElementById("loading").style.display="none";
+
+alert(error.message);
+
+}
+
+}
+
+// Close Popup
+document.getElementById("closePopup").onclick=()=>{
+
+document.getElementById("successPopup").style.display="none";
+
+};
+
+</script>
+</body>
+</html>
