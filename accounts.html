@@ -966,8 +966,6 @@ status:"Active"
 
 if(!editId){
 
-data.default = false;
-
 data.createdAt = serverTimestamp();
 
 }
@@ -985,6 +983,11 @@ await addDoc(collection(db,"paymentAccounts"),data);
 document.getElementById("accountModal").style.display="none";
 
 clearForm();
+
+showPopup(
+"Success",
+"Payment account saved successfully."
+);
 
 }
 
@@ -1217,6 +1220,11 @@ document.getElementById("walletStatus").textContent = account.type;
 
 document.getElementById("walletBadge").innerHTML = "AVAILABLE";
 
+showPopup(
+"Collection Method Updated",
+account.type + " is now your default collection method."
+);
+
 };
 
 // Edit
@@ -1258,6 +1266,11 @@ await deleteDoc(doc(db,"paymentAccounts",deleteId));
 
 document.getElementById("deleteModal").style.display="none";
 
+showPopup(
+"Deleted",
+"Payment account deleted successfully."
+);
+
 };
 
 // Make AUTOPAY Wallet the default collection method
@@ -1297,6 +1310,11 @@ default:false
 document.getElementById("walletStatus").textContent="AUTOPAY Wallet";
 
 document.getElementById("walletBadge").innerHTML="DEFAULT";
+
+showPopup(
+"Collection Method Updated",
+"AUTOPAY Wallet is now your default collection method."
+);
 
 };
 
