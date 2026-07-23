@@ -992,6 +992,11 @@ CHECK PAYMENT STATUS
 
 async function checkPaymentStatus(checkoutRequestId) {
 
+    if (paymentTimer) {
+        clearInterval(paymentTimer);
+        paymentTimer = null;
+    }
+
     let attempts = 0;
 
     paymentTimer = setInterval(async () => {
@@ -1066,10 +1071,14 @@ paymentTimer = null;
     result.data?.status === "completed"
 ) {
 
-                clearInterval(timer);
+    clearInterval(paymentTimer);
+    paymentTimer = null;
 
-                document.getElementById("loader").style.display =
-                    "none";
+    document.getElementById("loader").style.display =
+        "none";
+
+    document.getElementById("loaderText").innerHTML =
+    "Sending STK Push...";
 
                 await loadMerchant();
 
@@ -1094,10 +1103,14 @@ showPopup(
     result.data?.status === "cancelled"
 ) {
 
-                clearInterval(timer);
+    clearInterval(paymentTimer);
+    paymentTimer = null;
 
-                document.getElementById("loader").style.display =
-                    "none";
+    document.getElementById("loader").style.display =
+        "none";
+
+    document.getElementById("loaderText").innerHTML =
+    "Sending STK Push...";
 
                 document.getElementById("topupBtn").disabled = false;
 document.getElementById("topupBtn").innerHTML = "Top Up Wallet";
@@ -1111,11 +1124,14 @@ showPopup(
 
             if (attempts >= 24) {
 
-                clearInterval(timer);
+    clearInterval(paymentTimer);
+    paymentTimer = null;
 
-                document.getElementById("loader").style.display =
-                    "none";
+    document.getElementById("loader").style.display =
+        "none";
 
+    document.getElementById("loaderText").innerHTML =
+    "Sending STK Push...";
                 document.getElementById("topupBtn").disabled = false;
 document.getElementById("topupBtn").innerHTML = "Top Up Wallet";
 
@@ -1130,9 +1146,13 @@ showPopup(
 
     console.error(err);
 
-    clearInterval(timer);
+    clearInterval(paymentTimer);
+    paymentTimer = null;
 
     document.getElementById("loader").style.display = "none";
+
+    document.getElementById("loaderText").innerHTML =
+    "Sending STK Push...";
 
     document.getElementById("topupBtn").disabled = false;
 
