@@ -460,7 +460,7 @@ import {
 
 import {
     doc,
-    getDoc
+    onSnapshot
 } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
 
 const API_BASE = "https://autopay.co.ke";
@@ -474,39 +474,39 @@ if(localStorage.getItem("theme")==="light"){
 document.getElementById("backBtn").onclick = () => history.back();
 
 // Authentication
-onAuthStateChanged(auth, async(user)=>{
+onAuthStateChanged(auth,(user)=>{
 
-    if(!user){
-        location.href = "login.html";
-        return;
-    }
+if(!user){
+location.href="login.html";
+return;
+}
 
-    try{
+// Load cached merchant first
+const cached = JSON.parse(localStorage.getItem("merchant"));
 
-        const userRef = doc(db,"users",user.uid);
+if(cached){
+loadMerchant(cached);
+}
+
+const userRef = doc(db,"users",user.uid);
 
 onSnapshot(userRef,(snap)=>{
 
 if(!snap.exists()){
-
 location.href="login.html";
 return;
-
 }
 
 const merchant = snap.data();
 
-localStorage.setItem(
-"merchant",
-JSON.stringify(merchant)
-);
-
-localStorage.setItem(
-"merchantUid",
-user.uid
-);
+localStorage.setItem("merchant",JSON.stringify(merchant));
+localStorage.setItem("merchantUid",user.uid);
 
 loadMerchant(merchant);
+
+},(error)=>{
+
+console.error(error);
 
 });
 
@@ -532,8 +532,6 @@ document.getElementById("avatar").innerHTML =
     
 // Copy Helper
 function copyText(text){
-
-    navigator.clipboard.writeText(text);
 
     navigator.clipboard.writeText(text);
 
@@ -572,15 +570,21 @@ document.getElementById("testGateway").onclick = async ()=>{
     const amount =
     Number(document.getElementById("testAmount").value);
 
-    if(phone===""){
+    if(!/^254(7|1)\d{8}$/.test(phone)){
 
-        alert("Enter phone number");
+alert("Enter a valid M-Pesa phone number.");
 
-        return;
+return;
 
     }
 
-    if(amount<=0){
+    if(amount<10){
+
+alert("Minimum amount is KES 10.");
+
+return;
+
+    }
 
         alert("Enter a valid amount");
 
@@ -591,9 +595,13 @@ document.getElementById("testGateway").onclick = async ()=>{
     const btn =
     document.getElementById("testGateway");
 
+    if(btn.disabled){
+return;
+    }
+
     btn.disabled = true;
 
-    btn.innerHTML = "Sending...";
+    btn.innerHTML="Sending STK Push...";
 
     try{
 
@@ -646,9 +654,13 @@ balanceType:"service"
 
     }
 
-    btn.disabled = false;
+    } finally {
 
-    btn.innerHTML = "Send Test STK Push";
+btn.disabled = false;
+
+btn.innerHTML = "Send Test STK Push";
+
+    }
 
 };
 </script>
