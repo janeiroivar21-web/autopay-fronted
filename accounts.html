@@ -426,19 +426,95 @@ color:#64748b;
 
     </div>
 
-    <!-- Accounts -->
+    <!-- Collection Method -->
 
-    <div class="section-title">
+<div class="section-title">
 
-        Your Payment Accounts
+    Collection Method
+
+</div>
+
+<div id="walletCard" class="account-card">
+
+    <div class="account-top">
+
+        <div class="account-type">
+
+            <i class="fas fa-wallet"></i>
+
+            AUTOPAY Wallet
+
+        </div>
+
+        <span class="default-badge" id="walletBadge">
+
+            DEFAULT
+
+        </span>
 
     </div>
 
-    <div id="accountsContainer">
+    <div class="account-info">
 
-        <!-- Firestore Accounts Here -->
+        <div class="info-row">
+
+            <span class="info-label">
+
+                Collection Method
+
+            </span>
+
+            <span id="walletStatus">
+
+                AUTOPAY Wallet
+
+            </span>
+
+        </div>
+
+        <div class="info-row">
+
+            <span class="info-label">
+
+                Description
+
+            </span>
+
+            <span>
+
+                Receive all payments into your AUTOPAY Wallet.
+
+            </span>
+
+        </div>
 
     </div>
+
+<div class="account-actions">
+
+<button
+class="action-btn default-btn"
+id="walletDefaultBtn">
+
+Make Default
+
+</button>
+
+</div>
+
+</div>
+
+<div class="section-title">
+
+    Additional Payment Accounts
+
+</div>
+
+<div id="accountsContainer">
+
+    <!-- Firestore Accounts Here -->
+
+</div>
 
 </div>
 
@@ -619,15 +695,47 @@ onAuthStateChanged(auth, async(user)=>{
 
     const userData = snap.data();
 
+    // Add collectionMethod automatically for old users
+if(!userData.collectionMethod){
+
+    await updateDoc(doc(db,"users",user.uid),{
+
+        collectionMethod:"wallet"
+
+    });
+
+    userData.collectionMethod="wallet";
+
+    }
+
     // Update cache
     localStorage.setItem("merchant",JSON.stringify(userData));
     localStorage.setItem("merchantUid",user.uid);
 
     merchantId = userData.merchantId;
 
-    document.getElementById("avatar").innerHTML =
-    (userData.fullName || "A").charAt(0).toUpperCase();
+document.getElementById("avatar").innerHTML =
+(userData.fullName || "A").charAt(0).toUpperCase();
 
+const method=userData.collectionMethod || "wallet";
+
+document.getElementById("walletStatus").textContent=
+
+method==="wallet"
+
+?"AUTOPAY Wallet"
+
+:method.charAt(0).toUpperCase()+method.slice(1);
+
+if(method==="wallet"){
+
+document.getElementById("walletBadge").innerHTML="DEFAULT";
+
+}else{
+
+document.getElementById("walletBadge").innerHTML="AVAILABLE";
+
+}
 });
 
 // Back
@@ -693,7 +801,11 @@ const accountNumber=document.getElementById("accountNumber").value.trim();
 
 if(type===""){
 
-alert("Select account type");
+showPopup(
+"Missing Information",
+"Please select an account type.",
+false
+);
 
 return;
 
@@ -701,7 +813,11 @@ return;
 
 if(businessName===""){
 
-alert("Enter business name");
+showPopup(
+"Missing Information",
+"Please enter your business name.",
+false
+);
 
 return;
 
@@ -709,7 +825,11 @@ return;
 
 if(accountNumber===""){
 
-alert("Enter account number");
+showPopup(
+"Missing Information",
+"Please enter the account number.",
+false
+);
 
 return;
 
@@ -940,26 +1060,49 @@ document.getElementById("defaultType").innerHTML=defaultType;
 }
 
 // Set Default
-window.setDefault=async(id)=>{
+window.setDefault = async(id)=>{
 
-const q=query(
+// Get selected payment account
+const accountSnap = await getDoc(doc(db,"paymentAccounts",id));
+
+if(!accountSnap.exists()) return;
+
+const account = accountSnap.data();
+
+// Remove default from all accounts
+const q = query(
 collection(db,"paymentAccounts"),
 where("merchantId","==",merchantId)
 );
 
-const snap=await getDocs(q);
+const snap = await getDocs(q);
 
 for(const d of snap.docs){
 
-await updateDoc(d.ref,{
-default:false
-});
+    await updateDoc(d.ref,{
+        default:false
+    });
 
 }
 
+// Make selected account default
 await updateDoc(doc(db,"paymentAccounts",id),{
-default:true
+    default:true
 });
+
+// Update merchant collection method
+const uid = localStorage.getItem("merchantUid");
+
+await updateDoc(doc(db,"users",uid),{
+
+    collectionMethod: account.type.toLowerCase()
+
+});
+
+// Update wallet card immediately
+document.getElementById("walletStatus").textContent = account.type;
+
+document.getElementById("walletBadge").innerHTML = "AVAILABLE";
 
 };
 
@@ -1001,6 +1144,46 @@ document.getElementById("confirmDelete").onclick=async()=>{
 await deleteDoc(doc(db,"paymentAccounts",deleteId));
 
 document.getElementById("deleteModal").style.display="none";
+
+};
+
+// Make AUTOPAY Wallet the default collection method
+document.getElementById("walletDefaultBtn").onclick = async()=>{
+
+const uid = localStorage.getItem("merchantUid");
+
+if(!uid) return;
+
+// Update merchant collection method
+await updateDoc(doc(db,"users",uid),{
+
+collectionMethod:"wallet"
+
+});
+
+// Remove default from all payment accounts
+const q=query(
+
+collection(db,"paymentAccounts"),
+
+where("merchantId","==",merchantId)
+
+);
+
+const snap=await getDocs(q);
+
+for(const d of snap.docs){
+
+await updateDoc(d.ref,{
+default:false
+});
+
+}
+
+// Update wallet card
+document.getElementById("walletStatus").textContent="AUTOPAY Wallet";
+
+document.getElementById("walletBadge").innerHTML="DEFAULT";
 
 };
 
