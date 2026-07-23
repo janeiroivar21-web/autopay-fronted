@@ -612,6 +612,8 @@ CURRENT USER
 
 let currentUser = null;
 
+let paymentTimer = null;
+
 // Theme
 const theme = localStorage.getItem("theme");
 
@@ -789,6 +791,10 @@ document.getElementById("topupBtn")
 
 async function topupWallet() {
 
+    if(document.getElementById("topupBtn").disabled){
+    return;
+    }
+
     const phone =
         document.getElementById("phone").value.trim();
 
@@ -937,17 +943,21 @@ document.getElementById("topupBtn").innerHTML =
 
         if (!checkoutRequestId) {
 
-            document.getElementById("loader").style.display =
-                "none";
+    document.getElementById("loader").style.display = "none";
 
-            showPopup(
-                "Error",
-                "Checkout Request ID not returned by the server."
-            );
+    document.getElementById("topupBtn").disabled = false;
 
-            return;
+    document.getElementById("topupBtn").innerHTML =
+    "Top Up Wallet";
 
-        }
+    showPopup(
+        "Error",
+        "Checkout Request ID not returned by the server."
+    );
+
+    return;
+
+    }
 
         document.getElementById("loaderText").innerHTML =
 "Waiting for M-Pesa confirmation...";
@@ -984,7 +994,7 @@ async function checkPaymentStatus(checkoutRequestId) {
 
     let attempts = 0;
 
-    const timer = setInterval(async () => {
+    paymentTimer = setInterval(async () => {
 
         attempts++;
 
@@ -1034,7 +1044,8 @@ try {
 
             if (!response.ok) {
 
-    clearInterval(timer);
+    clearInterval(paymentTimer);
+paymentTimer = null;
 
     document.getElementById("loader").style.display = "none";
 
