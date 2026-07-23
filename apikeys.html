@@ -669,12 +669,10 @@ onAuthStateChanged
 
 import {
 doc,
-getDoc,
 collection,
 addDoc,
 deleteDoc,
 updateDoc,
-getDocs,
 query,
 where,
 onSnapshot,
@@ -711,7 +709,9 @@ loadKeys();
 
 }
 
-const snap = await getDoc(doc(db,"users",user.uid));
+const userRef = doc(db,"users",user.uid);
+
+onSnapshot(userRef,(snap)=>{
 
 if(!snap.exists()){
 
@@ -722,14 +722,23 @@ return;
 
 const userData = snap.data();
 
-// Update cache
 localStorage.setItem("merchant",JSON.stringify(userData));
 localStorage.setItem("merchantUid",user.uid);
 
-merchantId = userData.merchantId;
+merchantId = userData.merchantId || "";
 
 document.getElementById("avatar").innerHTML =
-(userData.fullName || "A").charAt(0).toUpperCase();
+(userData.fullName || "A")
+.charAt(0)
+.toUpperCase();
+
+if(!keysLoaded && merchantId){
+
+loadKeys();
+
+}
+
+});
 
 });
 
