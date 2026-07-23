@@ -576,7 +576,7 @@ Continue
 
 </div>
 
-  <!-- Maintenance Popup -->
+<!-- Maintenance Popup -->
 
 <div class="popup" id="maintenancePopup">
 
@@ -584,15 +584,19 @@ Continue
 
 <i class="fas fa-screwdriver-wrench" style="color:#f59e0b;"></i>
 
-<h2>Withdrawal Under Maintenance</h2>
+<h2>Withdrawals Temporarily Unavailable</h2>
 
 <p>
 
-Our withdrawal service is currently undergoing scheduled maintenance.
+We are currently performing important system upgrades to improve the speed, reliability, and security of our withdrawal service.
 
 <br><br>
 
-We apologize for the inconvenience. Please try again later.
+During this maintenance period, all withdrawals have been temporarily suspended.
+
+<br><br>
+
+Your funds remain safe and secure. We appreciate your patience and will restore withdrawal services as soon as the upgrade is complete.
 
 </p>
 
@@ -605,6 +609,7 @@ OK
 </div>
 
 </div>
+  
 <script type="module">
 
 import { auth, db } from "./firebase.js";
@@ -635,6 +640,17 @@ let merchantId="";
 if(localStorage.getItem("theme")==="light"){
 document.body.classList.add("light");
 }
+
+document.getElementById("phone").disabled = true;
+document.getElementById("amount").disabled = true;
+
+const withdrawBtn = document.getElementById("withdrawBtn");
+
+withdrawBtn.innerHTML =
+'<i class="fas fa-screwdriver-wrench"></i> Withdrawals Unavailable';
+
+withdrawBtn.style.background = "#6b7280";
+withdrawBtn.style.cursor = "not-allowed";
 
 // Authentication
 onAuthStateChanged(auth,async(user)=>{
