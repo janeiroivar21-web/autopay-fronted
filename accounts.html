@@ -366,6 +366,79 @@ body.light .empty p{
 color:#64748b;
 }
 
+.popup{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,.45);
+display:none;
+justify-content:center;
+align-items:center;
+z-index:99999;
+}
+
+.popup-box{
+background:#fff;
+width:90%;
+max-width:340px;
+padding:25px;
+border-radius:18px;
+text-align:center;
+animation:pop .25s ease;
+color:#111827;
+}
+
+.popup-icon{
+width:70px;
+height:70px;
+margin:auto;
+margin-bottom:15px;
+border-radius:50%;
+background:#16a34a;
+color:#fff;
+font-size:34px;
+display:flex;
+align-items:center;
+justify-content:center;
+}
+
+.popup-box p{
+margin:15px 0;
+color:#64748b;
+}
+
+.popup-box button{
+width:100%;
+padding:14px;
+border:none;
+background:#2563eb;
+color:#fff;
+border-radius:12px;
+cursor:pointer;
+font-weight:bold;
+}
+
+@keyframes pop{
+
+from{
+
+transform:scale(.8);
+
+opacity:0;
+
+}
+
+to{
+
+transform:scale(1);
+
+opacity:1;
+
+}
+
+}
 </style>
 
 </head>
@@ -605,6 +678,24 @@ Make Default
 
 </div>
 
+
+<!-- Popup -->
+
+<div id="popup" class="popup">
+
+<div class="popup-box">
+
+<div id="popupIcon" class="popup-icon">✓</div>
+
+<h3 id="popupTitle"></h3>
+
+<p id="popupMessage"></p>
+
+<button type="button" onclick="closePopup()">OK</button>
+
+</div>
+
+</div>
 <!-- Delete Confirmation -->
 
 <div class="modal" id="deleteModal">
@@ -659,6 +750,28 @@ serverTimestamp
 let merchantId = "";
 let deleteId = "";
 let editId = null;
+
+function showPopup(title,message,success=true){
+
+document.getElementById("popupTitle").innerHTML=title;
+
+document.getElementById("popupMessage").innerHTML=message;
+
+const icon=document.getElementById("popupIcon");
+
+icon.innerHTML=success?"✓":"✕";
+
+icon.style.background=success?"#16a34a":"#ef4444";
+
+document.getElementById("popup").style.display="flex";
+
+}
+
+window.closePopup=function(){
+
+document.getElementById("popup").style.display="none";
+
+}
 
 // Authenticate User
 let accountsLoaded = false;
