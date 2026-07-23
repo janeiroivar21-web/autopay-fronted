@@ -311,6 +311,57 @@ Complete these steps to start accepting payments with AUTOPAY.
 
     </div>
 
+    <div class="card">
+
+<h2>Payment Collection Method</h2>
+
+<p>
+
+Every merchant configures a default collection method from their AUTOPAY dashboard.
+
+When an STK Push payment is successful, AUTOPAY automatically routes the payment to the configured destination.
+
+</p>
+
+<table>
+
+<tr>
+<th>Collection Method</th>
+<th>Payment Destination</th>
+</tr>
+
+<tr>
+<td>AUTOPAY Wallet</td>
+<td>Funds are credited to your AUTOPAY Wallet balance.</td>
+</tr>
+
+<tr>
+<td>M-PESA Till</td>
+<td>Funds are collected into your registered Till Number.</td>
+</tr>
+
+<tr>
+<td>M-PESA Paybill</td>
+<td>Funds are collected into your registered Paybill account.</td>
+</tr>
+
+<tr>
+<td>Bank Account</td>
+<td>Funds are collected into your verified Bank Account.</td>
+</tr>
+
+</table>
+
+<div class="note">
+
+Your integration never needs to specify where payments should be sent.
+
+AUTOPAY automatically uses your configured Collection Method.
+
+</div>
+
+    </div>
+
     <!-- Base URL -->
 
     <div class="card">
@@ -527,6 +578,67 @@ Copy
 
     </div>
 
+ <div class="card">
+
+<h2>How STK Push Works</h2>
+
+<p>
+
+When you initiate an STK Push request, AUTOPAY automatically identifies your merchant account from your API Key and checks your configured Collection Method.
+
+No additional destination parameters are required.
+
+</p>
+
+<table>
+
+<tr>
+<th>Step</th>
+<th>Description</th>
+</tr>
+
+<tr>
+<td>1</td>
+<td>Your server sends a POST request to <strong>/api/stk-push</strong>.</td>
+</tr>
+
+<tr>
+<td>2</td>
+<td>AUTOPAY validates your Secret API Key.</td>
+</tr>
+
+<tr>
+<td>3</td>
+<td>AUTOPAY identifies your merchant account.</td>
+</tr>
+
+<tr>
+<td>4</td>
+<td>AUTOPAY reads your configured Collection Method.</td>
+</tr>
+
+<tr>
+<td>5</td>
+<td>The customer receives the M-PESA STK Push prompt.</td>
+</tr>
+
+<tr>
+<td>6</td>
+<td>After successful payment, funds are automatically routed to your configured destination.</td>
+</tr>
+
+</table>
+
+<div class="note">
+
+You never need to specify whether funds should go to your Wallet, Till, Paybill or Bank Account in the API request.
+
+AUTOPAY automatically routes the payment based on your merchant settings.
+
+</div>
+
+ </div>
+
     <div class="card">
 
 <h2>Request Parameters</h2>
@@ -591,18 +703,34 @@ fetch("https://autopay.co.ke/api/stk-push",{
 method:"POST",
 
 headers:{
+
 Authorization:"Bearer YOUR_SECRET_KEY",
+
 "Content-Type":"application/json"
+
 },
 
 body:JSON.stringify({
 
-amount:100,
 phone:"254712345678",
+
+amount:100,
+
 accountReference:"ORDER1001",
-description:"Payment"
+
+description:"Order Payment",
+
+callbackUrl:"https://yourdomain.com/webhook"
 
 })
+
+})
+
+.then(res=>res.json())
+
+.then(data=>{
+
+console.log(data);
 
 });
 </pre>
@@ -610,6 +738,57 @@ description:"Payment"
 <button onclick="copyCode('javascriptExample')">
 Copy
 </button>
+
+</div>
+
+    </div>
+
+    <div class="card">
+
+<h2>Automatic Payment Routing</h2>
+
+<p>
+
+Your application only initiates the payment request.
+
+After the customer completes the STK Push, AUTOPAY automatically routes the funds based on your configured Collection Method.
+
+</p>
+
+<table>
+
+<tr>
+<th>Configured Collection Method</th>
+<th>Payment Destination</th>
+</tr>
+
+<tr>
+<td>AUTOPAY Wallet</td>
+<td>Merchant Wallet Balance</td>
+</tr>
+
+<tr>
+<td>M-PESA Till</td>
+<td>Registered Till Number</td>
+</tr>
+
+<tr>
+<td>M-PESA Paybill</td>
+<td>Registered Paybill Number</td>
+</tr>
+
+<tr>
+<td>Bank Account</td>
+<td>Verified Bank Account</td>
+</tr>
+
+</table>
+
+<div class="note">
+
+The API request does not require any destination field.
+
+AUTOPAY automatically determines where to collect the payment using your merchant account settings.
 
 </div>
 
