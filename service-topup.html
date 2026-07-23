@@ -794,7 +794,10 @@ throw new Error(result.message);
 
 }
 
-checkoutRequestId = result.checkoutRequestId;
+checkoutRequestId =
+    result.checkout_request_id ||
+    result.data?.checkout_request_id ||
+    result.data?.CheckoutRequestID;
 
 checkStatus();
 
@@ -832,9 +835,13 @@ headers:{
 "Authorization":`Bearer ${token}`
 },
 
-body:JSON.stringify({
+body: JSON.stringify({
 
-checkoutRequestId
+    uid: userId,
+
+    checkout_request_id: checkoutRequestId,
+
+    balanceType: "service"
 
 })
 
@@ -844,7 +851,10 @@ checkoutRequestId
 
 const result = await response.json();
 
-if(result.status === "SUCCESS"){
+if (
+    result.status === "completed" ||
+    result.data?.status === "completed"
+) {
 
 clearInterval(timer);
 
@@ -870,7 +880,12 @@ document.getElementById("successPopup").style.display="flex";
 
 }
     
-if(result.status === "FAILED"){
+if (
+    result.status === "failed" ||
+    result.status === "cancelled" ||
+    result.data?.status === "failed" ||
+    result.data?.status === "cancelled"
+) {
 
 clearInterval(timer);
 
