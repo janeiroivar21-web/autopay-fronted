@@ -655,9 +655,25 @@ overlay.classList.add("show");
 
 }
 
-document.getElementById("popupButton").onclick=function(){
+const popupButton = document.getElementById("popupButton");
+
+if(popupButton){
+
+popupButton.onclick = function(){
 
 document.getElementById("popupOverlay").classList.remove("show");
+
+};
+
+}
+
+document.getElementById("popupOverlay").onclick = function(e){
+
+if(e.target === this){
+
+this.classList.remove("show");
+
+}
 
 };
     
@@ -673,6 +689,12 @@ const btn=document.activeElement;
 const old=btn.innerHTML;
 
 btn.innerHTML=toast;
+
+showPopup(
+"Copied",
+"Endpoint copied to clipboard successfully.",
+"success"
+);
 
 setTimeout(()=>{
 
