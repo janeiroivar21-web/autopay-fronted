@@ -844,11 +844,16 @@ if(method==="wallet"){
 
 document.getElementById("walletBadge").innerHTML="DEFAULT";
 
+document.getElementById("walletDefaultBtn").style.display="none";
+
 }else{
 
 document.getElementById("walletBadge").innerHTML="AVAILABLE";
 
+document.getElementById("walletDefaultBtn").style.display="block";
+
 }
+    
 });
 
 // Back
@@ -1036,8 +1041,14 @@ let active=0;
 
 let inactive=0;
 
-let defaultType="None";
+const merchant = JSON.parse(localStorage.getItem("merchant")) || {};
 
+const currentMethod = (merchant.collectionMethod || "wallet").toLowerCase();
+
+let defaultType =
+currentMethod==="wallet"
+? "AUTOPAY Wallet"
+: currentMethod.charAt(0).toUpperCase()+currentMethod.slice(1);
 if(snapshot.empty){
 
 container.innerHTML=`
@@ -1063,8 +1074,6 @@ total++;
 if(data.status==="Active") active++;
 else inactive++;
 
-if(data.default) defaultType=data.type;
-
 let icon="fa-store";
 
 if(data.type==="Bank") icon="fa-building-columns";
@@ -1085,7 +1094,11 @@ ${data.type}
 
 </div>
 
-${data.default?'<span class="default-badge">DEFAULT</span>':''}
+${
+data.type.toLowerCase()===currentMethod
+?'<span class="default-badge">DEFAULT</span>'
+:''
+}
 
 </div>
 
@@ -1220,6 +1233,9 @@ document.getElementById("walletStatus").textContent = account.type;
 
 document.getElementById("walletBadge").innerHTML = "AVAILABLE";
 
+document.getElementById("walletDefaultBtn").style.display="block";
+
+document.getElementById("defaultType").textContent=account.type;
 showPopup(
 "Collection Method Updated",
 account.type + " is now your default collection method."
@@ -1287,29 +1303,14 @@ collectionMethod:"wallet"
 
 });
 
-// Remove default from all payment accounts
-const q=query(
-
-collection(db,"paymentAccounts"),
-
-where("merchantId","==",merchantId)
-
-);
-
-const snap=await getDocs(q);
-
-for(const d of snap.docs){
-
-await updateDoc(d.ref,{
-default:false
-});
-
-}
-
 // Update wallet card
 document.getElementById("walletStatus").textContent="AUTOPAY Wallet";
 
 document.getElementById("walletBadge").innerHTML="DEFAULT";
+
+document.getElementById("walletDefaultBtn").style.display="none";
+
+document.getElementById("defaultType").textContent="AUTOPAY Wallet";
 
 showPopup(
 "Collection Method Updated",
