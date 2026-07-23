@@ -641,17 +641,6 @@ if(localStorage.getItem("theme")==="light"){
 document.body.classList.add("light");
 }
 
-document.getElementById("phone").disabled = true;
-document.getElementById("amount").disabled = true;
-
-const withdrawBtn = document.getElementById("withdrawBtn");
-
-withdrawBtn.innerHTML =
-'<i class="fas fa-screwdriver-wrench"></i> Withdrawals Unavailable';
-
-withdrawBtn.style.background = "#6b7280";
-withdrawBtn.style.cursor = "not-allowed";
-
 // Authentication
 onAuthStateChanged(auth,async(user)=>{
 
