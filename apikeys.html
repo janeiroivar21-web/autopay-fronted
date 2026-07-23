@@ -811,11 +811,6 @@ return;
 
 const userData = snap.data();
 
-const created = data.createdAt
-? new Date(data.createdAt.seconds*1000)
-    .toLocaleDateString()
-: "Just now";
-
 localStorage.setItem("merchant",JSON.stringify(userData));
 localStorage.setItem("merchantUid",user.uid);
 
@@ -972,6 +967,11 @@ Generate your first API key to integrate AUTOPAY into your application.
 snapshot.forEach(docSnap=>{
 
 const data=docSnap.data();
+
+const created = data.createdAt
+? new Date(data.createdAt.seconds * 1000)
+.toLocaleDateString()
+: "Just now";
 
 total++;
 
