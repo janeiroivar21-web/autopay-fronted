@@ -849,15 +849,34 @@ Copy
 <div class="code-box">
 
 <pre id="phpExample">
-$curl=curl_init();
+<?php
 
-curl_setopt_array($curl,[
+$payload = [
+    "phone" => "254712345678",
+    "amount" => 100,
+    "accountReference" => "ORDER1001",
+    "description" => "Order Payment",
+    "callbackUrl" => "https://yourdomain.com/webhook"
+];
 
-CURLOPT_URL=>"https://autopay.co.ke/api/stk-push",
+$curl = curl_init("https://autopay.co.ke/api/stk-push");
 
-CURLOPT_POST=>true
-
+curl_setopt_array($curl, [
+    CURLOPT_POST => true,
+    CURLOPT_RETURNTRANSFER => true,
+    CURLOPT_HTTPHEADER => [
+        "Authorization: Bearer YOUR_SECRET_KEY",
+        "Content-Type: application/json"
+    ],
+    CURLOPT_POSTFIELDS => json_encode($payload)
 ]);
+
+$response = curl_exec($curl);
+
+curl_close($curl);
+
+echo $response;
+?>
 </pre>
 
 <button onclick="copyCode('phpExample')">
@@ -922,13 +941,35 @@ Copy
 <div class="code-box">
 
 <pre id="nodeExample">
-const axios=require("axios");
+const axios = require("axios");
 
-await axios.post(
+async function initiatePayment(){
 
-"https://autopay.co.ke/api/stk-push"
+const response = await axios.post(
+
+"https://autopay.co.ke/api/stk-push",
+
+{
+phone:"254712345678",
+amount:100,
+accountReference:"ORDER1001",
+description:"Order Payment",
+callbackUrl:"https://yourdomain.com/webhook"
+},
+
+{
+headers:{
+Authorization:"Bearer YOUR_SECRET_KEY"
+}
+}
 
 );
+
+console.log(response.data);
+
+}
+
+initiatePayment();
 </pre>
 
 <button onclick="copyCode('nodeExample')">
@@ -1072,45 +1113,43 @@ Copy
 <pre>
 
 Merchant Website
-
         │
-
-POST /stk-push
-
-        │
-
         ▼
-
+POST /api/stk-push
+        │
+        ▼
 AUTOPAY Gateway
-
         │
-
         ▼
-
-Customer receives STK Push
-
+Validate Secret API Key
         │
-
         ▼
-
-Customer enters PIN
-
+Identify Merchant Account
         │
-
         ▼
-
-Payment Processed
-
+Read Collection Method
         │
-
         ▼
-
-Webhook Sent
-
+Send M-PESA STK Push
         │
-
         ▼
-
+Customer Enters PIN
+        │
+        ▼
+Payment Successful
+        │
+        ▼
+Automatically Route Funds
+        │
+        ├──► AUTOPAY Wallet
+        ├──► M-PESA Till
+        ├──► M-PESA Paybill
+        └──► Bank Account
+        │
+        ▼
+Webhook Notification
+        │
+        ▼
 Merchant Updates Order
 
 </pre>
