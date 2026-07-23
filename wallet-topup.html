@@ -883,9 +883,33 @@ document.getElementById("topupBtn").innerHTML =
                 }
             );
 
-        const result =
-            await response.json();
+        const text = await response.text();
 
+console.log("STK Response:", text);
+
+let result;
+
+try {
+
+    result = JSON.parse(text);
+
+} catch (e) {
+
+    document.getElementById("loader").style.display = "none";
+
+    document.getElementById("topupBtn").disabled = false;
+
+    document.getElementById("topupBtn").innerHTML =
+    "Top Up Wallet";
+
+    showPopup(
+        "Server Error",
+        text
+    );
+
+    return;
+
+    }
         if (!response.ok || !result.success) {
 
             document.getElementById("loader").style.display =
