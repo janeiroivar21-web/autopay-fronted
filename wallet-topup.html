@@ -993,14 +993,22 @@ async function checkPaymentStatus(checkoutRequestId) {
                     }
                 );
 
-            const result =
-                await response.json();
+            let result;
+
+try {
+    result = await response.json();
+} catch (e) {
+    throw new Error("Server returned an invalid response.");
+    }
 
             if (!response.ok) {
 
     clearInterval(timer);
 
     document.getElementById("loader").style.display = "none";
+
+    document.getElementById("topupBtn").disabled = false;
+    document.getElementById("topupBtn").innerHTML = "Top Up Wallet";
 
     showPopup(
         "Error",
