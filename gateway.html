@@ -451,7 +451,7 @@ color:#111827;
 
 </div>
 
-<script type="module" src="gateway.js">
+<script type="module">
 import { auth, db } from "./firebase.js";
 
 import {
@@ -483,48 +483,73 @@ onAuthStateChanged(auth, async(user)=>{
 
     try{
 
-        const snap = await getDoc(doc(db,"users",user.uid));
+        const userRef = doc(db,"users",user.uid);
 
-        if(!snap.exists()){
-            location.href="login.html";
-            return;
-        }
+onSnapshot(userRef,(snap)=>{
 
-        const merchant = snap.data();
+if(!snap.exists()){
 
-        localStorage.setItem("merchant",JSON.stringify(merchant));
-        localStorage.setItem("merchantUid",user.uid);
+location.href="login.html";
+return;
 
-        document.getElementById("merchantId").innerText =
-        merchant.merchantId || "--";
+}
 
-        document.getElementById("businessName").innerText =
-        merchant.fullName || "--";
+const merchant = snap.data();
 
-        document.getElementById("accountStatus").innerText =
-        merchant.accountStatus || "Active";
+localStorage.setItem(
+"merchant",
+JSON.stringify(merchant)
+);
 
-        document.getElementById("avatar").innerText =
-        (merchant.fullName || "A")
-        .charAt(0)
-        .toUpperCase();
+localStorage.setItem(
+"merchantUid",
+user.uid
+);
 
-    }catch(error){
-
-        console.error(error);
-
-        alert("Unable to load merchant information.");
-
-    }
+loadMerchant(merchant);
 
 });
 
+});
+
+function loadMerchant(merchant){
+
+document.getElementById("merchantId").innerHTML =
+merchant.merchantId || "--";
+
+document.getElementById("businessName").innerHTML =
+merchant.fullName || "--";
+
+document.getElementById("accountStatus").innerHTML =
+merchant.accountStatus || "Active";
+
+document.getElementById("avatar").innerHTML =
+(merchant.fullName || "A")
+.charAt(0)
+.toUpperCase();
+
+}
+    
 // Copy Helper
 function copyText(text){
 
     navigator.clipboard.writeText(text);
 
-    alert("Copied successfully.");
+    navigator.clipboard.writeText(text);
+
+const toast="Copied ✓";
+
+const btn=document.activeElement;
+
+const old=btn.innerHTML;
+
+btn.innerHTML=toast;
+
+setTimeout(()=>{
+
+btn.innerHTML=old;
+
+},1500);
 
 }
 
@@ -572,17 +597,28 @@ document.getElementById("testGateway").onclick = async ()=>{
 
     try{
 
-        const response = await fetch(
+        const token =
+await auth.currentUser.getIdToken();
+
+const response = await fetch(
             API_BASE + "/api/stk-push",
             {
                 method:"POST",
                 headers:{
-                    "Content-Type":"application/json"
-                },
+"Content-Type":"application/json",
+"Authorization":`Bearer ${token}`
+},
                 body:JSON.stringify({
-                    phone,
-                    amount
-                })
+
+uid:auth.currentUser.uid,
+
+phone,
+
+amount,
+
+balanceType:"service"
+
+})
             }
         );
 
