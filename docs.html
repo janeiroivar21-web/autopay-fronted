@@ -428,6 +428,37 @@ Copy
 
     <div class="card">
 
+<h2>Your API Keys</h2>
+
+<p>
+Use your Secret Key to authenticate every API request.
+Never expose your Secret Key in frontend applications.
+</p>
+
+<div class="code-box">
+
+<pre id="secretKey">
+Loading API Key...
+</pre>
+
+<button onclick="copyCode('secretKey')">
+Copy
+</button>
+
+</div>
+
+<div class="note">
+
+✔ Keep this key private.<br>
+✔ Never expose it in JavaScript.<br>
+✔ Regenerate it immediately if compromised.
+
+</div>
+
+    </div>
+
+    <div class="card">
+
 <h2>Authentication Flow</h2>
 
 <ol style="padding-left:20px;line-height:2;">
@@ -498,6 +529,58 @@ Copy
 
     <div class="card">
 
+<h2>Request Parameters</h2>
+
+<table>
+
+<tr>
+<th>Field</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+
+<tr>
+<td>phone</td>
+<td>String</td>
+<td>Yes</td>
+<td>Customer phone number (2547XXXXXXXX)</td>
+</tr>
+
+<tr>
+<td>amount</td>
+<td>Number</td>
+<td>Yes</td>
+<td>Payment amount in KES</td>
+</tr>
+
+<tr>
+<td>accountReference</td>
+<td>String</td>
+<td>Yes</td>
+<td>Your order reference</td>
+</tr>
+
+<tr>
+<td>description</td>
+<td>String</td>
+<td>No</td>
+<td>Payment description</td>
+</tr>
+
+<tr>
+<td>callbackUrl</td>
+<td>String</td>
+<td>Yes</td>
+<td>Your webhook URL</td>
+</tr>
+
+</table>
+
+    </div>
+
+    <div class="card">
+
 <h2>JavaScript Example</h2>
 
 <div class="code-box">
@@ -558,6 +641,30 @@ Copy
 
     <div class="card">
 
+<h2>Check Status Response</h2>
+
+<div class="code-box">
+
+<pre id="statusResponse">
+{
+  "success": true,
+  "status": "completed",
+  "amount": 100,
+  "phone": "254712345678",
+  "reference": "ORDER1001"
+}
+</pre>
+
+<button onclick="copyCode('statusResponse')">
+Copy
+</button>
+
+</div>
+
+    </div>
+
+    <div class="card">
+
 <h2>PHP Example</h2>
 
 <div class="code-box">
@@ -579,6 +686,26 @@ Copy
 </button>
 
 </div>
+
+    </div>
+
+    <div class="note">
+
+AUTOPAY sends a POST request to your webhook after every payment.
+
+Your endpoint should:
+
+<br><br>
+
+✔ Accept JSON
+
+<br>
+
+✔ Return HTTP 200
+
+<br>
+
+✔ Verify payment before updating your database
 
     </div>
 
@@ -693,13 +820,35 @@ Copy
 
 <pre id="successResponse">
 {
-"success":true,
-"message":"STK Push sent successfully",
-"checkoutRequestId":"ws_CO_123456789"
+  "success": true,
+  "message": "STK Push initiated successfully",
+  "checkoutRequestId": "ws_CO_123456789",
+  "merchantRequestId": "29115-34620561-1"
 }
 </pre>
 
 <button onclick="copyCode('successResponse')">
+Copy
+</button>
+
+</div>
+
+    </div>
+
+    <div class="card">
+
+<h2>Failed Response</h2>
+
+<div class="code-box">
+
+<pre id="failedResponse">
+{
+  "success": false,
+  "message": "Invalid phone number."
+}
+</pre>
+
+<button onclick="copyCode('failedResponse')">
 Copy
 </button>
 
@@ -739,17 +888,104 @@ Copy
 
 <h2>Payment Flow</h2>
 
-<p>1. Merchant sends an STK Push request.</p>
+<div class="code-box">
 
-<p>2. Customer receives the M-Pesa payment prompt.</p>
+<pre>
 
-<p>3. Customer enters their M-Pesa PIN.</p>
+Merchant Website
 
-<p>4. AUTOPAY processes the payment.</p>
+        │
 
-<p>5. Your webhook receives the payment notification.</p>
+POST /stk-push
 
-<p>6. Verify the payment using the Check Status endpoint if needed.</p>
+        │
+
+        ▼
+
+AUTOPAY Gateway
+
+        │
+
+        ▼
+
+Customer receives STK Push
+
+        │
+
+        ▼
+
+Customer enters PIN
+
+        │
+
+        ▼
+
+Payment Processed
+
+        │
+
+        ▼
+
+Webhook Sent
+
+        │
+
+        ▼
+
+Merchant Updates Order
+
+</pre>
+
+</div>
+    </div>
+
+    <div class="card">
+
+<h2>Best Practices</h2>
+
+<ul style="padding-left:20px;line-height:2;">
+
+<li>Validate phone numbers before sending requests.</li>
+
+<li>Store checkoutRequestId in your database.</li>
+
+<li>Always verify payment status.</li>
+
+<li>Never expose Secret API Keys.</li>
+
+<li>Handle duplicate webhook callbacks safely.</li>
+
+</ul>
+
+    </div>
+
+    <div class="card">
+
+<h2>Rate Limits</h2>
+
+<table>
+
+<tr>
+<th>Limit</th>
+<th>Value</th>
+</tr>
+
+<tr>
+<td>Requests</td>
+<td>100 per minute</td>
+</tr>
+
+<tr>
+<td>Minimum Amount</td>
+<td>KES 10</td>
+</tr>
+
+<tr>
+<td>Maximum Amount</td>
+<td>KES 300,000</td>
+</tr>
+
+</table>
 
     </div>
 
@@ -778,11 +1014,13 @@ Copy
 
 <hr style="margin-bottom:20px;border-color:#253149;">
 
-<p>
+<p><strong>AUTOPAY API</strong></p>
 
-AUTOPAY Developer API v1.0
+<p>Version: v1</p>
 
-</p>
+<p>Environment: LIVE</p>
+
+<p style="color:#22c55e;">Status: Operational</p>
 
 <p>
 
@@ -880,6 +1118,9 @@ const auth=document.getElementById("authCode");
 
 auth.textContent=
 `Authorization: Bearer ${api.secretKey}`;
+
+document.getElementById("secretKey").textContent =
+api.secretKey;
 
 }catch(err){
 
