@@ -563,7 +563,7 @@ Top Up Wallet
 
 <div class="spinner"></div>
 
-<p>
+<p id="loaderText">
 Sending STK Push...
 </p>
 
@@ -949,25 +949,29 @@ document.getElementById("topupBtn").innerHTML =
 
         }
 
-        checkPaymentStatus(checkoutRequestId);
+        document.getElementById("loaderText").innerHTML =
+"Waiting for M-Pesa confirmation...";
 
-    catch (err) {
+checkPaymentStatus(checkoutRequestId);
 
-    console.error(err);
+    } catch (err) {
 
-    clearInterval(timer);
+        console.error(err);
 
-    document.getElementById("loader").style.display = "none";
+        document.getElementById("loader").style.display = "none";
 
-    document.getElementById("topupBtn").disabled = false;
-    document.getElementById("topupBtn").innerHTML = "Top Up Wallet";
+        document.getElementById("topupBtn").disabled = false;
 
-    showPopup(
-        "Connection Error",
-        "Unable to verify payment status. Please try again."
-    );
+        document.getElementById("topupBtn").innerHTML =
+        "Top Up Wallet";
+
+        showPopup(
+            "Connection Error",
+            "Unable to connect to the server."
+        );
 
     }
+
 }
 
 /*
@@ -1113,9 +1117,23 @@ showPopup(
 
         } catch (err) {
 
-            console.error(err);
+    console.error(err);
 
-        }
+    clearInterval(timer);
+
+    document.getElementById("loader").style.display = "none";
+
+    document.getElementById("topupBtn").disabled = false;
+
+    document.getElementById("topupBtn").innerHTML =
+    "Top Up Wallet";
+
+    showPopup(
+        "Connection Error",
+        "Unable to verify payment status. Please try again."
+    );
+
+    }
 
     }, 3000);
 
