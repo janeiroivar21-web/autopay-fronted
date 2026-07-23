@@ -951,20 +951,23 @@ document.getElementById("topupBtn").innerHTML =
 
         checkPaymentStatus(checkoutRequestId);
 
-    } catch (err) {
+    catch (err) {
 
-        console.error(err);
+    console.error(err);
 
-        document.getElementById("loader").style.display =
-            "none";
+    clearInterval(timer);
 
-        showPopup(
-            "Network Error",
-            "Unable to connect to the server."
-        );
+    document.getElementById("loader").style.display = "none";
+
+    document.getElementById("topupBtn").disabled = false;
+    document.getElementById("topupBtn").innerHTML = "Top Up Wallet";
+
+    showPopup(
+        "Connection Error",
+        "Unable to verify payment status. Please try again."
+    );
 
     }
-
 }
 
 /*
@@ -1059,6 +1062,9 @@ document.getElementById("amount").value = "";
 
 document.getElementById("receiveAmount").textContent = "0";
 
+document.getElementById("topupBtn").disabled = false;
+document.getElementById("topupBtn").innerHTML = "Top Up Wallet";
+
 showPopup(
     "Payment Successful",
     "Your wallet has been credited successfully."
@@ -1078,10 +1084,13 @@ showPopup(
                 document.getElementById("loader").style.display =
                     "none";
 
-                showPopup(
-                    "Payment Failed",
-                    "The transaction was not completed."
-                );
+                document.getElementById("topupBtn").disabled = false;
+document.getElementById("topupBtn").innerHTML = "Top Up Wallet";
+
+showPopup(
+    "Payment Failed",
+    "The transaction was not completed."
+);
 
             }
 
@@ -1092,10 +1101,13 @@ showPopup(
                 document.getElementById("loader").style.display =
                     "none";
 
-                showPopup(
-                    "Timed Out",
-                    "The payment is taking longer than expected. Please check your transaction history later."
-                );
+                document.getElementById("topupBtn").disabled = false;
+document.getElementById("topupBtn").innerHTML = "Top Up Wallet";
+
+showPopup(
+    "Timed Out",
+    "The payment is taking longer than expected. Please check your transaction history later."
+);
 
             }
 
