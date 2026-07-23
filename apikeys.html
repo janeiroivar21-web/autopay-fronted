@@ -883,7 +883,8 @@ if(name===""){
 
 showPopup(
 "Missing Name",
-"Please enter a name for this API key."
+"Please enter an API key name.",
+"warning"
 );
 
 return;
@@ -1121,7 +1122,8 @@ btn.innerHTML = old;
 
 showPopup(
 "Copied",
-"API key copied to clipboard."
+"API key copied successfully.",
+"success"
 );
 
 };
@@ -1187,11 +1189,68 @@ secretKey
 
 showPopup(
 "Success",
-"API key regenerated successfully."
+"API key regenerated successfully.",
+"success"
 );
 
 };
 
+function showPopup(title,message,type="info"){
+
+const overlay=document.getElementById("popupOverlay");
+const icon=document.getElementById("popupIcon");
+
+document.getElementById("popupTitle").innerHTML=title;
+document.getElementById("popupMessage").innerHTML=message;
+
+if(type==="success"){
+
+icon.style.background="#22c55e";
+icon.innerHTML='<i class="fas fa-check"></i>';
+
+}else if(type==="error"){
+
+icon.style.background="#ef4444";
+icon.innerHTML='<i class="fas fa-times"></i>';
+
+}else if(type==="warning"){
+
+icon.style.background="#f59e0b";
+icon.innerHTML='<i class="fas fa-triangle-exclamation"></i>';
+
+}else{
+
+icon.style.background="#2563eb";
+icon.innerHTML='<i class="fas fa-circle-info"></i>';
+
+}
+
+overlay.classList.add("show");
+
+}
+
+const popupButton=document.getElementById("popupButton");
+
+if(popupButton){
+
+popupButton.onclick=function(){
+
+document.getElementById("popupOverlay").classList.remove("show");
+
+};
+
+}
+
+document.getElementById("popupOverlay").onclick=function(e){
+
+if(e.target===this){
+
+this.classList.remove("show");
+
+}
+
+};
+    
 // Theme
 if(localStorage.getItem("theme")==="light"){
 
