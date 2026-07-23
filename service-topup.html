@@ -786,7 +786,24 @@ uid:userId
 
 );
 
-const result = await response.json();
+const text = await response.text();
+
+console.log("STK Response:", text);
+
+let result;
+
+try {
+    result = JSON.parse(text);
+} catch (e) {
+
+    document.getElementById("loading").style.display = "none";
+
+    document.getElementById("failedMessage").innerHTML = text;
+
+    document.getElementById("failedPopup").style.display = "flex";
+
+    return;
+    }
 
 if(!result.success){
 
@@ -849,7 +866,18 @@ body: JSON.stringify({
 
 );
 
-const result = await response.json();
+const text = await response.text();
+
+console.log("Status Response:", text);
+
+let result;
+
+try {
+    result = JSON.parse(text);
+} catch (e) {
+    console.log(text);
+    return;
+    }
 
 if (
     result.status === "completed" ||
