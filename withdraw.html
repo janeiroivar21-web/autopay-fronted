@@ -474,7 +474,7 @@ KES 0
 
 <i class="fas fa-paper-plane"></i>
 
-Request Withdrawal
+Withdraw
 
 </button>
 
@@ -569,6 +569,36 @@ Your withdrawal request has been received and is awaiting processing.
 <button id="closePopup">
 
 Continue
+
+</button>
+
+</div>
+
+</div>
+
+  <!-- Maintenance Popup -->
+
+<div class="popup" id="maintenancePopup">
+
+<div class="popup-card">
+
+<i class="fas fa-screwdriver-wrench" style="color:#f59e0b;"></i>
+
+<h2>Withdrawal Under Maintenance</h2>
+
+<p>
+
+Our withdrawal service is currently undergoing scheduled maintenance.
+
+<br><br>
+
+We apologize for the inconvenience. Please try again later.
+
+</p>
+
+<button onclick="closeMaintenancePopup()">
+
+OK
 
 </button>
 
@@ -687,6 +717,9 @@ document.getElementById("receive").innerHTML=
 let withdrawData={};
 
 document.getElementById("withdrawBtn").onclick=()=>{
+
+showMaintenancePopup();
+return;
 
 const phone=document.getElementById("phone").value.trim();
 const amount=Number(document.getElementById("amount").value);
@@ -873,6 +906,18 @@ alert(error.message);
 }
 
 };
+
+function showMaintenancePopup(){
+
+document.getElementById("maintenancePopup").style.display="flex";
+
+}
+
+window.closeMaintenancePopup=function(){
+
+document.getElementById("maintenancePopup").style.display="none";
+
+}
 // Close Popup
 document.getElementById("closePopup").onclick=()=>{
 
