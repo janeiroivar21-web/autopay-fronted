@@ -996,7 +996,25 @@ async function checkPaymentStatus(checkoutRequestId) {
             const result =
                 await response.json();
 
-            if (result.data.status === "SUCCESS") {
+            if (!response.ok) {
+
+    clearInterval(timer);
+
+    document.getElementById("loader").style.display = "none";
+
+    showPopup(
+        "Error",
+        result.message || "Unable to check payment status."
+    );
+
+    return;
+
+            }
+
+            if (
+    result.status === "completed" ||
+    result.data?.status === "completed"
+) {
 
                 clearInterval(timer);
 
@@ -1017,8 +1035,10 @@ showPopup(
             }
 
             if (
-    result.data.status === "FAILED" ||
-    result.data.status === "CANCELLED"
+    result.status === "failed" ||
+    result.status === "cancelled" ||
+    result.data?.status === "failed" ||
+    result.data?.status === "cancelled"
 ) {
 
                 clearInterval(timer);
