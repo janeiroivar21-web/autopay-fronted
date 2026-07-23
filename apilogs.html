@@ -1,0 +1,1169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>API Logs - AUTOPAY</title>
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#0c1424;
+color:#fff;
+transition:.3s;
+}
+
+.container{
+max-width:430px;
+margin:auto;
+padding:18px;
+padding-bottom:100px;
+}
+
+.header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:20px;
+}
+
+.page-title{
+display:flex;
+align-items:center;
+gap:10px;
+font-size:22px;
+font-weight:bold;
+}
+
+.page-title i{
+color:#2563eb;
+}
+
+.icon-btn,
+.profile-avatar{
+width:48px;
+height:48px;
+border:none;
+border-radius:14px;
+background:#182235;
+color:#fff;
+display:flex;
+align-items:center;
+justify-content:center;
+cursor:pointer;
+font-size:18px;
+border:1px solid #293548;
+}
+
+.profile-avatar{
+font-weight:bold;
+font-size:18px;
+}
+
+.merchant-card{
+background:#182235;
+border:1px solid #293548;
+border-radius:18px;
+padding:18px;
+margin-bottom:20px;
+}
+
+.merchant-left{
+display:flex;
+align-items:center;
+gap:15px;
+}
+
+.merchant-logo{
+width:60px;
+height:60px;
+border-radius:50%;
+background:#2563eb;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:24px;
+color:#fff;
+}
+
+.merchant-left h2{
+font-size:18px;
+margin-bottom:5px;
+}
+
+.merchant-left p{
+color:#9ca3af;
+font-size:13px;
+}
+
+.stats-grid{
+display:grid;
+grid-template-columns:repeat(2,1fr);
+gap:15px;
+margin-bottom:20px;
+}
+
+.stat-card{
+background:#182235;
+border:1px solid #293548;
+border-radius:18px;
+padding:18px;
+text-align:center;
+transition:.3s;
+}
+
+.stat-card:hover{
+transform:translateY(-2px);
+}
+
+.stat-card i{
+font-size:24px;
+color:#2563eb;
+margin-bottom:12px;
+}
+
+.stat-card h3{
+font-size:24px;
+margin-bottom:8px;
+}
+
+.stat-card p{
+font-size:13px;
+color:#9ca3af;
+}
+
+.search-card{
+margin-bottom:15px;
+}
+
+.search-box{
+display:flex;
+align-items:center;
+gap:12px;
+background:#182235;
+border:1px solid #293548;
+border-radius:15px;
+padding:14px;
+}
+
+.search-box i{
+color:#2563eb;
+}
+
+.search-box input{
+width:100%;
+background:none;
+border:none;
+outline:none;
+color:#fff;
+font-size:15px;
+}
+
+.search-box input::placeholder{
+color:#7b8794;
+}
+
+.filter-card{
+display:flex;
+gap:10px;
+margin-bottom:20px;
+}
+
+.filter-card select{
+flex:1;
+padding:12px;
+background:#182235;
+color:#fff;
+border:1px solid #293548;
+border-radius:12px;
+outline:none;
+}
+
+#loadingState{
+text-align:center;
+padding:60px 20px;
+}
+
+.loader{
+width:45px;
+height:45px;
+border:4px solid #293548;
+border-top:4px solid #2563eb;
+border-radius:50%;
+margin:auto;
+animation:spin 1s linear infinite;
+margin-bottom:15px;
+}
+
+@keyframes spin{
+
+100%{
+transform:rotate(360deg);
+}
+
+}
+
+#emptyState{
+text-align:center;
+padding:70px 20px;
+}
+
+#emptyState i{
+font-size:65px;
+color:#2563eb;
+margin-bottom:20px;
+}
+
+#emptyState h2{
+margin-bottom:10px;
+}
+
+#emptyState p{
+color:#9ca3af;
+}
+
+#logsContainer{
+display:flex;
+flex-direction:column;
+gap:15px;
+}
+
+.log-card{
+background:#182235;
+border:1px solid #293548;
+border-radius:18px;
+padding:18px;
+}
+
+.log-header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:15px;
+}
+
+.endpoint{
+font-weight:bold;
+color:#60a5fa;
+word-break:break-all;
+}
+
+.status{
+padding:5px 10px;
+border-radius:30px;
+font-size:12px;
+font-weight:bold;
+}
+
+.success{
+background:#14532d;
+color:#4ade80;
+}
+
+.failed{
+background:#7f1d1d;
+color:#f87171;
+}
+
+.pending{
+background:#78350f;
+color:#facc15;
+}
+
+.log-info{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:10px;
+font-size:14px;
+margin-top:10px;
+}
+
+.log-info div{
+background:#111827;
+padding:10px;
+border-radius:10px;
+}
+
+.actions{
+display:flex;
+gap:10px;
+margin-top:15px;
+}
+
+.actions button{
+flex:1;
+padding:12px;
+border:none;
+border-radius:10px;
+background:#2563eb;
+color:#fff;
+cursor:pointer;
+font-weight:bold;
+}
+
+.popup-overlay{
+position:fixed;
+left:0;
+top:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,.6);
+display:none;
+align-items:center;
+justify-content:center;
+padding:20px;
+z-index:999;
+}
+
+.popup{
+width:100%;
+max-width:420px;
+background:#182235;
+border-radius:20px;
+padding:20px;
+}
+
+.popup h3{
+margin-bottom:15px;
+}
+
+.popup pre{
+max-height:350px;
+overflow:auto;
+background:#111827;
+padding:15px;
+border-radius:10px;
+font-size:13px;
+white-space:pre-wrap;
+word-break:break-word;
+margin-bottom:20px;
+}
+
+.popup-buttons{
+display:flex;
+gap:10px;
+}
+
+.popup-buttons button{
+flex:1;
+padding:12px;
+border:none;
+border-radius:10px;
+cursor:pointer;
+font-weight:bold;
+}
+
+#copyPopup{
+background:#2563eb;
+color:#fff;
+}
+
+#closePopup{
+background:#374151;
+color:#fff;
+}
+
+/* Light Mode */
+
+body.light{
+background:#f5f7fb;
+color:#111827;
+}
+
+body.light .merchant-card,
+body.light .stat-card,
+body.light .search-box,
+body.light .filter-card select,
+body.light .log-card,
+body.light .popup,
+body.light .icon-btn,
+body.light .profile-avatar{
+background:#fff;
+border-color:#dbe2ea;
+color:#111827;
+}
+
+body.light .search-box input{
+color:#111827;
+}
+
+body.light .log-info div,
+body.light .popup pre{
+background:#f3f4f6;
+}
+
+body.light .merchant-left p,
+body.light .stat-card p,
+body.light #emptyState p{
+color:#6b7280;
+}
+
+@media(max-width:430px){
+
+.container{
+padding:15px;
+}
+
+.log-info{
+grid-template-columns:1fr;
+}
+
+.filter-card{
+flex-direction:column;
+}
+
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- Header -->
+    <header class="header">
+
+        <button id="backBtn" class="icon-btn">
+            <i class="fas fa-arrow-left"></i>
+        </button>
+
+        <div class="page-title">
+            <i class="fas fa-terminal"></i>
+            <span>API Logs</span>
+        </div>
+
+        <div class="profile-avatar" id="merchantAvatar">
+            AP
+        </div>
+
+    </header>
+
+    <!-- Merchant Card -->
+
+    <section class="merchant-card">
+
+        <div class="merchant-left">
+
+            <div class="merchant-logo">
+
+                <i class="fas fa-store"></i>
+
+            </div>
+
+            <div>
+
+                <h2 id="merchantName">Loading...</h2>
+
+                <p id="merchantEmail">Please wait...</p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- Statistics -->
+
+    <section class="stats-grid">
+
+        <div class="stat-card">
+
+            <i class="fas fa-chart-line"></i>
+
+            <h3 id="totalRequests">0</h3>
+
+            <p>Total Requests</p>
+
+        </div>
+
+        <div class="stat-card">
+
+            <i class="fas fa-circle-check"></i>
+
+            <h3 id="successRequests">0</h3>
+
+            <p>Successful</p>
+
+        </div>
+
+        <div class="stat-card">
+
+            <i class="fas fa-circle-xmark"></i>
+
+            <h3 id="failedRequests">0</h3>
+
+            <p>Failed</p>
+
+        </div>
+
+        <div class="stat-card">
+
+            <i class="fas fa-percent"></i>
+
+            <h3 id="successRate">0%</h3>
+
+            <p>Success Rate</p>
+
+        </div>
+
+    </section>
+
+    <!-- Search -->
+
+    <section class="search-card">
+
+        <div class="search-box">
+
+            <i class="fas fa-search"></i>
+
+            <input
+            type="text"
+            id="searchInput"
+            placeholder="Search phone, endpoint, API key...">
+
+        </div>
+
+    </section>
+
+    <!-- Filters -->
+
+    <section class="filter-card">
+
+        <select id="statusFilter">
+
+            <option value="">All Status</option>
+
+            <option value="SUCCESS">Successful</option>
+
+            <option value="FAILED">Failed</option>
+
+            <option value="PENDING">Pending</option>
+
+        </select>
+
+        <select id="endpointFilter">
+
+            <option value="">All Endpoints</option>
+
+            <option>/api/stk-push</option>
+
+            <option>/api/check-status</option>
+
+            <option>/api/webhook</option>
+
+            <option>/api/merchant</option>
+
+        </select>
+
+    </section>
+
+    <!-- Loading -->
+
+    <div id="loadingState">
+
+        <div class="loader"></div>
+
+        <p>Loading API logs...</p>
+
+    </div>
+
+    <!-- Empty -->
+
+    <div id="emptyState" style="display:none;">
+
+        <i class="fas fa-folder-open"></i>
+
+        <h2>No API Logs</h2>
+
+        <p>Your API requests will appear here.</p>
+
+    </div>
+
+    <!-- Logs -->
+
+    <section id="logsContainer">
+
+    </section>
+
+</div>
+
+<!-- Popup -->
+
+<div class="popup-overlay" id="popupOverlay">
+
+    <div class="popup">
+
+        <h3 id="popupTitle">Details</h3>
+
+        <pre id="popupContent"></pre>
+
+        <div class="popup-buttons">
+
+            <button id="copyPopup">
+
+                Copy
+
+            </button>
+
+            <button id="closePopup">
+
+                Close
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+<script type="module">
+// ================================
+// FIREBASE IMPORTS
+// ================================
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
+
+import {
+getAuth,
+onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
+
+import {
+getFirestore,
+doc,
+collection,
+query,
+where,
+orderBy,
+onSnapshot
+} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
+
+import {
+getStorage
+} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-storage.js";
+
+
+// ================================
+// FIREBASE CONFIG
+// ================================
+
+const firebaseConfig = {
+apiKey: "AIzaSyBASnCv4bgXK8qr0T7VehzmOqthubv7vm4",
+authDomain: "autopay-a8ee7.firebaseapp.com",
+projectId: "autopay-a8ee7",
+storageBucket: "autopay-a8ee7.firebasestorage.app",
+messagingSenderId: "460380197271",
+appId: "1:460380197271:web:ffc07c79dd6e0ffd2d74d2"
+};
+
+const app = initializeApp(firebaseConfig);
+
+const auth = getAuth(app);
+
+const db = getFirestore(app);
+
+const storage = getStorage(app);
+
+// ================================
+// GLOBAL VARIABLES
+// ================================
+
+let merchant = null;
+
+let apiLogs = [];
+
+let unsubscribeLogs = null;
+
+
+// ================================
+// DOM ELEMENTS
+// ================================
+
+const merchantName =
+document.getElementById("merchantName");
+
+const merchantEmail =
+document.getElementById("merchantEmail");
+
+const merchantAvatar =
+document.getElementById("merchantAvatar");
+
+const logsContainer =
+document.getElementById("logsContainer");
+
+const loadingState =
+document.getElementById("loadingState");
+
+const emptyState =
+document.getElementById("emptyState");
+
+
+// Statistics
+
+const totalRequests =
+document.getElementById("totalRequests");
+
+const successRequests =
+document.getElementById("successRequests");
+
+const failedRequests =
+document.getElementById("failedRequests");
+
+const successRate =
+document.getElementById("successRate");
+
+
+// ================================
+// AUTH
+// ================================
+
+onAuthStateChanged(auth, async(user)=>{
+
+if(!user){
+
+location.href="login.html";
+
+return;
+
+}
+
+loadMerchant(user.uid);
+
+});
+
+
+// ================================
+// LOAD MERCHANT
+// ================================
+
+async function loadMerchant(uid){
+
+const cache =
+localStorage.getItem("merchant");
+
+if(cache){
+
+merchant = JSON.parse(cache);
+
+updateMerchant();
+
+listenLogs();
+
+}
+
+const ref =
+doc(db,"merchants",uid);
+
+onSnapshot(ref,(snapshot)=>{
+
+if(!snapshot.exists()) return;
+
+merchant = {
+
+id:snapshot.id,
+
+...snapshot.data()
+
+};
+
+localStorage.setItem(
+"merchant",
+JSON.stringify(merchant)
+);
+
+updateMerchant();
+
+listenLogs();
+
+});
+
+}
+
+
+// ================================
+// UPDATE HEADER
+// ================================
+
+function updateMerchant(){
+
+merchantName.textContent =
+merchant.businessName || "Merchant";
+
+merchantEmail.textContent =
+merchant.email || "";
+
+merchantAvatar.textContent =
+merchant.businessName
+?merchant.businessName
+.substring(0,2)
+.toUpperCase()
+:"AP";
+
+}
+
+// Theme
+
+if(localStorage.getItem("theme")==="light"){
+
+document.body.classList.add("light");
+
+}
+
+// Back Button
+
+document.getElementById("backBtn").onclick=()=>{
+
+history.back();
+
+};
+
+function listenLogs(){
+
+if(!merchant) return;
+
+loadingState.style.display="block";
+
+logsContainer.innerHTML="";
+
+emptyState.style.display="none";
+
+if(unsubscribeLogs){
+
+unsubscribeLogs();
+
+}
+
+const q=query(
+
+collection(db,"apiLogs"),
+
+where("merchantId","==",merchant.id),
+
+orderBy("createdAt","desc")
+
+);
+
+unsubscribeLogs=onSnapshot(q,(snapshot)=>{
+
+apiLogs=[];
+
+snapshot.forEach(doc=>{
+
+apiLogs.push({
+
+id:doc.id,
+
+...doc.data()
+
+});
+
+});
+
+updateStats();
+
+renderLogs();
+
+});
+
+}
+  
+function updateStats(){
+
+const total=apiLogs.length;
+
+const success=apiLogs.filter(
+
+log=>log.status==="SUCCESS"
+
+).length;
+
+const failed=apiLogs.filter(
+
+log=>log.status==="FAILED"
+
+).length;
+
+totalRequests.textContent=total;
+
+successRequests.textContent=success;
+
+failedRequests.textContent=failed;
+
+successRate.textContent=
+
+total
+
+?((success/total)*100).toFixed(1)+"%"
+
+:"0%";
+
+}
+
+function renderLogs(){
+
+loadingState.style.display="none";
+
+logsContainer.innerHTML="";
+
+if(apiLogs.length===0){
+
+emptyState.style.display="block";
+
+return;
+
+}
+
+emptyState.style.display="none";
+
+apiLogs.forEach(log=>{
+
+logsContainer.innerHTML+=`
+
+<div class="log-card">
+
+<div class="log-header">
+
+<div class="endpoint">
+
+${log.endpoint||"-"}
+
+</div>
+
+<div class="status ${String(log.status||'').toLowerCase()}">
+
+${log.status||"UNKNOWN"}
+
+</div>
+
+</div>
+
+<div class="log-info">
+
+<div>
+
+<strong>Phone</strong><br>
+
+${log.phone||"-"}
+
+</div>
+
+<div>
+
+<strong>Amount</strong><br>
+
+KES ${log.amount||0}
+
+</div>
+
+<div>
+
+<strong>Method</strong><br>
+
+${log.method||"-"}
+
+</div>
+
+<div>
+
+<strong>Response</strong><br>
+
+${log.statusCode||"-"}
+
+</div>
+
+</div>
+
+<div class="actions">
+
+<button class="view-request" data-index="${apiLogs.indexOf(log)}">
+
+Request
+
+</button>
+
+<button class="view-response" data-index="${apiLogs.indexOf(log)}">
+
+Response
+
+</button>
+
+</div>
+
+</div>
+
+`;
+
+});
+
+}
+
+document
+
+.getElementById("searchInput")
+
+.addEventListener("input",e=>{
+
+const value=e.target.value.toLowerCase();
+
+document
+
+.querySelectorAll(".log-card")
+
+.forEach(card=>{
+
+card.style.display=
+
+card.innerText
+
+.toLowerCase()
+
+.includes(value)
+
+?"block"
+
+:"none";
+
+});
+
+});
+
+document
+
+.getElementById("statusFilter")
+
+.onchange=e=>{
+
+const value=e.target.value;
+
+document
+
+.querySelectorAll(".log-card")
+
+.forEach(card=>{
+
+if(
+
+value===""||
+
+card.innerHTML.includes(value)
+
+){
+
+card.style.display="block";
+
+}else{
+
+card.style.display="none";
+
+}
+
+});
+
+};
+
+document
+
+.getElementById("endpointFilter")
+
+.onchange=e=>{
+
+const value=e.target.value;
+
+document
+
+.querySelectorAll(".log-card")
+
+.forEach(card=>{
+
+if(
+
+value===""||
+
+card.innerHTML.includes(value)
+
+){
+
+card.style.display="block";
+
+}else{
+
+card.style.display="none";
+
+}
+
+});
+
+};
+
+const popup=
+
+document.getElementById("popupOverlay");
+
+document
+
+.getElementById("closePopup")
+
+.onclick=()=>{
+
+popup.style.display="none";
+
+};
+
+document
+
+.getElementById("copyPopup")
+
+.onclick=()=>{
+
+navigator.clipboard.writeText(
+
+document
+
+.getElementById("popupContent")
+
+.textContent
+
+);
+
+};
+
+window.viewRequest=function(data){
+
+document.getElementById("popupTitle").textContent="Request";
+
+document.getElementById("popupContent").textContent=
+
+JSON.stringify(data,null,2);
+
+popup.style.display="flex";
+
+}
+
+window.viewResponse=function(data){
+
+document.getElementById("popupTitle").textContent="Response";
+
+document.getElementById("popupContent").textContent=
+
+JSON.stringify(data,null,2);
+
+popup.style.display="flex";
+
+}
+</script>
+</body>
+</html>
