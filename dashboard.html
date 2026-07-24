@@ -897,12 +897,7 @@ if (cachedStats) {
     document.getElementById("completed").innerHTML =
         "KES " + Number(cachedStats.completed).toLocaleString();
 
-    revenueChart.data.datasets[0].data =
-        cachedStats.monthlyRevenue;
-
-    revenueChart.update();
-
-}
+  }
   
 onAuthStateChanged(auth, async(user)=>{
 
@@ -1291,6 +1286,7 @@ id:doc.id,
 ...doc.data()
 }))
 );
+  
 snapshot.forEach(doc=>{
 
     const data = doc.data();
@@ -1323,9 +1319,13 @@ snapshot.forEach(doc=>{
 
 });
 
+// Update revenue chart
+revenueChart.data.datasets[0].data = monthlyRevenue;
+revenueChart.update();
+
 document.getElementById("transactions").innerHTML =
 totalTransactions.toLocaleString();
-
+  
 document.getElementById("completed").innerHTML =
 "KES "+completedAmount.toLocaleString();
 
