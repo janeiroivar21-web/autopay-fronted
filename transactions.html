@@ -180,18 +180,24 @@ transform:translateY(-3px);
 .transaction-top{
 display:flex;
 justify-content:space-between;
-align-items:center;
+align-items:flex-start;
+gap:15px;
 margin-bottom:12px;
 }
 
 .reference{
 font-weight:bold;
 font-size:15px;
+word-break:break-all;
+margin-bottom:6px;
 }
 
 .amount{
 font-size:20px;
 font-weight:bold;
+text-align:right;
+min-width:80px;
+flex-shrink:0;
 }
 
 .transaction-info{
