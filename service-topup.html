@@ -739,6 +739,16 @@ document.getElementById("failedPopup").style.display="none";
 
 };
 
+function showError(message){
+
+    document.getElementById("loading").style.display = "none";
+
+    document.getElementById("failedMessage").innerHTML = message;
+
+    document.getElementById("failedPopup").style.display = "flex";
+
+     }
+
 async function startTopup(){
 
 const amount = Number(document.getElementById("amount").value);
@@ -746,12 +756,22 @@ const phone = document.getElementById("phone").value.trim();
 
 if(amount < 10){
 
-alert("Minimum topup amount is KES 10");
+showError("Minimum topup amount is KES 10.");
 
 return;
 
-}
+    }
 
+const phone = document.getElementById("phone").value.trim();
+
+if(!phone){
+
+    showError("Please enter your M-PESA phone number.");
+
+    return;
+
+    }
+    
 document.getElementById("loading").style.display="flex";
 
 try{
@@ -827,12 +847,7 @@ document.getElementById("loading").style.display="none";
 
 console.log("Topup Error:", error);
 
-alert(error.message);
-
-document.getElementById("failedMessage").innerHTML =
-error.message;
-
-document.getElementById("failedPopup").style.display="flex";
+showError(error.message);
 
  }
 
