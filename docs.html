@@ -829,13 +829,15 @@ Copy
 <pre id="statusResponse">
 {
   "success": true,
-  "status": "SUCCESS",
-  "transaction": {
-    "amount": 100,
-    "phone": "254712345678",
-    "balanceType": "wallet",
-    "checkoutRequestId": "ws_CO_123456789",
-    "merchantRequestId": "29115-34620561-1"
+  "status": "completed",
+  "amount": 100,
+  "phone": "254712345678",
+  "data": {
+    "transaction": {
+      "status": "completed",
+      "amount": 100,
+      "phone_number": "254712345678"
+    }
   }
 }
 </pre>
