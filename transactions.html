@@ -676,86 +676,83 @@ renderTransactions();
 // Render
 function renderTransactions(){
 
-const list=document.getElementById("transactionList");
+const list = document.getElementById("transactionList");
+const empty = document.getElementById("emptyState");
 
-const empty=document.getElementById("emptyState");
-
-const search=document
+const search = document
 .getElementById("searchInput")
 .value
 .toLowerCase();
 
-list.innerHTML="";
+const filtered = allTransactions.filter(tx=>{
 
-const filtered=allTransactions.filter(tx=>{
+const status = (tx.status || "").toUpperCase();
 
-const status=(tx.status||"").toUpperCase();
+const ref = String(tx.checkoutRequestId || "")
+.toLowerCase();
 
-const ref=(tx.checkoutRequestId||"").toLowerCase();
+const phone = String(tx.phone || "")
+.toLowerCase();
 
-const phone=(tx.phone||"").toLowerCase();
+const matchesSearch =
+ref.includes(search) || phone.includes(search);
 
-const matchesSearch=
-ref.includes(search)||phone.includes(search);
+const matchesFilter =
+currentFilter === "ALL" ||
+status === currentFilter;
 
-const matchesFilter=
-currentFilter==="ALL"||status===currentFilter;
-
-return matchesSearch&&matchesFilter;
+return matchesSearch && matchesFilter;
 
 });
 
 if(filtered.length===0){
 
-empty.style.display="block";
+list.innerHTML = "";
+
+empty.style.display = "block";
 
 return;
 
 }
 
-empty.style.display="none";
+empty.style.display = "none";
+
+let html = "";
 
 filtered.forEach(tx=>{
 
-const status=(tx.status||"PENDING").toUpperCase();
+const status =
+(tx.status || "PENDING").toUpperCase();
 
-let css="pending";
+let css = "pending";
 
 if(status==="SUCCESS") css="success";
-
 if(status==="FAILED") css="failed";
 
-const date=tx.createdAt?.toDate
-?tx.createdAt.toDate().toLocaleString()
-:"";
+const date =
+tx.createdAt?.toDate
+? tx.createdAt.toDate().toLocaleString()
+: "--";
 
-list.innerHTML+=`
-
-<div class="transaction-card"
-onclick="showDetails('${tx.id}')">
+html += `
+<div class="transaction-card" data-id="${tx.id}">
 
 <div class="transaction-top">
 
 <div>
 
 <div class="reference">
-
-${tx.checkoutRequestId||tx.id.substring(0,10)}
-
+${tx.checkoutRequestId || tx.id}
 </div>
 
 <div class="transaction-info">
-
-${tx.phone||""}
-
+${tx.phone || "--"}
 </div>
 
 </div>
 
 <div class="amount">
-
-KES ${Number(tx.amount||0).toLocaleString()}
-
+KES ${Number(tx.amount || 0).toLocaleString()}
 </div>
 
 </div>
@@ -765,16 +762,26 @@ KES ${Number(tx.amount||0).toLocaleString()}
 <span>${date}</span>
 
 <span class="status ${css}">
-
 ${status}
-
 </span>
 
 </div>
 
 </div>
-
 `;
+
+});
+
+list.innerHTML = html;
+
+document.querySelectorAll(".transaction-card")
+.forEach(card=>{
+
+card.onclick = ()=>{
+
+showDetails(card.dataset.id);
+
+};
 
 });
 
