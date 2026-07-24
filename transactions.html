@@ -582,13 +582,8 @@ if(transactionsLoaded || !merchantId) return;
 transactionsLoaded = true;
 
 const q=query(
-
 collection(db,"transactions"),
-
-where("merchantId","==",merchantId),
-
-orderBy("createdAt","desc")
-
+where("merchantId","==",merchantId)
 );
 
 onSnapshot(q,
