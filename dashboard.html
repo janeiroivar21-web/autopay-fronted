@@ -1293,99 +1293,35 @@ id:doc.id,
 );
 snapshot.forEach(doc=>{
 
-const data=doc.data();
+    const data = doc.data();
 
-if((data.status || "").toUpperCase() === "SUCCESS"){
+    if((data.status || "").toUpperCase() === "SUCCESS"){
 
-const d = data.createdAt?.toDate();
+        const d = data.createdAt?.toDate();
 
-if(d){
+        if(d){
 
-const month = d.getMonth();
+            const month = d.getMonth();
 
-if(month >= 0 && month < 6){
+            if(month >= 0 && month < 6){
 
-monthlyRevenue[month] += Number(data.amount || 0);
+                monthlyRevenue[month] += Number(data.amount || 0);
 
-}
+            }
 
-}
+        }
 
-}
+    }
 
-const date = data.createdAt?.toDate
-    ? data.createdAt.toDate()
-    : new Date();
+    totalTransactions++;
 
-const status =
-(data.status || "PENDING").toUpperCase();
+    if((data.status || "").toUpperCase() === "SUCCESS"){
 
-let css = "pending";
-let text = "Pending";
+        completedAmount += Number(data.amount || 0);
 
-if(status === "SUCCESS"){
-
-    css = "success";
-    text = "Completed";
-
-}else if(status === "FAILED"){
-
-    css = "failed";
-    text = "Failed";
-
-}
-
-const ref =
-data.checkoutRequestId ||
-doc.id.substring(0,8).toUpperCase();
-
-recentContainer.innerHTML += `
-<div class="activity-item">
-
-<div class="activity-left">
-
-<div class="activity-title">
-${ref}
-</div>
-
-<div class="activity-time">
-${date.toLocaleString()}
-</div>
-
-</div>
-
-<div class="activity-middle">
-
-<div class="activity-amount">
-KES ${Number(data.amount||0).toLocaleString()}
-</div>
-
-</div>
-
-<div class="activity-right ${css}">
-
-<i class="fas fa-circle"></i>
-
-${text}
-
-</div>
-
-</div>
-`;
-
-totalTransactions++;
-
-if((data.status || "").toUpperCase() === "SUCCESS"){
-
-completedAmount += Number(data.amount||0);
-
-}
+    }
 
 });
-
-revenueChart.data.datasets[0].data = monthlyRevenue;
-
-revenueChart.update();
 
 document.getElementById("transactions").innerHTML =
 totalTransactions.toLocaleString();
@@ -1460,12 +1396,11 @@ try{
 
 await signOut(auth);
 
-// Optional: clear any saved data
-localStorage.removeItem("merchant");
-localStorage.removeItem("merchantUid");
+// Clear all merchant cache
+Cache.clearMerchant();
+
 // Redirect to login
 window.location.href = "login.html";
-
 }catch(error){
 
 alert("Logout failed: " + error.message);
