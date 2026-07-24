@@ -560,11 +560,9 @@ Copy
 
 <pre id="stkExample">
 {
-  "amount":100,
   "phone":"254712345678",
-  "accountReference":"ORDER1001",
-  "description":"Payment",
-  "callbackUrl":"https://yourdomain.com/webhook"
+  "amount":100,
+  "balanceType":"wallet"
 }
 </pre>
 
@@ -656,35 +654,21 @@ AUTOPAY automatically routes the payment based on your merchant settings.
 <td>phone</td>
 <td>String</td>
 <td>Yes</td>
-<td>Customer phone number (2547XXXXXXXX)</td>
+<td>Customer M-PESA phone number in the format 2547XXXXXXXX.</td>
 </tr>
 
 <tr>
 <td>amount</td>
 <td>Number</td>
 <td>Yes</td>
-<td>Payment amount in KES</td>
+<td>Payment amount in Kenyan Shillings (KES). Must be greater than 0.</td>
 </tr>
 
 <tr>
-<td>accountReference</td>
+<td>balanceType</td>
 <td>String</td>
 <td>Yes</td>
-<td>Your order reference</td>
-</tr>
-
-<tr>
-<td>description</td>
-<td>String</td>
-<td>No</td>
-<td>Payment description</td>
-</tr>
-
-<tr>
-<td>callbackUrl</td>
-<td>String</td>
-<td>Yes</td>
-<td>Your webhook URL</td>
+<td>Either <strong>wallet</strong> or <strong>service</strong>.</td>
 </tr>
 
 </table>
