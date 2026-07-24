@@ -423,27 +423,41 @@ email=usernameDoc.data().email;
 
 }
 
-await signInWithEmailAndPassword(
-
-auth,
-email,
-password
-
+const credential = await signInWithEmailAndPassword(
+    auth,
+    email,
+    password
 );
+
+// Load merchant data immediately
+const merchantRef = doc(db, "users", credential.user.uid);
+const merchantSnap = await getDoc(merchantRef);
+
+if (merchantSnap.exists()) {
+
+    const merchantData = merchantSnap.data();
+
+    // Save cache
+    localStorage.setItem(
+        "merchant",
+        JSON.stringify(merchantData)
+    );
+
+    localStorage.setItem(
+        "merchantUid",
+        credential.user.uid
+    );
+
+}
 
 showPopup(
-
-"Success",
-
-"Login successful. Redirecting..."
-
+    "Success",
+    "Login successful. Redirecting..."
 );
 
-setTimeout(()=>{
-
-window.location.href="dashboard.html";
-
-},1200);
+setTimeout(() => {
+    window.location.href = "dashboard.html";
+}, 1200);
 
 }catch(error){
 
