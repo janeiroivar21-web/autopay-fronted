@@ -927,23 +927,130 @@ Your endpoint should:
 
     <div class="card">
 
-        <h3>Webhook Response</h3>
+<h2>Webhook Notifications</h2>
+
+<p>
+
+When a payment is successfully completed, AUTOPAY automatically sends an HTTPS POST request to your configured Callback URL.
+
+Your endpoint must:
+
+</p>
+
+<ul style="padding-left:20px;line-height:2;">
+
+<li>Accept HTTP POST requests.</li>
+
+<li>Accept JSON payloads.</li>
+
+<li>Return HTTP 200 OK after successful processing.</li>
+
+<li>Process duplicate callbacks safely.</li>
+
+</ul>
+
+<div class="note">
+
+AUTOPAY sends webhook notifications only after a payment has been confirmed successfully.
+
+</div>
+
+    </div>
+
+    <div class="card">
+
+<h2>Webhook Payload</h2>
 
 <div class="code-box">
 
-<pre id="webhookExample">
+<pre id="webhookPayload">
 {
- "status":"SUCCESS",
- "amount":100,
- "phone":"254712345678",
- "reference":"ORDER1001"
+  "success": true,
+  "status": "SUCCESS",
+  "amount": 100,
+  "phone": "254712345678",
+  "transaction_id": "TXN123456",
+  "merchant_request_id": "29115-34620561-1",
+  "checkout_request_id": "ws_CO_123456789",
+  "merchant_id": "APY131009",
+  "currency": "KES"
 }
 </pre>
 
-<button onclick="copyCode('webhookExample')">
-
+<button onclick="copyCode('webhookPayload')">
 Copy
+</button>
 
+</div>
+
+    </div>
+
+    <div class="card">
+
+<h2>PHP Webhook Example</h2>
+
+<div class="code-box">
+
+<pre id="phpWebhook">
+<?php
+
+$data=json_decode(file_get_contents("php://input"),true);
+
+http_response_code(200);
+
+if($data["status"]==="SUCCESS"){
+
+// Update your database
+
+// Verify transaction
+
+// Mark order as paid
+
+}
+
+echo json_encode([
+"success"=>true
+]);
+
+?>
+</pre>
+
+<button onclick="copyCode('phpWebhook')">
+Copy
+</button>
+
+</div>
+
+    </div>
+
+    <div class="card">
+
+<h2>Node.js Webhook Example</h2>
+
+<div class="code-box">
+
+<pre id="nodeWebhook">
+app.post("/webhook",(req,res)=>{
+
+const payment=req.body;
+
+if(payment.status==="SUCCESS"){
+
+console.log(payment);
+
+}
+
+res.status(200).json({
+
+success:true
+
+});
+
+});
+</pre>
+
+<button onclick="copyCode('nodeWebhook')">
+Copy
 </button>
 
 </div>
@@ -991,6 +1098,36 @@ Copy
 </button>
 
 </div>
+
+    </div>
+
+    <div class="card">
+
+<h2>Webhook Events</h2>
+
+<table>
+
+<tr>
+<th>Event</th>
+<th>Description</th>
+</tr>
+
+<tr>
+<td>SUCCESS</td>
+<td>Payment completed successfully.</td>
+</tr>
+
+<tr>
+<td>FAILED</td>
+<td>Customer cancelled or payment failed.</td>
+</tr>
+
+<tr>
+<td>PENDING</td>
+<td>Payment is awaiting completion.</td>
+</tr>
+
+</table>
 
     </div>
 
