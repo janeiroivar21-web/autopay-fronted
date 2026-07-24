@@ -1130,6 +1130,16 @@ display:false
 
 });
 
+// Load cached chart data
+if (cachedStats && cachedStats.monthlyRevenue) {
+
+    revenueChart.data.datasets[0].data =
+        cachedStats.monthlyRevenue;
+
+    revenueChart.update();
+
+  }
+
 function animateCounter(id,end,prefix=""){
 
 let value=0;
