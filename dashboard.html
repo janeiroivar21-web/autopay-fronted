@@ -865,6 +865,13 @@ greet="Good Afternoon";
 
 }
 
+// Load cached merchant instantly
+const cached = Cache.get("merchant");
+
+if (cached) {
+    loadDashboard(cached);
+}
+  
 onAuthStateChanged(auth, async(user)=>{
 
 if(!user){
@@ -872,15 +879,6 @@ if(!user){
 window.location.href="login.html";
 
 return;
-
-}
-
-// Load cached merchant instantly
-const cached = Cache.get("merchant");
-
-if (cached) {
-
-    loadDashboard(cached);
 
 }
   
@@ -905,6 +903,29 @@ localStorage.setItem("merchantUid", user.uid);
 
 // Update dashboard
 loadDashboard(data);
+
+const cachedStats = Cache.get("dashboardStats");
+
+if (cachedStats) {
+
+    document.getElementById("activeLinks").innerHTML =
+        cachedStats.activeLinks;
+
+    document.getElementById("accounts").innerHTML =
+        cachedStats.accounts;
+
+    document.getElementById("transactions").innerHTML =
+        cachedStats.transactions;
+
+    document.getElementById("completed").innerHTML =
+        "KES " + Number(cachedStats.completed).toLocaleString();
+
+    revenueChart.data.datasets[0].data =
+        cachedStats.monthlyRevenue;
+
+    revenueChart.update();
+
+}
 
 // Load processing activity only once
 if(!processingLoaded){
@@ -1299,6 +1320,20 @@ totalTransactions.toLocaleString();
 
 document.getElementById("completed").innerHTML =
 "KES "+completedAmount.toLocaleString();
+
+Cache.set("dashboardStats", {
+
+    activeLinks: linksSnap.size,
+
+    accounts: accountsSnap.size,
+
+    transactions: totalTransactions,
+
+    completed: completedAmount,
+
+    monthlyRevenue
+
+});
 
 });
 
