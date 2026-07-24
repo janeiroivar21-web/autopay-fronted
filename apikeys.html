@@ -1164,23 +1164,20 @@ document.getElementById("activeKeys").innerHTML=active;
 // Copy Key
 window.copyKey=function(id){
 
-const btn = event.target;
+const btn = event.currentTarget || event.target.closest("button");
 
 navigator.clipboard.writeText(
-
 document.getElementById(id).dataset.key ||
-
 document.getElementById(id).innerText
-
 );
 
 const old = btn.innerHTML;
 
-btn.innerHTML = "✓ Copied";
+btn.innerHTML='<i class="fas fa-check"></i>';
 
 setTimeout(()=>{
 
-btn.innerHTML = old;
+btn.innerHTML=old;
 
 },1500);
 
@@ -1239,14 +1236,19 @@ document.getElementById("deleteModal").style.display="none";
 // Regenerate
 window.regenerateKey=async(id)=>{
 
-const publicKey=`pk_live_${randomString(32)}`;
+const card=document.getElementById("sec_"+id);
 
-const secretKey=`sk_live_${randomString(48)}`;
+const prefix=card.dataset.key.startsWith("sk_test_")
+? "test"
+: "live";
+
+const publicKey=`pk_${prefix}_${randomString(32)}`;
+
+const secretKey=`sk_${prefix}_${randomString(48)}`;
 
 await updateDoc(doc(db,"apiKeys",id),{
 
 publicKey,
-
 secretKey
 
 });
