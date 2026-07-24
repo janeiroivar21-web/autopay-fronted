@@ -829,11 +829,13 @@ Copy
 <pre id="statusResponse">
 {
   "success": true,
-  "message": "STK Push sent successfully.",
-  "data": {
-    "checkout_request_id": "ws_CO_123456789",
-    "merchant_request_id": "29115-34620561-1",
-    "status": "PENDING"
+  "status": "SUCCESS",
+  "transaction": {
+    "amount": 100,
+    "phone": "254712345678",
+    "balanceType": "wallet",
+    "checkoutRequestId": "ws_CO_123456789",
+    "merchantRequestId": "29115-34620561-1"
   }
 }
 </pre>
@@ -988,45 +990,30 @@ Copy
 
         <table>
 
-            <tr>
+<tr>
+<th>Code</th>
+<th>Description</th>
+</tr>
 
-                <th>Code</th>
+<tr>
+<td>400</td>
+<td>Invalid request, missing required fields or invalid balanceType.</td>
+</tr>
 
-                <th>Description</th>
+<tr>
+<td>401</td>
+<td>Missing, invalid or inactive API Key.</td>
+</tr>
 
-            </tr>
+<tr>
+<td>404</td>
+<td>Merchant or transaction not found.</td>
+</tr>
 
-            <tr>
-
-                <td>400</td>
-
-                <td>Invalid Request</td>
-
-            </tr>
-
-            <tr>
-
-                <td>401</td>
-
-                <td>Unauthorized</td>
-
-            </tr>
-
-            <tr>
-
-                <td>404</td>
-
-                <td>Transaction Not Found</td>
-
-            </tr>
-
-            <tr>
-
-                <td>500</td>
-
-                <td>Internal Server Error</td>
-
-            </tr>
+<tr>
+<td>500</td>
+<td>Internal server error.</td>
+</tr>
 
         </table>
 
@@ -1041,9 +1028,12 @@ Copy
 <pre id="successResponse">
 {
   "success": true,
-  "message": "STK Push initiated successfully",
-  "checkoutRequestId": "ws_CO_123456789",
-  "merchantRequestId": "29115-34620561-1"
+  "message": "STK Push sent successfully.",
+  "data": {
+    "checkout_request_id": "ws_CO_123456789",
+    "merchant_request_id": "29115-34620561-1",
+    "status": "PENDING"
+  }
 }
 </pre>
 
