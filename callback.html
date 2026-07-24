@@ -190,6 +190,44 @@ pre{
 }
 
 }
+
+/* ================= LIGHT MODE ================= */
+
+body.light{
+    background:#f5f7fb;
+    color:#111827;
+}
+
+body.light .card{
+    background:#ffffff;
+    color:#111827;
+    border:1px solid #dbe2ea;
+}
+
+body.light .back-btn{
+    background:#ffffff;
+    color:#111827;
+    border:1px solid #dbe2ea;
+}
+
+body.light input{
+    background:#f3f4f6;
+    color:#111827;
+}
+
+body.light .description,
+body.light .tips div{
+    color:#64748b;
+}
+
+body.light pre{
+    background:#f3f4f6;
+    color:#111827;
+}
+
+body.light .topbar p{
+    color:#64748b;
+}
 </style>
 
 </head>
@@ -202,7 +240,7 @@ pre{
     <!-- Header -->
     <header class="topbar">
 
-        <button class="back-btn" onclick="history.back()">
+        <button class="back-btn" onclick="window.location.href='dashboard.html'">
             <i class="fas fa-arrow-left"></i>
         </button>
 
@@ -409,6 +447,13 @@ saveBtn.addEventListener("click", async () => {
         '<i class="fas fa-save"></i> Save Callback URL';
 
 });
+
+// Apply saved dashboard theme
+if(localStorage.getItem("theme")==="light"){
+
+    document.body.classList.add("light");
+
+    }
 
 </script>
 
