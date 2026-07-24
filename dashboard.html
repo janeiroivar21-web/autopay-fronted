@@ -871,6 +871,38 @@ const cached = Cache.get("merchant");
 if (cached) {
     loadDashboard(cached);
 }
+
+const cachedTransactions =
+Cache.get("merchantTransactions");
+
+if(cachedTransactions){
+
+renderTransactions(cachedTransactions);
+
+}
+
+const cachedStats = Cache.get("dashboardStats");
+
+if (cachedStats) {
+
+    document.getElementById("activeLinks").innerHTML =
+        cachedStats.activeLinks;
+
+    document.getElementById("accounts").innerHTML =
+        cachedStats.accounts;
+
+    document.getElementById("transactions").innerHTML =
+        cachedStats.transactions;
+
+    document.getElementById("completed").innerHTML =
+        "KES " + Number(cachedStats.completed).toLocaleString();
+
+    revenueChart.data.datasets[0].data =
+        cachedStats.monthlyRevenue;
+
+    revenueChart.update();
+
+}
   
 onAuthStateChanged(auth, async(user)=>{
 
@@ -903,29 +935,6 @@ localStorage.setItem("merchantUid", user.uid);
 
 // Update dashboard
 loadDashboard(data);
-
-const cachedStats = Cache.get("dashboardStats");
-
-if (cachedStats) {
-
-    document.getElementById("activeLinks").innerHTML =
-        cachedStats.activeLinks;
-
-    document.getElementById("accounts").innerHTML =
-        cachedStats.accounts;
-
-    document.getElementById("transactions").innerHTML =
-        cachedStats.transactions;
-
-    document.getElementById("completed").innerHTML =
-        "KES " + Number(cachedStats.completed).toLocaleString();
-
-    revenueChart.data.datasets[0].data =
-        cachedStats.monthlyRevenue;
-
-    revenueChart.update();
-
-}
 
 // Load processing activity only once
 if(!processingLoaded){
@@ -1152,6 +1161,68 @@ el.innerHTML=prefix+value.toLocaleString();
 
 }
 
+function renderTransactions(transactions){
+
+const recentContainer =
+document.getElementById("recentTransactions");
+
+recentContainer.innerHTML="";
+
+transactions.forEach(item=>{
+
+const date =
+item.createdAt?.toDate
+? item.createdAt.toDate()
+: new Date();
+
+const status=(item.status||"PENDING").toUpperCase();
+
+let css="pending";
+let text="Pending";
+
+if(status==="SUCCESS"){
+css="success";
+text="Completed";
+}else if(status==="FAILED"){
+css="failed";
+text="Failed";
+}
+
+const ref=item.checkoutRequestId||item.id;
+
+recentContainer.innerHTML+=`
+<div class="activity-item">
+
+<div class="activity-left">
+
+<div class="activity-title">${ref}</div>
+
+<div class="activity-time">
+${date.toLocaleString()}
+</div>
+
+</div>
+
+<div class="activity-middle">
+
+<div class="activity-amount">
+KES ${Number(item.amount||0).toLocaleString()}
+</div>
+
+</div>
+
+<div class="activity-right ${css}">
+<i class="fas fa-circle"></i>
+${text}
+</div>
+
+</div>
+`;
+
+});
+
+}
+  
 function loadDashboard(data){
 
 document.getElementById("greeting").innerHTML =
@@ -1214,11 +1285,12 @@ let totalTransactions=0;
 
 let completedAmount=0;
 
-const recentContainer =
-document.getElementById("recentTransactions");
-
-recentContainer.innerHTML = "";
-
+renderTransactions(
+snapshot.docs.map(doc=>({
+id:doc.id,
+...doc.data()
+}))
+);
 snapshot.forEach(doc=>{
 
 const data=doc.data();
@@ -1334,6 +1406,11 @@ Cache.set("dashboardStats", {
     monthlyRevenue
 
 });
+
+Cache.set("merchantTransactions", snapshot.docs.map(doc => ({
+    id: doc.id,
+    ...doc.data()
+})));
 
 });
 
