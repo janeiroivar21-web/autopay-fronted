@@ -550,6 +550,28 @@ Copy
 
     </div>
 
+    <div class="card">
+
+<h2>Important</h2>
+
+<div class="note">
+
+Do not send a Firebase UID in your request.
+
+AUTOPAY automatically identifies your merchant account using your Secret API Key.
+
+The request body only requires:
+
+<ul style="margin-top:10px;padding-left:20px;line-height:2;">
+<li>phone</li>
+<li>amount</li>
+<li>balanceType</li>
+</ul>
+
+</div>
+
+    </div>
+
     <!-- STK Push -->
 
     <div class="card">
@@ -807,10 +829,12 @@ Copy
 <pre id="statusResponse">
 {
   "success": true,
-  "status": "completed",
-  "amount": 100,
-  "phone": "254712345678",
-  "reference": "ORDER1001"
+  "message": "STK Push sent successfully.",
+  "data": {
+    "checkout_request_id": "ws_CO_123456789",
+    "merchant_request_id": "29115-34620561-1",
+    "status": "PENDING"
+  }
 }
 </pre>
 
