@@ -742,6 +742,7 @@ document.getElementById("failedPopup").style.display="none";
 async function startTopup(){
 
 const amount = Number(document.getElementById("amount").value);
+const phone = document.getElementById("phone").value.trim();
 
 if(amount < 10){
 
@@ -770,17 +771,15 @@ headers:{
 "Authorization":`Bearer ${token}`
 },
 
-body:JSON.stringify({
+body: JSON.stringify({
 
-const phone = document.getElementById("phone").value.trim();
+    phone: phone,
 
-phone: phone,
+    amount: amount,
 
-amount:amount,
+    balanceType: "service",
 
-balanceType:"service",
-
-uid:userId
+    uid: userId
 
 })
 
