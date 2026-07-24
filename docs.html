@@ -943,6 +943,50 @@ AUTOPAY sends webhook notifications only after a payment has been confirmed succ
 
     <div class="card">
 
+<h2>Configure Callback URL</h2>
+
+<p>
+
+Configure your Callback URL from your AUTOPAY Dashboard before accepting payments.
+
+Dashboard → Callback Link
+
+</p>
+
+<div class="code-box">
+
+<pre id="callbackUrl">
+https://yourdomain.com/api/webhook
+</pre>
+
+<button onclick="copyCode('callbackUrl')">
+Copy
+</button>
+
+</div>
+
+<div class="note">
+
+✔ Must use HTTPS
+
+<br><br>
+
+✔ Must accept POST requests
+
+<br><br>
+
+✔ Must return HTTP 200 OK
+
+<br><br>
+
+✔ Must accept JSON payloads
+
+</div>
+
+    </div>
+
+    <div class="card">
+
 <h2>Webhook Payload</h2>
 
 <div class="code-box">
@@ -1101,16 +1145,6 @@ Copy
 <td>Payment completed successfully.</td>
 </tr>
 
-<tr>
-<td>FAILED</td>
-<td>Customer cancelled or payment failed.</td>
-</tr>
-
-<tr>
-<td>PENDING</td>
-<td>Payment is awaiting completion.</td>
-</tr>
-
 </table>
 
     </div>
@@ -1238,7 +1272,7 @@ Copy
 Merchant Server
         │
         ▼
-Authorization: Bearer sk_live_xxxxx
+Authorization: Bearer YOUR_SECRET_KEY
         │
         ▼
 POST /api/stk-push
@@ -1250,10 +1284,10 @@ AUTOPAY Gateway
 Validate Secret API Key
         │
         ▼
-Automatically Identify Merchant
+Identify Merchant
         │
         ▼
-Read Collection Method
+Read Merchant Settings
         │
         ▼
 Send M-PESA STK Push
@@ -1262,18 +1296,16 @@ Send M-PESA STK Push
 Customer Enters PIN
         │
         ▼
-Payment Successful
+Payment Confirmed
         │
         ▼
-Automatically Route Funds
-        │
-        ├──► AUTOPAY Wallet
-        ├──► M-PESA Till
-        ├──► M-PESA Paybill
-        └──► Bank Account
+Credit Merchant Balance
         │
         ▼
-Webhook Notification
+Send Callback URL
+        │
+        ▼
+Merchant Receives JSON
         │
         ▼
 Merchant Updates Order
