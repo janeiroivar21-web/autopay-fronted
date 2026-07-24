@@ -700,11 +700,7 @@ phone:"254712345678",
 
 amount:100,
 
-accountReference:"ORDER1001",
-
-description:"Order Payment",
-
-callbackUrl:"https://yourdomain.com/webhook"
+balanceType:"wallet"
 
 })
 
@@ -838,9 +834,7 @@ Copy
 $payload = [
     "phone" => "254712345678",
     "amount" => 100,
-    "accountReference" => "ORDER1001",
-    "description" => "Order Payment",
-    "callbackUrl" => "https://yourdomain.com/webhook"
+    "balanceType" => "wallet"
 ];
 
 $curl = curl_init("https://autopay.co.ke/api/stk-push");
@@ -936,11 +930,9 @@ const response = await axios.post(
 {
 phone:"254712345678",
 amount:100,
-accountReference:"ORDER1001",
-description:"Order Payment",
-callbackUrl:"https://yourdomain.com/webhook"
-},
-
+balanceType:"wallet"
+}, 
+    
 {
 headers:{
 Authorization:"Bearer YOUR_SECRET_KEY"
