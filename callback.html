@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Callback Link - AUTOPAY</title>
+
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<!-- CSS GOES HERE -->
+<style>
+
+/* Paste ALL CSS here */
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,Helvetica,sans-serif;
+}
+
+body{
+    background:#0c1424;
+    color:#fff;
+}
+
+.container{
+    max-width:430px;
+    margin:0 auto;
+    padding:20px;
+}
+
+.topbar{
+    display:flex;
+    align-items:center;
+    gap:15px;
+    margin-bottom:25px;
+}
+
+.back-btn{
+    width:42px;
+    height:42px;
+    border:none;
+    border-radius:50%;
+    background:#1b2945;
+    color:#fff;
+    cursor:pointer;
+    font-size:18px;
+    transition:.3s;
+}
+
+.back-btn:hover{
+    background:#3b82f6;
+}
+
+.topbar h2{
+    font-size:22px;
+    margin-bottom:4px;
+}
+
+.topbar p{
+    color:#9ca3af;
+    font-size:14px;
+}
+
+.card{
+    background:#111c31;
+    border-radius:18px;
+    padding:20px;
+    margin-bottom:20px;
+    box-shadow:0 5px 18px rgba(0,0,0,.35);
+}
+
+.card-title{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    color:#3b82f6;
+    font-size:18px;
+    font-weight:bold;
+    margin-bottom:15px;
+}
+
+.description{
+    color:#b5c1d8;
+    line-height:1.6;
+    margin-bottom:20px;
+    font-size:14px;
+}
+
+label{
+    display:block;
+    margin-bottom:10px;
+    font-weight:bold;
+}
+
+input{
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:12px;
+    background:#1b2945;
+    color:#fff;
+    outline:none;
+    font-size:15px;
+    margin-bottom:18px;
+}
+
+input:focus{
+    border:2px solid #3b82f6;
+}
+
+.tips{
+    margin-bottom:20px;
+}
+
+.tips div{
+    margin:10px 0;
+    color:#cbd5e1;
+    font-size:14px;
+}
+
+.tips i{
+    color:#22c55e;
+    margin-right:8px;
+}
+
+button{
+    width:100%;
+    padding:15px;
+    border:none;
+    border-radius:12px;
+    background:#3b82f6;
+    color:#fff;
+    font-size:16px;
+    font-weight:bold;
+    cursor:pointer;
+    transition:.3s;
+}
+
+button:hover{
+    background:#2563eb;
+}
+
+button:disabled{
+    opacity:.6;
+    cursor:not-allowed;
+}
+
+#message{
+    margin-top:15px;
+    text-align:center;
+    font-size:14px;
+    font-weight:bold;
+}
+
+.success{
+    color:#22c55e;
+}
+
+.error{
+    color:#ef4444;
+}
+
+pre{
+    background:#0b1220;
+    color:#8be9fd;
+    padding:16px;
+    border-radius:12px;
+    overflow:auto;
+    font-size:13px;
+    line-height:1.6;
+}
+
+@media(max-width:480px){
+
+.container{
+    padding:15px;
+}
+
+.card{
+    padding:16px;
+}
+
+.topbar h2{
+    font-size:20px;
+}
+
+}
+</style>
+
+</head>
+
+<body>
+
+<!-- HTML GOES HERE -->
+<div class="container">
+
+    <!-- Header -->
+    <header class="topbar">
+
+        <button class="back-btn" onclick="history.back()">
+            <i class="fas fa-arrow-left"></i>
+        </button>
+
+        <div>
+            <h2>Callback Link</h2>
+            <p>Configure your payment callback URL</p>
+        </div>
+
+    </header>
+
+    <!-- Main Card -->
+    <div class="card">
+
+        <div class="card-title">
+            <i class="fas fa-link"></i>
+            Callback URL
+        </div>
+
+        <p class="description">
+            AUTOPAY will send payment notifications to this URL whenever a transaction is completed successfully.
+        </p>
+
+        <label>Callback URL</label>
+
+        <input
+            type="url"
+            id="callbackUrl"
+            placeholder="https://example.com/api/autopay/webhook">
+
+        <div class="tips">
+
+            <div><i class="fas fa-check-circle"></i> Must start with https://</div>
+
+            <div><i class="fas fa-check-circle"></i> Must accept POST requests</div>
+
+            <div><i class="fas fa-check-circle"></i> Receives JSON payload</div>
+
+        </div>
+
+        <button id="saveBtn">
+            <i class="fas fa-save"></i>
+            Save Callback URL
+        </button>
+
+        <div id="message"></div>
+
+    </div>
+
+    <!-- Example Payload -->
+
+    <div class="card">
+
+        <div class="card-title">
+            <i class="fas fa-code"></i>
+            Example Callback Payload
+        </div>
+
+<pre>{
+  "success": true,
+  "status": "SUCCESS",
+  "amount": 100,
+  "phone": "254712345678",
+  "checkout_request_id": "ws_CO_123456789",
+  "merchant_request_id": "29115-34620561-1",
+  "transaction_id": "TXN123456"
+}</pre>
+
+    </div>
+
+</div>
+
+<!-- Firebase + Script -->
+<script type="module">
+// Firebase Imports
+import { auth, db } from "./firebase.js";
+
+import {
+    onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
+
+import {
+    doc,
+    getDoc,
+    setDoc
+} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
+// Elements
+const callbackInput = document.getElementById("callbackUrl");
+
+const saveBtn = document.getElementById("saveBtn");
+
+const message = document.getElementById("message");
+
+
+// Logged in user
+let currentUser = null;
+
+
+// Check Login
+onAuthStateChanged(auth, async (user) => {
+
+    if (!user) {
+
+        window.location.href = "login.html";
+
+        return;
+
+    }
+
+    currentUser = user;
+
+    loadCallback();
+
+});
+
+
+// Load Existing Callback
+async function loadCallback() {
+
+    try {
+
+        const ref = doc(db, "users", currentUser.uid);
+
+        const snap = await getDoc(ref);
+
+        if (snap.exists()) {
+
+            const data = snap.data();
+
+            callbackInput.value = data.webhookUrl || "";
+
+        }
+
+    } catch (err) {
+
+        console.error(err);
+
+    }
+
+}
+
+
+// Save Callback
+saveBtn.addEventListener("click", async () => {
+
+    const url = callbackInput.value.trim();
+
+    message.className = "";
+
+    if (url === "") {
+
+        message.className = "error";
+
+        message.textContent = "Please enter your callback URL.";
+
+        return;
+
+    }
+
+    if (!url.startsWith("https://")) {
+
+        message.className = "error";
+
+        message.textContent =
+            "Callback URL must start with https://";
+
+        return;
+
+    }
+
+    saveBtn.disabled = true;
+
+    saveBtn.innerHTML =
+        '<i class="fas fa-spinner fa-spin"></i> Saving...';
+
+    try {
+
+        await setDoc(
+    doc(db, "users", currentUser.uid),
+    {
+        webhookUrl: url
+    },
+    { merge: true }
+);
+
+        message.className = "success";
+
+        message.textContent =
+            "Callback URL saved successfully.";
+
+    } catch (err) {
+
+        console.error(err);
+
+        message.className = "error";
+
+        message.textContent =
+            "Failed to save callback URL.";
+
+    }
+
+    saveBtn.disabled = false;
+
+    saveBtn.innerHTML =
+        '<i class="fas fa-save"></i> Save Callback URL';
+
+});
+
+</script>
+
+</body>
+
+</html>
