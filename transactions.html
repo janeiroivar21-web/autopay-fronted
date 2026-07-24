@@ -591,7 +591,12 @@ orderBy("createdAt","desc")
 
 );
 
-onSnapshot(q,(snapshot)=>{
+onSnapshot(q,
+
+(snapshot)=>{
+
+console.log("Merchant ID:", merchantId);
+console.log("Transactions found:", snapshot.size);
 
 allTransactions=[];
 
@@ -624,19 +629,27 @@ pending++;
 
 });
 
-document.getElementById("totalTransactions").innerHTML=
+document.getElementById("totalTransactions").textContent =
 allTransactions.length;
 
-document.getElementById("successTransactions").innerHTML=
+document.getElementById("successTransactions").textContent =
 success;
 
-document.getElementById("pendingTransactions").innerHTML=
+document.getElementById("pendingTransactions").textContent =
 pending;
 
-document.getElementById("failedTransactions").innerHTML=
+document.getElementById("failedTransactions").textContent =
 failed;
 
 renderTransactions();
+
+},
+
+(error)=>{
+
+console.error("Firestore Error:",error);
+
+alert(error.message);
 
 });
 
