@@ -820,6 +820,8 @@ Yesterday
 <script type="module">
 import { auth, db } from "./firebase.js";
 
+import Cache from "./cache.js";
+
 import {
 onAuthStateChanged,
 signOut
@@ -873,12 +875,12 @@ return;
 
 }
 
-// Load cached merchant first
-const cached = JSON.parse(localStorage.getItem("merchant"));
+// Load cached merchant instantly
+const cached = Cache.get("merchant");
 
-if(cached){
+if (cached) {
 
-loadDashboard(cached);
+    loadDashboard(cached);
 
 }
   
@@ -898,8 +900,8 @@ return;
 const data = snap.data();
 
 // Save latest merchant locally
-localStorage.setItem("merchant",JSON.stringify(data));
-localStorage.setItem("merchantUid",user.uid);
+Cache.set("merchant", data);
+localStorage.setItem("merchantUid", user.uid);
 
 // Update dashboard
 loadDashboard(data);
