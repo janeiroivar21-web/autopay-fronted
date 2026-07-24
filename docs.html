@@ -415,12 +415,6 @@ https://autopay.co.ke/api
 </tr>
 
 <tr>
-<td>POST</td>
-<td>/api/webhook</td>
-<td>Webhook Callback</td>
-</tr>
-
-<tr>
 <td>GET</td>
 <td>/health</td>
 <td>Gateway Health</td>
@@ -465,8 +459,7 @@ API Version:
 
 <div class="code-box">
 
-<pre id="authCode">Authorization: Bearer sk_live_xxxxxxxxxxxxx</pre>
-
+<pre id="authCode">Authorization: Bearer YOUR_SECRET_KEY</pre>
 <button onclick="copyCode('authCode')">
 
 Copy
@@ -479,30 +472,21 @@ Copy
 
     <div class="card">
 
-<h2>Your API Keys</h2>
+<h2>API Keys</h2>
 
 <p>
-Use your Secret Key to authenticate every API request.
-Never expose your Secret Key in frontend applications.
+
+Generate and manage your Live and Test API Keys from your AUTOPAY Dashboard.
+
+Dashboard → API Keys
+
 </p>
-
-<div class="code-box">
-
-<pre id="secretKey">
-Loading API Key...
-</pre>
-
-<button onclick="copyCode('secretKey')">
-Copy
-</button>
-
-</div>
 
 <div class="note">
 
-✔ Keep this key private.<br>
-✔ Never expose it in JavaScript.<br>
-✔ Regenerate it immediately if compromised.
+Your Secret API Key is never displayed in this documentation.
+
+Use the API Keys page in your dashboard to copy or regenerate your credentials.
 
 </div>
 
@@ -1401,12 +1385,7 @@ onAuthStateChanged
 
 import {
 doc,
-getDoc,
-collection,
-query,
-where,
-limit,
-getDocs
+getDoc
 } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
 
 // Theme
@@ -1446,49 +1425,7 @@ const initials=(data.fullName||"A")
 
 document.getElementById("avatar").innerHTML=initials;
 
-// Load merchant API key
-loadApiKey();
-
 });
-
-// Load first Live API key
-async function loadApiKey(){
-
-try{
-
-const q=query(
-
-collection(db,"apiKeys"),
-
-where("merchantId","==",merchantId),
-
-where("environment","==","Live"),
-
-limit(1)
-
-);
-
-const snapshot=await getDocs(q);
-
-if(snapshot.empty) return;
-
-const api=snapshot.docs[0].data();
-
-const auth=document.getElementById("authCode");
-
-auth.textContent=
-`Authorization: Bearer ${api.secretKey}`;
-
-document.getElementById("secretKey").textContent =
-api.secretKey;
-
-}catch(err){
-
-console.log(err);
-
-}
-
-}
 
 // Back
 document.getElementById("backBtn").onclick=()=>{
