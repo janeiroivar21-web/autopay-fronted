@@ -694,7 +694,9 @@ KES 0.00
 
 <b>REVENUE HORIZON</b>
 
-<span class="small">6 Month Tracker</span>
+<span class="small">
+12 Month Tracker
+</span>
 
 </div>
 
@@ -1060,7 +1062,20 @@ type:"bar",
 
 data:{
 
-labels:["Jan","Feb","Mar","Apr","May","Jun"],
+labels:[
+"Jan",
+"Feb",
+"Mar",
+"Apr",
+"May",
+"Jun",
+"Jul",
+"Aug",
+"Sep",
+"Oct",
+"Nov",
+"Dec"
+],
 
 datasets:[{
 
@@ -1295,7 +1310,7 @@ transactionsQuery,
 
 console.log("Dashboard transactions:", snapshot.size);
 
-const monthlyRevenue = [0,0,0,0,0,0];
+const monthlyRevenue = Array(12).fill(0);
 
 let totalTransactions=0;
 
@@ -1320,11 +1335,7 @@ snapshot.forEach(doc=>{
 
             const month = d.getMonth();
 
-            if(month >= 0 && month < 6){
-
-                monthlyRevenue[month] += Number(data.amount || 0);
-
-            }
+monthlyRevenue[month] += Number(data.amount || 0);
 
         }
 
