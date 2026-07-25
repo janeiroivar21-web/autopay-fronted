@@ -606,6 +606,14 @@ import {
 
 /*
 =========================================
+BACKEND URL
+=========================================
+*/
+
+const API_BASE = "https://autopay.co.ke";
+
+/*
+=========================================
 CURRENT USER
 =========================================
 */
@@ -714,14 +722,14 @@ localStorage.setItem(
 
     } catch(err){
 
-        console.error(err);
+    console.error("LOAD MERCHANT ERROR:", err);
 
-        showPopup(
-            "Error",
-            "Unable to load merchant account."
-        );
+    showPopup(
+        "Error",
+        err.message
+    );
 
-    }
+  }
 
 }
 
@@ -770,15 +778,6 @@ window.closePopup = function() {
         "none";
 
 }
-
-/*
-=========================================
-BACKEND URL
-=========================================
-*/
-
-const API_BASE =
-"https://autopay.co.ke";
 
 /*
 =========================================
