@@ -383,7 +383,7 @@ font-size:15px;
 
 <script type="module">
 
-import { auth, db } from "./firebase.js";
+import { auth, db, storage } from "./firebase.js";
 
 import {
 onAuthStateChanged
@@ -395,6 +395,12 @@ getDoc,
 setDoc,
 serverTimestamp
 } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
+
+import {
+ref,
+uploadBytes,
+getDownloadURL
+} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-storage.js";
 
 // Theme
 if(localStorage.getItem("theme")==="light"){
@@ -497,6 +503,25 @@ btn.innerHTML="Submitting...";
 
 try{
 
+let idFrontUrl = "";
+
+const idFrontFile =
+document.getElementById("idFront").files[0];
+
+if(idFrontFile){
+
+const storageRef = ref(
+storage,
+`kyc/${currentUser.uid}/idFront`
+);
+
+await uploadBytes(storageRef,idFrontFile);
+
+idFrontUrl =
+await getDownloadURL(storageRef);
+
+}
+
 await setDoc(doc(db,"kyc",currentUser.uid),{
 
 uid:currentUser.uid,
@@ -518,6 +543,8 @@ phone:document.getElementById("phone").value,
 address:document.getElementById("address").value,
 
 idNumber:document.getElementById("idNumber").value,
+
+idFront:idFrontUrl,
 
 dob:document.getElementById("dob").value,
 
