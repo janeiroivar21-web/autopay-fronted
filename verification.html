@@ -11,7 +11,6 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
 <style>
-/* CSS will be added next */
 *{
 margin:0;
 padding:0;
@@ -29,23 +28,25 @@ transition:.3s;
 max-width:700px;
 margin:auto;
 padding:20px;
-padding-bottom:90px;
+padding-bottom:100px;
 }
 
-.top{
+/* ================= HEADER ================= */
+
+.header{
 display:flex;
-justify-content:space-between;
 align-items:center;
+justify-content:space-between;
 margin-bottom:25px;
 }
 
 .back-btn,
 .avatar{
-width:48px;
-height:48px;
+width:50px;
+height:50px;
 background:#182235;
 border:1px solid #253149;
-border-radius:14px;
+border-radius:15px;
 display:flex;
 align-items:center;
 justify-content:center;
@@ -58,19 +59,77 @@ transition:.3s;
 transform:translateY(-2px);
 }
 
-.title{
+.header-title{
+flex:1;
+padding:0 15px;
+}
+
+.header-title h2{
+font-size:24px;
+margin-bottom:5px;
+}
+
+.header-title p{
+font-size:14px;
+color:#94a3b8;
+}
+
+/* ================= PROGRESS ================= */
+
+.progress-card{
+background:#182235;
+border:1px solid #253149;
+padding:20px;
+border-radius:18px;
+margin-bottom:20px;
+}
+
+.progress-top{
 display:flex;
 align-items:center;
-gap:10px;
-font-size:24px;
+justify-content:space-between;
+}
+
+.step{
+display:flex;
+flex-direction:column;
+align-items:center;
+width:90px;
+}
+
+.circle{
+width:42px;
+height:42px;
+border-radius:50%;
+background:#334155;
+display:flex;
+align-items:center;
+justify-content:center;
 font-weight:bold;
+margin-bottom:8px;
+transition:.3s;
 }
 
-.title i{
-color:#2563eb;
+.step.active .circle{
+background:#2563eb;
 }
 
-.card{
+.step span{
+font-size:13px;
+text-align:center;
+}
+
+.line{
+flex:1;
+height:4px;
+background:#334155;
+margin:0 12px;
+border-radius:20px;
+}
+
+/* ================= STATUS ================= */
+
+.status-card{
 background:#182235;
 border:1px solid #253149;
 border-radius:18px;
@@ -78,107 +137,177 @@ padding:20px;
 margin-bottom:20px;
 }
 
-.card h2{
+.status-card h3{
 margin-bottom:15px;
-font-size:20px;
 }
 
-.card p{
-color:#94a3b8;
-line-height:1.6;
-margin-top:10px;
-}
-
-.status{
+.status-badge{
 display:inline-block;
 padding:10px 18px;
 border-radius:30px;
 font-weight:bold;
-margin-top:10px;
-margin-bottom:10px;
+margin-bottom:20px;
 }
 
 .pending{
 background:#f59e0b;
-color:#fff;
 }
 
 .review{
 background:#2563eb;
-color:#fff;
 }
 
 .verified{
 background:#16a34a;
-color:#fff;
 }
 
 .rejected{
 background:#dc2626;
-color:#fff;
 }
 
-input,
-textarea,
-select{
+.limit-card{
+margin-top:15px;
+background:#0f172a;
+padding:20px;
+border-radius:15px;
+text-align:center;
+}
+
+.limit-card small{
+color:#94a3b8;
+}
+
+.limit-card h2{
+margin-top:8px;
+font-size:28px;
+color:#22c55e;
+}
+
+/* ================= SECTION ================= */
+
+.section{
+background:#182235;
+border:1px solid #253149;
+border-radius:18px;
+padding:20px;
+margin-bottom:20px;
+}
+
+.section h3{
+margin-bottom:18px;
+}
+
+.section p{
+color:#94a3b8;
+line-height:1.7;
+}
+
+/* ================= INPUTS ================= */
+
+input{
 width:100%;
-margin-top:12px;
 padding:15px;
-border-radius:12px;
-border:1px solid #334155;
+margin-bottom:15px;
+border:none;
+border-radius:14px;
 background:#0f172a;
 color:#fff;
-font-size:15px;
 outline:none;
+font-size:15px;
+border:1px solid #334155;
 transition:.3s;
 }
 
-input:focus,
-textarea:focus,
-select:focus{
+input:focus{
 border-color:#2563eb;
 }
 
-textarea{
-resize:vertical;
-min-height:110px;
+/* ================= UPLOAD ================= */
+
+.upload-card{
+background:#0f172a;
+border:2px dashed #334155;
+border-radius:15px;
+padding:18px;
+margin-bottom:18px;
+}
+
+.upload-card label{
+display:block;
+font-weight:bold;
+margin-bottom:12px;
 }
 
 input[type=file]{
-padding:12px;
+border:none;
+padding:0;
+background:none;
+}
+
+/* ================= BENEFITS ================= */
+
+.benefits{
+list-style:none;
+margin-bottom:20px;
+}
+
+.benefits li{
+padding:10px 0;
+display:flex;
+align-items:center;
+gap:10px;
+}
+
+.benefits i{
+color:#22c55e;
+}
+
+.limit-box{
+background:#1d4ed8;
+padding:16px;
+border-radius:15px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+font-size:16px;
+font-weight:bold;
+}
+
+/* ================= DECLARATION ================= */
+
+.agree{
+display:flex;
+align-items:flex-start;
+gap:12px;
+line-height:1.6;
 cursor:pointer;
 }
 
-label{
-display:block;
-margin-top:15px;
-margin-bottom:6px;
-font-weight:bold;
-font-size:14px;
-color:#cbd5e1;
+.agree input{
+width:20px;
+height:20px;
+margin-top:3px;
 }
 
-input[type=checkbox]{
-width:auto;
-margin-right:10px;
-}
+/* ================= BUTTON ================= */
 
 button{
 width:100%;
-padding:16px;
-margin-top:20px;
-background:#2563eb;
+padding:18px;
 border:none;
-border-radius:14px;
+border-radius:15px;
+background:#2563eb;
 color:#fff;
-font-size:16px;
+font-size:17px;
 font-weight:bold;
 cursor:pointer;
 transition:.3s;
+margin-bottom:20px;
 }
 
 button:hover{
 background:#1d4ed8;
+transform:translateY(-2px);
 }
 
 button:disabled{
@@ -186,12 +315,22 @@ opacity:.6;
 cursor:not-allowed;
 }
 
+/* ================= BUSINESS ================= */
+
+.business-section{
+display:none;
+}
+
+/* ================= LIGHT MODE ================= */
+
 body.light{
 background:#f5f7fb;
 color:#111827;
 }
 
-body.light .card,
+body.light .progress-card,
+body.light .status-card,
+body.light .section,
 body.light .back-btn,
 body.light .avatar{
 background:#fff;
@@ -199,17 +338,36 @@ border-color:#dbe2ea;
 color:#111827;
 }
 
-body.light input,
-body.light textarea,
-body.light select{
+body.light input{
 background:#f8fafc;
+color:#111827;
 border-color:#dbe2ea;
+}
+
+body.light .upload-card{
+background:#f8fafc;
+border-color:#cbd5e1;
+}
+
+body.light .line{
+background:#cbd5e1;
+}
+
+body.light .circle{
+background:#cbd5e1;
 color:#111827;
 }
 
-body.light label{
-color:#334155;
+body.light .step.active .circle{
+background:#2563eb;
+color:#fff;
 }
+
+body.light .limit-card{
+background:#eff6ff;
+}
+
+/* ================= MOBILE ================= */
 
 @media(max-width:768px){
 
@@ -217,39 +375,44 @@ color:#334155;
 padding:15px;
 }
 
-.title{
+.header-title h2{
 font-size:20px;
 }
 
-.card{
-padding:18px;
+.header-title p{
+font-size:13px;
+}
+
+.limit-card h2{
+font-size:24px;
 }
 
 button{
-font-size:15px;
+font-size:16px;
 }
 
 }
-
 </style>
 
 </head>
 
 <body>
-
 <div class="container">
 
     <!-- Header -->
 
-    <div class="top">
+    <div class="header">
 
         <div class="back-btn" id="backBtn">
             <i class="fas fa-arrow-left"></i>
         </div>
 
-        <div class="title">
-            <i class="fas fa-id-card"></i>
-            <span>KYC Verification</span>
+        <div class="header-title">
+
+            <h2>KYC Verification</h2>
+
+            <p>Secure your AUTOPAY merchant account</p>
+
         </div>
 
         <div class="avatar" id="avatar">
@@ -258,114 +421,219 @@ font-size:15px;
 
     </div>
 
-    <!-- Status -->
+    <!-- Progress -->
 
-    <div class="card">
+    <div class="progress-card">
 
-        <h2>KYC Status</h2>
+        <div class="progress-top">
 
-        <div id="kycStatus" class="status pending">
-            Pending Verification
+            <div class="step active">
+
+                <div class="circle">1</div>
+
+                <span>Personal</span>
+
+            </div>
+
+            <div class="line"></div>
+
+            <div class="step">
+
+                <div class="circle">2</div>
+
+                <span>Business</span>
+
+            </div>
+
         </div>
 
-        <p>
-            Complete your verification to activate all AUTOPAY merchant features.
-        </p>
+    </div>
+
+    <!-- Status -->
+
+    <div class="status-card">
+
+        <h3>Verification Status</h3>
+
+        <div class="status-badge pending" id="statusBadge">
+
+            Pending Personal Verification
+
+        </div>
+
+        <div class="limit-card">
+
+            <small>Monthly Transaction Limit</small>
+
+            <h2 id="monthlyLimit">
+
+                KSh 0
+
+            </h2>
+
+        </div>
 
     </div>
 
-    <!-- Business Information -->
+    <!-- ========================= -->
 
-    <div class="card">
+    <!-- PERSONAL VERIFICATION -->
 
-        <h2>Business Information</h2>
+    <!-- ========================= -->
 
-        <input type="text" id="businessName" placeholder="Business Name">
+    <div class="section">
 
-        <input type="text" id="businessType" placeholder="Business Type">
+        <h3>
 
-        <input type="text" id="registrationNumber" placeholder="Business Registration Number (Optional)">
+            Personal Information
 
-        <textarea id="businessDescription" placeholder="Business Description"></textarea>
+        </h3>
 
-    </div>
+        <input
+        type="text"
+        id="fullName"
+        placeholder="Full Name">
 
-    <!-- Owner Information -->
+        <input
+        type="tel"
+        id="phone"
+        placeholder="Phone Number">
 
-    <div class="card">
-
-        <h2>Owner Information</h2>
-
-        <input type="text" id="fullName" placeholder="Full Name">
-
-        <input type="text" id="idNumber" placeholder="National ID / Passport Number">
-
-        <input type="date" id="dob">
-
-    </div>
-
-    <!-- Contact Information -->
-
-    <div class="card">
-
-        <h2>Contact Information</h2>
-
-        <input type="email" id="email" placeholder="Email Address">
-
-        <input type="tel" id="phone" placeholder="Phone Number">
-
-        <textarea id="address" placeholder="Business Address"></textarea>
+        <input
+        type="text"
+        id="idNumber"
+        placeholder="National ID Number">
 
     </div>
 
     <!-- Documents -->
 
-    <div class="card">
+    <div class="section">
 
-        <h2>Upload Documents</h2>
+        <h3>
 
-        <label>National ID Front</label>
-        <input type="file" id="idFront" accept="image/*">
+            Identity Documents
 
-        <label>National ID Back</label>
-        <input type="file" id="idBack" accept="image/*">
+        </h3>
 
-        <label>Selfie with ID</label>
-        <input type="file" id="selfie" accept="image/*">
+        <div class="upload-card">
 
-        <label>Certificate of Registration (Optional)</label>
-        <input type="file" id="registrationFile" accept=".jpg,.jpeg,.png,.pdf">
+            <label>
 
-        <label>KRA PIN Certificate (Optional)</label>
-        <input type="file" id="kraPin" accept=".jpg,.jpeg,.png,.pdf">
+                National ID Front
+
+            </label>
+
+            <input
+            type="file"
+            id="idFront"
+            accept="image/*">
+
+        </div>
+
+        <div class="upload-card">
+
+            <label>
+
+                National ID Back
+
+            </label>
+
+            <input
+            type="file"
+            id="idBack"
+            accept="image/*">
+
+        </div>
+
+        <div class="upload-card">
+
+            <label>
+
+                Selfie Holding ID
+
+            </label>
+
+            <input
+            type="file"
+            id="selfie"
+            accept="image/*">
+
+        </div>
 
     </div>
 
-    <!-- Settlement Details -->
+    <!-- Benefits -->
 
-    <div class="card">
+    <div class="section">
 
-        <h2>Settlement Details</h2>
+        <h3>
 
-        <input type="text" id="bankName" placeholder="Bank Name">
+            After Approval
 
-        <input type="text" id="accountName" placeholder="Account Name">
+        </h3>
 
-        <input type="text" id="accountNumber" placeholder="Account Number">
+        <ul class="benefits">
 
-        <input type="text" id="mpesaTill" placeholder="M-Pesa Till / Paybill (Optional)">
+            <li>
+
+                <i class="fas fa-check-circle"></i>
+
+                Receive Payments
+
+            </li>
+
+            <li>
+
+                <i class="fas fa-check-circle"></i>
+
+                Withdraw Funds
+
+            </li>
+
+            <li>
+
+                <i class="fas fa-check-circle"></i>
+
+                Payment Links
+
+            </li>
+
+            <li>
+
+                <i class="fas fa-check-circle"></i>
+
+                API Keys
+
+            </li>
+
+        </ul>
+
+        <div class="limit-box">
+
+            Monthly Limit
+
+            <strong>
+
+                KSh 10,000
+
+            </strong>
+
+        </div>
 
     </div>
 
     <!-- Declaration -->
 
-    <div class="card">
+    <div class="section">
 
-        <label>
+        <label class="agree">
 
-            <input type="checkbox" id="agree">
+            <input
+            type="checkbox"
+            id="agree">
 
-            I confirm that all information provided is accurate and belongs to me.
+            I confirm that all information is correct.
 
         </label>
 
@@ -373,11 +641,134 @@ font-size:15px;
 
     <!-- Submit -->
 
-    <button id="submitKyc">
+    <button
+    id="submitPersonal">
 
-        Submit Verification
+        Submit Personal Verification
 
     </button>
+
+    <!-- ========================= -->
+
+    <!-- BUSINESS VERIFICATION -->
+
+    <!-- Hidden Until Approved -->
+
+    <!-- ========================= -->
+
+    <div
+    class="business-section"
+    id="businessSection">
+
+        <div class="section">
+
+            <h3>
+
+                Upgrade to Business Verification
+
+            </h3>
+
+            <p>
+
+                Increase your monthly transaction limit from
+
+                <strong>
+
+                    KSh 10,000
+
+                </strong>
+
+                to
+
+                <strong>
+
+                    KSh 1,000,000
+
+                </strong>
+
+            </p>
+
+        </div>
+
+        <div class="section">
+
+            <h3>
+
+                Business Details
+
+            </h3>
+
+            <input
+            type="text"
+            id="businessName"
+            placeholder="Business Name">
+
+            <input
+            type="text"
+            id="businessType"
+            placeholder="Business Type">
+
+            <input
+            type="text"
+            id="businessEmail"
+            placeholder="Business Email">
+
+            <input
+            type="text"
+            id="registrationNumber"
+            placeholder="Registration Number">
+
+        </div>
+
+        <div class="section">
+
+            <h3>
+
+                Upload Business Documents
+
+            </h3>
+
+            <label>
+
+                Business Permit
+
+            </label>
+
+            <input
+            type="file"
+            id="permit">
+
+            <label>
+
+                KRA PIN Certificate
+
+            </label>
+
+            <input
+            type="file"
+            id="kraPin">
+
+            <label>
+
+                Supporting Documents
+
+            </label>
+
+            <input
+            type="file"
+            id="supportDocs"
+            multiple>
+
+        </div>
+
+        <button
+        id="submitBusiness">
+
+            Submit Business Verification
+
+        </button>
+
+    </div>
 
 </div>
 
