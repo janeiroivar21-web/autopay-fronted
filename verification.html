@@ -773,8 +773,7 @@ font-size:16px;
 </div>
 
 <script type="module">
-
-import { auth, db, storage } from "./firebase.js";
+import { auth, db } from "./firebase.js";
 
 import {
 onAuthStateChanged
@@ -782,99 +781,105 @@ onAuthStateChanged
 
 import {
 doc,
-getDoc,
-setDoc,
-serverTimestamp
+getDoc
 } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
 
-import {
-ref,
-uploadBytes,
-getDownloadURL
-} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-storage.js";
-
 // Theme
+
 if(localStorage.getItem("theme")==="light"){
+
 document.body.classList.add("light");
+
 }
 
-// Back
+// Back Button
+
 document.getElementById("backBtn").onclick=()=>{
+
 history.back();
+
 };
 
-let currentUser=null;
+let currentUser = null;
+
+let merchant = null;
 
 // Authentication
-onAuthStateChanged(auth,async(user)=>{
+onAuthStateChanged(auth, async(user)=>{
 
 if(!user){
+
 location.href="login.html";
+
 return;
+
 }
 
-currentUser=user;
+currentUser = user;
 
-const snap=await getDoc(doc(db,"users",user.uid));
+const snap = await getDoc(
+
+doc(db,"users",user.uid)
+
+);
 
 if(!snap.exists()){
+
 location.href="login.html";
+
 return;
-}
-
-const data=snap.data();
-
-// Avatar
-document.getElementById("avatar").innerHTML=
-(data.fullName||"A").charAt(0).toUpperCase();
-
-// Auto-fill
-document.getElementById("fullName").value=data.fullName||"";
-document.getElementById("email").value=data.email||"";
-document.getElementById("phone").value=data.phone||"";
-
-// Check existing KYC
-const kycSnap=await getDoc(doc(db,"kyc",user.uid));
-
-if(kycSnap.exists()){
-
-const kyc=kycSnap.data();
-
-document.getElementById("businessName").value=kyc.businessName||"";
-document.getElementById("businessType").value=kyc.businessType||"";
-document.getElementById("registrationNumber").value=kyc.registrationNumber||"";
-document.getElementById("businessDescription").value=kyc.businessDescription||"";
-
-document.getElementById("idNumber").value=kyc.idNumber||"";
-document.getElementById("dob").value=kyc.dob||"";
-document.getElementById("address").value=kyc.address||"";
-
-document.getElementById("bankName").value=kyc.bankName||"";
-document.getElementById("accountName").value=kyc.accountName||"";
-document.getElementById("accountNumber").value=kyc.accountNumber||"";
-document.getElementById("mpesaTill").value=kyc.mpesaTill||"";
-
-const status=kyc.status||"Pending";
-
-const badge=document.getElementById("kycStatus");
-
-badge.innerHTML=status;
-
-badge.className="status";
-
-if(status==="Pending"){
-badge.classList.add("pending");
-}else if(status==="Under Review"){
-badge.classList.add("review");
-}else if(status==="Verified"){
-badge.classList.add("verified");
-}else{
-badge.classList.add("rejected");
-}
 
 }
+
+merchant = snap.data();
+
+document.getElementById("avatar").innerHTML =
+
+(merchant.fullName || "A")
+
+.charAt(0)
+
+.toUpperCase();
+
+document.getElementById("fullName").value =
+
+merchant.fullName || "";
+
+document.getElementById("phone").value =
+
+merchant.phone || "";
+
+// Read-only
+
+document.getElementById("fullName").readOnly = true;
+
+document.getElementById("phone").readOnly = true;
+
+// Load KYC
+
+loadKyc();
 
 });
+
+async function loadKyc(){
+
+const snap = await getDoc(
+
+doc(db,"kyc",currentUser.uid)
+
+);
+
+if(!snap.exists()){
+
+return;
+
+}
+
+const kyc = snap.data();
+
+updateStatus(kyc);
+
+}
 
 // Submit
 document.getElementById("submitKyc").onclick=async()=>{
