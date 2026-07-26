@@ -832,6 +832,26 @@ margin:0;
 
 </div>
 
+<!-- AUTOPAY Popup -->
+
+<div id="popupOverlay" class="popup-overlay">
+
+    <div class="popup-box">
+
+        <div id="popupIcon" class="popup-icon">
+            <i class="fas fa-circle-info"></i>
+        </div>
+
+        <h3 id="popupTitle">AUTOPAY</h3>
+
+        <p id="popupMessage"></p>
+
+        <button id="popupButton">OK</button>
+
+    </div>
+
+</div>
+
 <script type="module">
 import { auth, db } from "./firebase.js";
 
@@ -1208,32 +1228,5 @@ popupRedirect=null;
 };
 
 </script>
-
-<!-- AUTOPAY Popup -->
-
-<div id="popupOverlay" class="popup-overlay">
-
-    <div class="popup-box">
-
-        <div id="popupIcon" class="popup-icon">
-
-            <i class="fas fa-circle-info"></i>
-
-        </div>
-
-        <h3 id="popupTitle">
-            AUTOPAY
-        </h3>
-
-        <p id="popupMessage"></p>
-
-        <button id="popupButton">
-            OK
-        </button>
-
-    </div>
-
-</div>
-
 </body>
 </html>
