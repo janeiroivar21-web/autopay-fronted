@@ -864,116 +864,174 @@ loadKyc();
 async function loadKyc(){
 
 const snap = await getDoc(
-
 doc(db,"kyc",currentUser.uid)
-
 );
 
-if(!snap.exists()){
-
-return;
-
-}
+if(!snap.exists()) return;
 
 const kyc = snap.data();
 
 updateStatus(kyc);
 
+ }
+
+function updateStatus(kyc){
+
+const badge =
+document.getElementById("statusBadge");
+
+const limit =
+document.getElementById("monthlyLimit");
+
+badge.className = "status-badge";
+
+switch(kyc.personalStatus){
+
+case "Pending":
+
+badge.innerHTML =
+"Pending Verification";
+
+badge.classList.add("pending");
+
+limit.innerHTML="KSh 0";
+
+break;
+
+case "Under Review":
+
+badge.innerHTML =
+"Under Review";
+
+badge.classList.add("review");
+
+limit.innerHTML="KSh 0";
+
+break;
+
+case "Approved":
+
+badge.innerHTML =
+"Personal Verified";
+
+badge.classList.add("verified");
+
+limit.innerHTML="KSh 10,000";
+
+document.getElementById("businessSection").style.display="block";
+
+break;
+
+case "Rejected":
+
+badge.innerHTML =
+"Rejected";
+
+badge.classList.add("rejected");
+
+limit.innerHTML="KSh 0";
+
+break;
+
+default:
+
+badge.innerHTML =
+"Pending Verification";
+
+badge.classList.add("pending");
+
 }
-
+}
 // Submit
-document.getElementById("submitKyc").onclick=async()=>{
+document.getElementById("submitPersonal").onclick = async()=>{
 
-if(!currentUser)return;
+if(!currentUser) return;
 
 if(!document.getElementById("agree").checked){
+
 alert("Please accept the declaration.");
+
 return;
+
 }
 
-const btn=document.getElementById("submitKyc");
+const btn =
+document.getElementById("submitPersonal");
 
-btn.disabled=true;
+btn.disabled = true;
 
-btn.innerHTML="Submitting...";
+btn.innerHTML = "Submitting...";
+
+const form = new FormData();
+
+form.append("uid", currentUser.uid);
+
+form.append(
+"fullName",
+document.getElementById("fullName").value
+);
+
+form.append(
+"phone",
+document.getElementById("phone").value
+);
+
+form.append(
+"idNumber",
+document.getElementById("idNumber").value
+);
+
+form.append(
+"idFront",
+document.getElementById("idFront").files[0]
+);
+
+form.append(
+"idBack",
+document.getElementById("idBack").files[0]
+);
+
+form.append(
+"selfie",
+document.getElementById("selfie").files[0]
+);
 
 try{
 
-let idFrontUrl = "";
+const response = await fetch("/api/kyc/upload",{
 
-const idFrontFile =
-document.getElementById("idFront").files[0];
+method:"POST",
 
-if(idFrontFile){
+body:form
 
-const storageRef = ref(
-storage,
-`kyc/${currentUser.uid}/idFront`
-);
+});
 
-await uploadBytes(storageRef,idFrontFile);
+const result = await response.json();
 
-idFrontUrl =
-await getDownloadURL(storageRef);
+if(result.success){
 
-}
+alert("Personal verification submitted successfully.");
 
-await setDoc(doc(db,"kyc",currentUser.uid),{
+location.reload();
 
-uid:currentUser.uid,
+}else{
 
-fullName:document.getElementById("fullName").value,
-
-businessName:document.getElementById("businessName").value,
-
-businessType:document.getElementById("businessType").value,
-
-registrationNumber:document.getElementById("registrationNumber").value,
-
-businessDescription:document.getElementById("businessDescription").value,
-
-email:document.getElementById("email").value,
-
-phone:document.getElementById("phone").value,
-
-address:document.getElementById("address").value,
-
-idNumber:document.getElementById("idNumber").value,
-
-idFront:idFrontUrl,
-
-dob:document.getElementById("dob").value,
-
-bankName:document.getElementById("bankName").value,
-
-accountName:document.getElementById("accountName").value,
-
-accountNumber:document.getElementById("accountNumber").value,
-
-mpesaTill:document.getElementById("mpesaTill").value,
-
-status:"Pending",
-
-submittedAt:serverTimestamp()
-
-},{merge:true});
-
-alert("KYC submitted successfully.");
-
-document.getElementById("kycStatus").innerHTML="Pending";
-document.getElementById("kycStatus").className="status pending";
-
-}catch(err){
-
-console.log(err);
-
-alert("Unable to submit KYC.");
+alert(result.message);
 
 }
 
-btn.disabled=false;
+}catch(error){
 
-btn.innerHTML="Submit Verification";
+console.error(error);
+
+alert("Unable to submit verification.");
+
+}
+
+btn.disabled = false;
+
+btn.innerHTML =
+"Submit Personal Verification";
 
 };
 
