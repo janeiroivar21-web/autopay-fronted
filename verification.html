@@ -949,7 +949,23 @@ if(!currentUser) return;
 
 if(!document.getElementById("agree").checked){
 
-alert("Please accept the declaration.");
+showPopup(
+"Declaration Required",
+"Please accept the declaration before submitting.",
+"warning"
+);
+
+return;
+
+}
+
+if(document.getElementById("idNumber").value.trim()===""){
+
+showPopup(
+"Missing ID Number",
+"Please enter your National ID Number.",
+"warning"
+);
 
 return;
 
@@ -961,7 +977,11 @@ if(
 !document.getElementById("selfie").files.length
 ){
 
-alert("Please upload your ID Front, ID Back and Selfie.");
+showPopup(
+"Missing Documents",
+"Please upload your ID Front, ID Back and Selfie.",
+"warning"
+);
 
 return;
 
@@ -1022,21 +1042,32 @@ const result = await response.json();
 
 if(result.success){
 
-alert("Personal verification submitted successfully.");
+showPopup(
+"Verification Submitted",
+"Your personal verification has been submitted successfully.",
+"success"
+);
 
 location.reload();
 
 }else{
 
-alert(result.message);
-
+showPopup(
+"Submission Failed",
+result.message,
+"error"
+);
 }
 
 }catch(error){
 
 console.error(error);
 
-alert("Unable to submit verification.");
+showPopup(
+"Network Error",
+"Unable to submit verification. Please try again.",
+"error"
+);
 
 }
 
