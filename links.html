@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Payment Links - AUTOPAY</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#0c1424;
+color:#fff;
+}
+
+.container{
+max-width:430px;
+margin:auto;
+padding:16px;
+}
+
+.top{
+display:flex;
+align-items:center;
+justify-content:space-between;
+margin-bottom:25px;
+}
+
+.back{
+width:48px;
+height:48px;
+border-radius:14px;
+background:#182235;
+display:flex;
+align-items:center;
+justify-content:center;
+cursor:pointer;
+}
+
+.title{
+font-size:24px;
+font-weight:bold;
+}
+
+.card{
+background:#182235;
+border-radius:20px;
+padding:30px 20px;
+text-align:center;
+border:1px solid #253149;
+}
+
+.icon{
+width:100px;
+height:100px;
+margin:auto;
+border-radius:50%;
+background:#2563eb;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:42px;
+margin-bottom:20px;
+}
+
+h2{
+margin-bottom:12px;
+}
+
+p{
+color:#9aa7bd;
+line-height:1.7;
+margin-bottom:25px;
+}
+
+.features{
+text-align:left;
+margin:25px 0;
+}
+
+.features div{
+padding:12px 0;
+border-bottom:1px solid #253149;
+}
+
+.features i{
+color:#22c55e;
+margin-right:10px;
+}
+
+button{
+width:100%;
+padding:16px;
+border:none;
+border-radius:14px;
+background:#2563eb;
+color:#fff;
+font-size:16px;
+font-weight:bold;
+opacity:.7;
+cursor:not-allowed;
+margin-top:25px;
+}
+
+.note{
+margin-top:20px;
+font-size:13px;
+color:#94a3b8;
+text-align:center;
+}
+
+/* ===== LIGHT MODE ===== */
+
+body.light{
+background:#f5f7fb;
+color:#111827;
+}
+
+body.light .card,
+body.light .back{
+background:#ffffff;
+border:1px solid #dbe2ea;
+color:#111827;
+}
+
+body.light p,
+body.light .note{
+color:#64748b;
+}
+
+body.light .features div{
+border-bottom:1px solid #e5e7eb;
+}
+
+body.light button{
+background:#2563eb;
+color:#fff;
+opacity:.7;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="top">
+
+<div class="back" onclick="history.back()">
+<i class="fas fa-arrow-left"></i>
+</div>
+
+<div class="title">
+Payment Links
+</div>
+
+<div style="width:48px;"></div>
+
+</div>
+
+<div class="card">
+
+<div class="icon">
+<i class="fas fa-link"></i>
+</div>
+
+<h2>Coming Soon</h2>
+
+<p>
+We're building a powerful Payment Links feature that will enable merchants to collect payments quickly and securely using M-PESA.
+</p>
+
+<div class="features">
+
+<div>
+<i class="fas fa-check-circle"></i>
+Create Unlimited Payment Links
+</div>
+
+<div>
+<i class="fas fa-check-circle"></i>
+Receive M-PESA Payments
+</div>
+
+<div>
+<i class="fas fa-check-circle"></i>
+Share Links via WhatsApp, SMS & Email
+</div>
+
+<div>
+<i class="fas fa-check-circle"></i>
+Track Payments in Real Time
+</div>
+
+<div>
+<i class="fas fa-check-circle"></i>
+Set Link Expiry Dates
+</div>
+
+<div>
+<i class="fas fa-check-circle"></i>
+View Payment Analytics
+</div>
+
+</div>
+
+<button disabled>
+COMING SOON
+</button>
+
+<div class="note">
+This feature is currently under development and will be available in a future AUTOPAY update.
+</div>
+
+</div>
+
+</div>
+
+<script>
+const theme = localStorage.getItem("theme");
+
+if(theme === "light"){
+    document.body.classList.add("light");
+}
+</script>
+</body>
+</html>
