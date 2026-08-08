@@ -771,6 +771,7 @@ serverTimestamp
 let merchantId = "";
 let deleteId = "";
 let keysLoaded = false;
+let kycApproved = false;
 
 // Authentication
 onAuthStateChanged(auth, async(user)=>{
@@ -816,6 +817,8 @@ localStorage.setItem("merchantUid",user.uid);
 
 merchantId = userData.merchantId || "";
 
+kycApproved = userData.kycStatus === "Approved";
+
 document.getElementById("avatar").innerHTML =
 (userData.fullName || "A")
 .charAt(0)
@@ -836,6 +839,19 @@ document.getElementById("backBtn").onclick=()=>history.back();
 
 // Open Modal
 document.getElementById("generateKey").onclick=()=>{
+
+if(!kycApproved){
+
+showPopup(
+"Verification Required",
+"Complete your KYC verification before generating API keys.",
+"warning",
+"verification.html"
+);
+
+return;
+
+}
 
 document.getElementById("keyModal").style.display="flex";
 
@@ -867,6 +883,19 @@ return text;
 
 // Generate API Key
 document.getElementById("createKey").onclick=async()=>{
+
+if(!kycApproved){
+
+showPopup(
+"Verification Required",
+"Complete your KYC verification before generating API keys.",
+"warning",
+"verification.html"
+);
+
+return;
+
+}
 
 const environment=
 document.getElementById("environment").value;
@@ -1255,7 +1284,11 @@ showPopup(
 
 };
 
-function showPopup(title,message,type="info"){
+let popupRedirect = null;
+
+function showPopup(title,message,type="info",redirect=null){
+
+popupRedirect = redirect;
 
 const overlay=document.getElementById("popupOverlay");
 const icon=document.getElementById("popupIcon");
@@ -1291,15 +1324,19 @@ overlay.classList.add("show");
 
 const popupButton=document.getElementById("popupButton");
 
-if(popupButton){
-
 popupButton.onclick=function(){
 
 document.getElementById("popupOverlay").classList.remove("show");
 
-};
+if(popupRedirect){
+
+location.href = popupRedirect;
 
 }
+
+popupRedirect = null;
+
+};
 
 document.getElementById("popupOverlay").onclick=function(e){
 
@@ -1347,4 +1384,4 @@ OK
 
 </div>
 </body>
-</html>
+    </html>
