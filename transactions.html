@@ -464,6 +464,35 @@ Failed
 
 </div>
 
+<div id="pagination" style="
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-top:20px;
+gap:12px;
+">
+
+<button id="prevPage" class="filter-btn">
+<i class="fas fa-chevron-left"></i>
+ Previous
+</button>
+
+<span id="pageInfo" style="
+flex:1;
+text-align:center;
+font-size:14px;
+color:#94a3b8;
+">
+Page 1 of 1
+</span>
+
+<button id="nextPage" class="filter-btn">
+Next
+<i class="fas fa-chevron-right"></i>
+</button>
+
+</div>
+
 </div>
 
 <!-- Empty State -->
@@ -504,8 +533,8 @@ Your payment transactions will appear here.
 
 </div>
 <script type="module">
-
 import { auth, db } from "./firebase.js";
+import Cache from "./cache.js";
 
 import {
 onAuthStateChanged
@@ -530,6 +559,9 @@ let merchantId="";
 let allTransactions=[];
 let currentFilter="ALL";
 
+const pageSize = 10;
+let currentPage = 1;
+
 // Authentication
 let transactionsLoaded = false;
 
@@ -541,40 +573,80 @@ return;
 }
 
 // Load cached merchant immediately
-const cached = JSON.parse(localStorage.getItem("merchant"));
+const cached = Cache.get("merchant");
 
 if(cached){
 
-merchantId = cached.merchantId || "";
+    merchantId = cached.merchantId || "";
 
-document.getElementById("avatar").innerHTML =
-(cached.fullName || "A").charAt(0).toUpperCase();
+    document.getElementById("avatar").innerHTML =
+        (cached.fullName || "A").charAt(0).toUpperCase();
 
-if(merchantId){
-loadTransactions();
-}
+    // Show cached transactions instantly
+    const cachedTransactions = Cache.get("merchantTransactions");
+
+    if(cachedTransactions){
+
+        allTransactions = cachedTransactions;
+
+        document.getElementById("totalTransactions").textContent =
+            allTransactions.length;
+
+        let success = 0;
+        let pending = 0;
+        let failed = 0;
+
+        allTransactions.forEach(tx=>{
+
+            switch((tx.status || "").toUpperCase()){
+
+                case "SUCCESS":
+                    success++;
+                    break;
+
+                case "FAILED":
+                    failed++;
+                    break;
+
+                default:
+                    pending++;
+
+            }
+
+        });
+
+        document.getElementById("successTransactions").textContent = success;
+        document.getElementById("pendingTransactions").textContent = pending;
+        document.getElementById("failedTransactions").textContent = failed;
+
+        renderTransactions();
+
+    }
+
+    if(merchantId){
+        loadTransactions();
+    }
 
 }
 
 const snap = await getDoc(doc(db,"users",user.uid));
 
-if(!snap.exists()){
-location.href="login.html";
-return;
+if(snap.exists()){
+
+    const userData = snap.data();
+
+    Cache.set("merchant", userData);
+
+    localStorage.setItem("merchantUid", user.uid);
+
+    merchantId = userData.merchantId;
+
+    document.getElementById("avatar").innerHTML =
+        (userData.fullName || "A").charAt(0).toUpperCase();
+
+    loadTransactions();
+
 }
-
-const userData = snap.data();
-
-// Update cache
-localStorage.setItem("merchant",JSON.stringify(userData));
-localStorage.setItem("merchantUid",user.uid);
-
-merchantId = userData.merchantId;
-
-document.getElementById("avatar").innerHTML =
-(userData.fullName || "A").charAt(0).toUpperCase();
-
-loadTransactions();
 });
 
 // Back
@@ -587,9 +659,9 @@ if(transactionsLoaded || !merchantId) return;
 
 transactionsLoaded = true;
 
-const q=query(
-collection(db,"transactions"),
-where("merchantId","==",merchantId)
+const q = query(
+    collection(db,"transactions"),
+    where("merchantId","==",merchantId)
 );
 
 onSnapshot(q,
@@ -658,20 +730,28 @@ alert(error.message);
 
 // Search
 document.getElementById("searchInput")
-.addEventListener("input",renderTransactions);
+.addEventListener("input",()=>{
+
+currentPage=1;
+
+renderTransactions();
+
+});
 
 // Filters
-document.querySelectorAll(".filter-btn")
+document.querySelectorAll(".filter-btn[data-filter]")
 .forEach(btn=>{
 
 btn.onclick=function(){
 
-document.querySelectorAll(".filter-btn")
+document.querySelectorAll(".filter-btn[data-filter]")
 .forEach(b=>b.classList.remove("active"));
 
 this.classList.add("active");
 
 currentFilter=this.dataset.filter;
+
+currentPage=1;
 
 renderTransactions();
 
@@ -717,15 +797,69 @@ list.innerHTML = "";
 
 empty.style.display = "block";
 
+document.getElementById("pagination").style.display = "none";
+
 return;
 
 }
 
 empty.style.display = "none";
 
+document.getElementById("pagination").style.display = "flex";
+
 let html = "";
 
-filtered.forEach(tx=>{
+filtered.sort((a,b)=>{
+
+const aTime =
+a.createdAt?.toDate
+? a.createdAt.toDate().getTime()
+:0;
+
+const bTime =
+b.createdAt?.toDate
+? b.createdAt.toDate().getTime()
+:0;
+
+return bTime-aTime;
+
+});
+
+const totalPages = Math.max(
+1,
+Math.ceil(filtered.length/pageSize)
+);
+
+if(currentPage>totalPages){
+
+currentPage=totalPages;
+
+}
+
+const start=(currentPage-1)*pageSize;
+
+const pageTransactions=
+filtered.slice(
+start,
+start+pageSize
+);
+
+document.getElementById("pageInfo").innerHTML=
+`Page ${currentPage} of ${totalPages}`;
+
+const prevBtn = document.getElementById("prevPage");
+const nextBtn = document.getElementById("nextPage");
+
+prevBtn.disabled = currentPage === 1;
+nextBtn.disabled = currentPage === totalPages;
+
+prevBtn.style.opacity = prevBtn.disabled ? ".5" : "1";
+nextBtn.style.opacity = nextBtn.disabled ? ".5" : "1";
+
+prevBtn.style.cursor = prevBtn.disabled ? "not-allowed" : "pointer";
+nextBtn.style.cursor = nextBtn.disabled ? "not-allowed" : "pointer";
+
+pageTransactions.forEach(tx=>{
 
 const status =
 (tx.status || "PENDING").toUpperCase();
@@ -740,6 +874,45 @@ tx.createdAt?.toDate
 ? tx.createdAt.toDate().toLocaleString()
 : "--";
 
+let icon = "fa-money-check-dollar";
+let title = tx.type || "Transaction";
+
+switch ((tx.type || "").toUpperCase()) {
+
+case "DEPOSIT":
+    icon = "fa-arrow-down";
+    title = "Wallet Deposit";
+    break;
+
+case "WITHDRAWAL":
+    icon = "fa-arrow-up";
+    title = "Withdrawal";
+    break;
+    
+case "REVERSAL":
+    icon = "fa-rotate-left";
+    title = "Transaction Reversal";
+    break;
+
+case "AUTO SERVICE TOP-UP":
+    icon = "fa-rotate";
+    title = "Auto Service Top-up";
+    break;
+
+default:
+
+    if (tx.balanceType === "wallet") {
+        icon = "fa-wallet";
+        title = "Wallet Top-up";
+    }
+
+    else if (tx.balanceType === "service") {
+        icon = "fa-server";
+        title = "Service Balance Top-up";
+    }
+
+}
+
 html += `
 <div class="transaction-card" data-id="${tx.id}">
 
@@ -748,17 +921,30 @@ html += `
 <div>
 
 <div class="reference">
-${tx.checkoutRequestId || tx.id}
+
+<i class="fas ${icon}" style="color:#2563eb;margin-right:8px;"></i>
+
+${title}
+
 </div>
 
 <div class="transaction-info">
+
 ${tx.phone || "--"}
+
+</div>
+
+<div class="transaction-info">
+
+${tx.checkoutRequestId || tx.reference || tx.id}
+
 </div>
 
 </div>
 
 <div class="amount">
-KES ${Number(tx.amount || 0).toLocaleString()}
+${Number(tx.amount) < 0 ? "-" : ""}
+KES ${Math.abs(Number(tx.amount || 0)).toLocaleString()}
 </div>
 
 </div>
@@ -794,85 +980,110 @@ showDetails(card.dataset.id);
 }
 
 // Modal
-window.showDetails=function(id){
+window.showDetails = function(id){
 
-const tx=allTransactions.find(t=>t.id===id);
+const tx = allTransactions.find(t => t.id === id);
 
 if(!tx) return;
 
-document.getElementById("detailsContent").innerHTML=`
+let transactionName = "Transaction";
+
+switch ((tx.type || "").toUpperCase()) {
+
+case "DEPOSIT":
+    transactionName = "Wallet Deposit";
+    break;
+
+case "WITHDRAWAL":
+    transactionName = "Withdrawal";
+    break;
+    
+case "REVERSAL":
+    transactionName = "Transaction Reversal";
+    break;
+
+case "AUTO SERVICE TOP-UP":
+    transactionName = "Auto Service Top-up";
+    break;
+
+default:
+
+    if(tx.balanceType === "wallet"){
+        transactionName = "Wallet Top-up";
+    }
+    else if(tx.balanceType === "service"){
+        transactionName = "Service Balance Top-up";
+    }
+
+}
+
+document.getElementById("detailsContent").innerHTML = `
 
 <div class="detail-row">
+<span>Transaction Type</span>
+<strong>${transactionName}</strong>
+</div>
 
+<div class="detail-row">
 <span>Reference</span>
-
-<strong>
-
-${tx.checkoutRequestId||tx.id}
-
-</strong>
-
+<strong>${tx.checkoutRequestId || tx.reference || tx.id}</strong>
 </div>
 
 <div class="detail-row">
-
 <span>Phone</span>
-
-<strong>
-
-${tx.phone||"--"}
-
-</strong>
-
+<strong>${tx.phone || "--"}</strong>
 </div>
 
 <div class="detail-row">
-
 <span>Amount</span>
-
-<strong>
-
-KES ${Number(tx.amount||0).toLocaleString()}
-
-</strong>
-
+<strong>KES ${Number(tx.amount || 0).toLocaleString()}</strong>
 </div>
 
 <div class="detail-row">
-
 <span>Status</span>
-
-<strong>
-
-${tx.status||"--"}
-
-</strong>
-
+<strong>${tx.status || "--"}</strong>
 </div>
 
 <div class="detail-row">
+<span>Gateway</span>
+<strong>${tx.gateway || "AUTOPAY"}</strong>
+</div>
 
+${tx.fee ? `
+<div class="detail-row">
+<span>Fee</span>
+<strong>KES ${Number(tx.fee).toLocaleString()}</strong>
+</div>
+` : ""}
+
+${tx.payoutAmount ? `
+<div class="detail-row">
+<span>Net Amount</span>
+<strong>KES ${Number(tx.payoutAmount).toLocaleString()}</strong>
+</div>
+` : ""}
+
+${tx.description ? `
+<div class="detail-row">
+<span>Description</span>
+<strong>${tx.description}</strong>
+</div>
+` : ""}
+
+<div class="detail-row">
 <span>Merchant Request</span>
-
-<strong>
-
-${tx.merchantRequestId||"--"}
-
-</strong>
-
+<strong>${tx.merchantRequestId || "--"}</strong>
 </div>
 
 <button
 class="copy-btn"
-onclick="copyReference('${tx.checkoutRequestId||tx.id}')">
-
+onclick="copyReference('${tx.checkoutRequestId || tx.reference || tx.id}')">
 Copy Reference
-
 </button>
 
 `;
 
-document.getElementById("detailsModal").style.display="flex";
+document.getElementById("detailsModal").style.display = "flex";
 
 };
 
@@ -895,6 +1106,67 @@ modal.style.display="none";
 
 };
 
+document.getElementById("prevPage").onclick=()=>{
+
+if(currentPage>1){
+
+currentPage--;
+
+renderTransactions();
+
+}
+
+};
+
+document.getElementById("nextPage").onclick=()=>{
+
+const totalPages=Math.max(
+1,
+Math.ceil(filteredTransactionCount()/pageSize)
+);
+
+if(currentPage<totalPages){
+
+currentPage++;
+
+renderTransactions();
+
+}
+
+};
+
+function filteredTransactionCount(){
+
+const search=document
+.getElementById("searchInput")
+.value
+.toLowerCase();
+
+return allTransactions.filter(tx=>{
+
+const status=(tx.status||"").toUpperCase();
+
+const ref=String(
+tx.checkoutRequestId||
+tx.reference||
+""
+).toLowerCase();
+
+const phone=String(
+tx.phone||""
+).toLowerCase();
+
+return(
+(ref.includes(search)||phone.includes(search))
+&&
+(currentFilter==="ALL"||
+status===currentFilter)
+);
+
+}).length;
+
+}
+
 // Copy
 window.copyReference=function(ref){
 
@@ -906,4 +1178,4 @@ alert("Reference copied.");
 
 </script>
 </body>
-</html>
+  </html>
