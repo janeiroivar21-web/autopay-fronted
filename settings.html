@@ -111,8 +111,9 @@ line-height:1.5;
 .switch{
 position:relative;
 display:inline-block;
-width:52px;
-height:30px;
+width:58px;
+height:34px;
+flex-shrink:0;
 }
 
 .switch input{
@@ -121,26 +122,27 @@ display:none;
 
 .slider{
 position:absolute;
-cursor:pointer;
 top:0;
 left:0;
 right:0;
 bottom:0;
+cursor:pointer;
 background:#4b5563;
+border-radius:50px;
 transition:.3s;
-border-radius:30px;
 }
 
 .slider:before{
 content:"";
 position:absolute;
-height:22px;
-width:22px;
+width:26px;
+height:26px;
 left:4px;
-bottom:4px;
-background:white;
-transition:.3s;
+top:4px;
+background:#fff;
 border-radius:50%;
+box-shadow:0 2px 10px rgba(0,0,0,.25);
+transition:.3s;
 }
 
 input:checked + .slider{
@@ -148,7 +150,7 @@ background:#2563eb;
 }
 
 input:checked + .slider:before{
-transform:translateX(22px);
+transform:translateX(24px);
 }
 
 .menu-btn{
@@ -289,14 +291,68 @@ line-height:1.6;
 
 .popup-card button{
 width:100%;
-padding:15px;
+padding:16px;
 border:none;
 border-radius:14px;
-background:#2563eb;
+background:linear-gradient(135deg,#2563eb,#1d4ed8);
 color:#fff;
 font-size:15px;
-font-weight:bold;
+font-weight:700;
 cursor:pointer;
+transition:.25s;
+box-shadow:0 8px 20px rgba(37,99,235,.35);
+}
+
+.popup-card button:hover{
+transform:translateY(-2px);
+box-shadow:0 12px 24px rgba(37,99,235,.45);
+}
+
+.popup-card button:active{
+transform:scale(.98);
+}
+
+.input-box{
+margin-top:15px;
+}
+
+.input-box label{
+display:block;
+font-size:14px;
+margin-bottom:8px;
+color:#94a3b8;
+}
+
+.input-box input{
+width:100%;
+padding:14px;
+border-radius:12px;
+border:1px solid #2b3750;
+background:#111827;
+color:#fff;
+font-size:15px;
+outline:none;
+transition:.3s;
+}
+
+.input-box input::placeholder{
+color:#6b7280;
+opacity:1;
+}
+
+.input-box input:focus{
+border-color:#2563eb;
+box-shadow:0 0 0 3px rgba(37,99,235,.15);
+}
+
+.input-box input[readonly]{
+cursor:pointer;
+}
+
+body.light .input-box input{
+background:#fff;
+border-color:#dbe2ea;
+color:#111827;
 }
 
 /* LIGHT MODE */
@@ -304,6 +360,10 @@ cursor:pointer;
 body.light{
 background:#f5f7fb;
 color:#111827;
+}
+
+body.light .input-box input::placeholder{
+color:#94a3b8;
 }
 
 body.light .section-card,
@@ -423,25 +483,119 @@ border-color:#e5e7eb;
 
         <div class="setting-item">
 
-            <div>
+    <div>
 
-                <h3>SMS Notifications</h3>
+        <h3>WhatsApp Notifications</h3>
 
-                <p>Receive important alerts via SMS.</p>
+        <p>Receive payment updates and transaction alerts via WhatsApp.</p>
 
-            </div>
+    </div>
 
-            <label class="switch">
+    <label class="switch">
 
-                <input type="checkbox" id="smsNotifications">
+        <input type="checkbox" id="whatsappNotifications">
 
-                <span class="slider"></span>
+        <span class="slider"></span>
 
-            </label>
+    </label>
+
+</div>
 
         </div>
 
     </div>
+    
+    <div class="section-card">
+
+    <div class="section-title">
+        WhatsApp Notifications
+    </div>
+
+    <div class="input-box">
+
+        <label>WhatsApp Number</label>
+
+        <input
+            type="tel"
+            id="whatsappNumber"
+            placeholder="07XXXXXXXX or 2547XXXXXXXX"
+        >
+
+        <small style="display:block;margin-top:8px;color:#94a3b8;font-size:12px;">
+            This number will receive payment notifications.
+        </small>
+
+    </div>
+
+</div>
+    
+    <!-- Auto Service Top-up -->
+
+<div class="section-card">
+
+    <div class="section-title">
+        Auto Service Top-up
+    </div>
+
+    <div class="setting-item">
+
+        <div>
+
+            <h3>Enable Auto Top-up</h3>
+
+            <p>
+                Automatically transfer funds from your AUTOPAY Wallet to your Service Balance whenever it reaches your configured threshold. This feature is available exclusively for AUTOPAY Wallet users.
+            </p>
+
+        </div>
+
+        <label class="switch">
+
+            <input type="checkbox" id="autoTopupEnabled">
+
+            <span class="slider"></span>
+
+        </label>
+
+    </div>
+
+    <div class="input-box">
+
+        <label>Threshold Amount (KSh)</label>
+
+        <input
+type="number"
+id="autoTopupThreshold"
+placeholder="Enter threshold amount"
+min="20"
+max="1000"
+>
+
+<small style="display:block;margin-top:8px;color:#94a3b8;font-size:12px;">
+Minimum: KSh 20 • Maximum: KSh 1,000
+</small>
+
+    </div>
+
+    <div class="input-box">
+
+        <label>Top-up Amount (KSh)</label>
+
+        <input
+type="number"
+id="autoTopupAmount"
+placeholder="Enter top-up amount"
+min="20"
+max="1000"
+>
+
+<small style="display:block;margin-top:8px;color:#94a3b8;font-size:12px;">
+Minimum: KSh 20 • Maximum: KSh 1,000
+</small>
+
+    </div>
+
+</div>
 
     <!-- Security -->
 
@@ -481,7 +635,7 @@ border-color:#e5e7eb;
 
             <span>Version</span>
 
-            <strong>1.0.0</strong>
+            <strong>2.0.0</strong>
 
         </div>
 
@@ -550,6 +704,31 @@ border-color:#e5e7eb;
     </div>
 
 </div>
+
+<!-- Warning Popup -->
+
+<div class="popup" id="warningPopup">
+
+    <div class="popup-card">
+
+        <i class="fas fa-triangle-exclamation"
+           style="color:#f59e0b;"></i>
+
+        <h2 id="warningTitle">
+            AUTOPAY Notice
+        </h2>
+
+        <p id="warningMessage"></p>
+
+        <button id="closeWarningPopup">
+        
+           Configure Now
+           
+        </button>
+
+    </div>
+
+</div>
 <script type="module">
 
 import { auth, db } from "./firebase.js";
@@ -562,12 +741,53 @@ sendPasswordResetEmail
 
 import {
 doc,
-getDoc,
-setDoc
-} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
+setDoc,
+updateDoc,
+onSnapshot
+}
+from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
 
 let currentUser=null;
 let userEmail="";
+
+function toggleAutoTopupFields(){
+
+const enabled =
+document.getElementById("autoTopupEnabled").checked;
+
+const threshold =
+document.getElementById("autoTopupThreshold");
+
+const amount =
+document.getElementById("autoTopupAmount");
+
+threshold.style.opacity = enabled ? "1" : ".75";
+amount.style.opacity = enabled ? "1" : ".75";
+
+threshold.placeholder = "Enter threshold amount";
+amount.placeholder = "Enter top-up amount";
+
+}
+
+function showWarning(title,message,buttonText="OK"){
+
+document.getElementById("warningTitle").innerHTML=title;
+
+document.getElementById("warningMessage").innerHTML=message;
+
+const btn=document.getElementById("closeWarningPopup");
+
+btn.innerHTML=buttonText;
+
+btn.onclick=()=>{
+
+document.getElementById("warningPopup").style.display="none";
+
+};
+
+document.getElementById("warningPopup").style.display="flex";
+
+}
 
 // Theme
 if(localStorage.getItem("theme")==="light"){
@@ -586,7 +806,7 @@ return;
 currentUser=user;
 userEmail=user.email;
 
-const snap=await getDoc(doc(db,"users",user.uid));
+onSnapshot(doc(db,"users",user.uid),(snap)=>{
 
 if(!snap.exists()){
 location.href="login.html";
@@ -595,26 +815,47 @@ return;
 
 const data=snap.data();
 
-const initials=(data.fullName||"A").charAt(0).toUpperCase();
+const initials=(data.fullName || "A")
+.split(" ")
+.map(name => name.charAt(0))
+.join("")
+.substring(0,2)
+.toUpperCase();
 
 document.getElementById("avatar").innerHTML=initials;
 
-// Load saved settings
-const settingsSnap=await getDoc(doc(db,"settings",user.uid));
+document.getElementById("whatsappNotifications").checked =
+data.whatsappEnabled || false;
 
-if(settingsSnap.exists()){
-
-const settings=settingsSnap.data();
-
-document.getElementById("emailNotifications").checked=
-settings.emailNotifications||false;
-
-document.getElementById("smsNotifications").checked=
-settings.smsNotifications||false;
-
-}
+document.getElementById("whatsappNumber").value =
+data.whatsappNumber || "";
 
 });
+
+// Load saved settings
+onSnapshot(doc(db,"settings",user.uid),(settingsSnap)=>{
+
+    if(!settingsSnap.exists()) return;
+
+    const settings=settingsSnap.data();
+
+    document.getElementById("emailNotifications").checked =
+    settings.emailNotifications || false;
+
+    document.getElementById("autoTopupEnabled").checked =
+    settings.autoTopupEnabled || false;
+
+    document.getElementById("autoTopupThreshold").value =
+    settings.autoTopupThreshold || "";
+
+    document.getElementById("autoTopupAmount").value =
+    settings.autoTopupAmount || "";
+
+    toggleAutoTopupFields();
+
+});
+
+}); // <-- MOVE THIS HERE
 
 // Back
 document.getElementById("backBtn").onclick=()=>history.back();
@@ -636,6 +877,111 @@ localStorage.setItem("theme","light");
 
 });
 
+document.getElementById("autoTopupEnabled").addEventListener("change",function(){
+
+if(!this.checked){
+
+toggleAutoTopupFields();
+
+return;
+
+}
+
+const threshold=
+Number(document.getElementById("autoTopupThreshold").value);
+
+const amount=
+Number(document.getElementById("autoTopupAmount").value);
+
+/*
+Replace this later with the real value from Firestore.
+*/
+const usingAutopayWallet=true;
+
+if(!threshold){
+
+this.checked=false;
+
+toggleAutoTopupFields();
+
+showWarning(
+"Threshold Required",
+"Please enter a Threshold Amount before enabling Auto Service Top-up.",
+"Configure Now"
+);
+
+return;
+
+}
+
+if(threshold<20 || threshold>1000){
+
+this.checked=false;
+
+toggleAutoTopupFields();
+
+showWarning(
+"Invalid Threshold",
+"Threshold Amount must be between <b>KSh 20</b> and <b>KSh 1,000</b>.",
+"Configure Now"
+);
+
+return;
+
+}
+
+if(!amount){
+
+this.checked=false;
+
+toggleAutoTopupFields();
+
+showWarning(
+"Top-up Amount Required",
+"Please enter a Top-up Amount before enabling Auto Service Top-up.",
+"Configure Now"
+);
+
+return;
+
+}
+
+if(amount<20 || amount>1000){
+
+this.checked=false;
+
+toggleAutoTopupFields();
+
+showWarning(
+"Invalid Top-up Amount",
+"Top-up Amount must be between <b>KSh 20</b> and <b>KSh 1,000</b>.",
+"Configure Now"
+);
+
+return;
+
+}
+
+if(!usingAutopayWallet){
+
+this.checked=false;
+
+toggleAutoTopupFields();
+
+showWarning(
+"AUTOPAY Wallet Required",
+"This feature is available only for merchants using an <b>AUTOPAY Wallet</b>.",
+"Configure Now"
+);
+
+return;
+
+}
+
+toggleAutoTopupFields();
+
+});
+
 // Save Settings
 document.getElementById("saveSettings").onclick=async()=>{
 
@@ -645,15 +991,56 @@ document.getElementById("loading").style.display="flex";
 
 try{
 
+const whatsappEnabled =
+document.getElementById("whatsappNotifications").checked;
+
+const whatsappNumber =
+document.getElementById("whatsappNumber").value.trim();
+
+if(whatsappEnabled && whatsappNumber===""){
+
+    document.getElementById("loading").style.display="none";
+
+    showWarning(
+        "WhatsApp Number Required",
+        "Please enter your WhatsApp number before enabling WhatsApp notifications.",
+        "Configure Now"
+    );
+
+    return;
+}
+
 await setDoc(doc(db,"settings",currentUser.uid),{
 
 emailNotifications:
 document.getElementById("emailNotifications").checked,
 
-smsNotifications:
-document.getElementById("smsNotifications").checked,
+whatsappNotifications:
+document.getElementById("whatsappNotifications").checked,
+
+whatsappNumber:
+document.getElementById("whatsappNumber").value.trim(),
+
+autoTopupEnabled:
+document.getElementById("autoTopupEnabled").checked,
+
+autoTopupThreshold:
+Number(document.getElementById("autoTopupThreshold").value || 0),
+
+autoTopupAmount:
+Number(document.getElementById("autoTopupAmount").value || 0),
 
 updatedAt:new Date()
+
+});
+
+await updateDoc(doc(db,"users",currentUser.uid),{
+
+    whatsappEnabled:
+    document.getElementById("whatsappNotifications").checked,
+
+    whatsappNumber:
+    document.getElementById("whatsappNumber").value.trim()
 
 });
 
@@ -665,11 +1052,15 @@ document.getElementById("successPopup").style.display="flex";
 
 document.getElementById("loading").style.display="none";
 
-alert(error.message);
+showWarning(
+"Settings Not Saved",
+error.message,
+"Close"
+);
 
 }
 
-};
+};   // <-- ADD THIS LINE
 
 // Close Popup
 document.getElementById("closePopup").onclick=()=>{
@@ -679,9 +1070,18 @@ document.getElementById("successPopup").style.display="none";
 };
 
 // Logout
-document.getElementById("logout").onclick=async()=>{
+document.getElementById("logout").onclick=()=>{
 
-if(!confirm("Are you sure you want to logout?")) return;
+showWarning(
+"Logout",
+"Are you sure you want to logout from your AUTOPAY account?"
+);
+
+document.getElementById("closeWarningPopup").innerHTML="Logout";
+
+document.getElementById("closeWarningPopup").onclick=async()=>{
+
+document.getElementById("warningPopup").style.display="none";
 
 await signOut(auth);
 
@@ -689,11 +1089,17 @@ location.href="login.html";
 
 };
 
+};
+
 // Password Reset
-document.getElementById("changePassword").onclick=async()=>{
+document.getElementById("changePassword").onclick = async()=>{
 
 if(!userEmail){
-alert("Unable to get your email address.");
+showWarning(
+"Email Required",
+"We couldn't find your email address. Please sign in again and try.",
+"Close"
+);
 return;
 }
 
@@ -701,18 +1107,29 @@ try{
 
 await sendPasswordResetEmail(auth,userEmail);
 
-alert(
-"Password reset link has been sent to your email."
-);
+document.getElementById("warningTitle").innerHTML="Password Reset";
+
+document.getElementById("warningMessage").innerHTML=
+"A password reset link has been sent to your registered email address.";
+
+document.getElementById("closeWarningPopup").innerHTML="Continue";
+
+document.getElementById("warningPopup").style.display="flex";
 
 }catch(error){
 
-alert(error.message);
+showWarning(
+"Password Reset Failed",
+error.message,
+"Close"
+);
 
 }
 
 };
 
+toggleAutoTopupFields();
+
 </script>
 </body>
-</html>
+    </html>
