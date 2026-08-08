@@ -685,7 +685,7 @@ Make Default
 
 <div class="popup-box">
 
-<div id="popupIcon" class="popup-icon">✓</div>
+<div id="popupIcon" class="popup-icon">âœ“</div>
 
 <h3 id="popupTitle"></h3>
 
@@ -759,7 +759,7 @@ document.getElementById("popupMessage").innerHTML=message;
 
 const icon=document.getElementById("popupIcon");
 
-icon.innerHTML=success?"✓":"✕";
+icon.innerHTML=success?"âœ“":"âœ•";
 
 icon.style.background=success?"#16a34a":"#ef4444";
 
@@ -860,13 +860,18 @@ document.getElementById("walletDefaultBtn").style.display="block";
 document.getElementById("backBtn").onclick=()=>history.back();
 
 // Open Modal
-document.getElementById("addAccount").onclick=()=>{
+document.getElementById("addAccount").onclick = () => {
 
-editId = null;
-
-clearForm();
-
-document.getElementById("accountModal").style.display="flex";
+showPopup(
+"ðŸš§ Coming Soon",
+`Personal payment account integration is currently under development.<br><br>
+Soon you will be able to connect:<br><br>
+â€¢ M-PESA Till<br>
+â€¢ M-PESA Paybill<br>
+â€¢ Bank Account<br><br>
+For now, all payments are securely received into your <b>AUTOPAY Wallet</b>.`,
+true
+);
 
 };
 // Close Modal
@@ -1058,7 +1063,10 @@ container.innerHTML=`
 
 <h3>No Payment Accounts</h3>
 
-<p>Add your first payment account to start receiving payments.</p>
+<p>
+Personal payment account integration is coming soon.
+All collections are currently received through your AUTOPAY Wallet.
+</p>
 
 </div>
 `;
@@ -1328,4 +1336,4 @@ document.body.classList.add("light");
 
 </script>
 </body>
-</html>
+    </html>
