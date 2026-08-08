@@ -183,6 +183,25 @@ font-size:28px;
 color:#22c55e;
 }
 
+.rejection-card{
+display:none;
+background:#7f1d1d;
+border:1px solid #dc2626;
+padding:18px;
+border-radius:15px;
+margin-top:18px;
+}
+
+.rejection-card h4{
+margin-bottom:10px;
+color:#fff;
+}
+
+.rejection-card p{
+line-height:1.7;
+color:#fecaca;
+}
+
 /* ================= SECTION ================= */
 
 .section{
@@ -534,6 +553,19 @@ margin:0;
         </div>
 
     </div>
+    
+    <div class="rejection-card" id="rejectionCard" style="display:none;">
+
+    <h4>
+        <i class="fas fa-circle-exclamation"></i>
+        Verification Rejected
+    </h4>
+
+    <p id="rejectionReason">
+        Your verification was rejected.
+    </p>
+
+</div>
 
     <!-- ========================= -->
 
@@ -861,7 +893,8 @@ onAuthStateChanged
 
 import {
 doc,
-getDoc
+getDoc,
+onSnapshot
 } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
 
 // Theme
@@ -935,97 +968,157 @@ document.getElementById("fullName").readOnly = true;
 
 document.getElementById("phone").readOnly = true;
 
+// Disable button while loading KYC
+
+const submitBtn = document.getElementById("submitPersonal");
+
+submitBtn.disabled = true;
+
+submitBtn.innerHTML = "Loading...";
+
 // Load KYC
 
 loadKyc();
 
 });
 
-async function loadKyc(){
+function loadKyc(){
 
-const snap = await getDoc(
-doc(db,"kyc",currentUser.uid)
-);
+const kycRef = doc(db,"kyc",currentUser.uid);
 
-if(!snap.exists()) return;
+onSnapshot(kycRef,(snap)=>{
 
-const kyc = snap.data();
+if(!snap.exists()){
 
-updateStatus(kyc);
+updateStatus({
+personalStatus:"",
+businessStatus:""
+});
 
- }
+return;
+
+}
+
+updateStatus(snap.data());
+
+},(error)=>{
+
+console.error(error);
+
+});
+
+}
 
 function updateStatus(kyc){
 
-const badge =
-document.getElementById("statusBadge");
-
-const limit =
-document.getElementById("monthlyLimit");
+const badge = document.getElementById("statusBadge");
+const limit = document.getElementById("monthlyLimit");
+const rejectCard = document.getElementById("rejectionCard");
+const rejectReason = document.getElementById("rejectionReason");
+const submitBtn = document.getElementById("submitPersonal");
 
 badge.className = "status-badge";
+rejectCard.style.display = "none";
 
 switch(kyc.personalStatus){
 
 case "Pending":
 
-badge.innerHTML =
-"Pending Verification";
-
+badge.innerHTML = "Pending Verification";
 badge.classList.add("pending");
+limit.innerHTML = "KSh 0";
 
-limit.innerHTML="KSh 0";
+submitBtn.disabled = true;
+submitBtn.innerHTML = "Verification Submitted";
 
 break;
 
 case "Under Review":
 
-badge.innerHTML =
-"Under Review";
-
+badge.innerHTML = "Under Review";
 badge.classList.add("review");
+limit.innerHTML = "KSh 0";
 
-limit.innerHTML="KSh 0";
+submitBtn.disabled = true;
+submitBtn.innerHTML = "Verification Under Review";
 
 break;
 
 case "Approved":
 
-badge.innerHTML =
-"Personal Verified";
+document.getElementById("businessSection").style.display = "block";
 
-badge.classList.add("verified");
+submitBtn.disabled = true;
+submitBtn.innerHTML = "Personal Verification Completed";
 
-limit.innerHTML="KSh 10,000";
+const businessBtn =
+document.getElementById("submitBusiness");
 
-document.getElementById("businessSection").style.display="block";
+// BUSINESS APPROVED
+if (kyc.businessStatus === "Approved") {
 
-document.getElementById("submitPersonal").disabled = true;
+    badge.innerHTML = "Business Verified";
+    badge.classList.add("verified");
+    limit.innerHTML = "KSh 1,000,000";
 
-document.getElementById("submitPersonal").innerHTML =
-"Personal Verification Completed";
+    // Highlight Step 2
+    document.querySelectorAll(".step")[1].classList.add("active");
+
+    businessBtn.disabled = true;
+    businessBtn.innerHTML = "Business Verified";
+
+// BUSINESS PENDING
+} else if (kyc.businessStatus === "Pending") {
+
+    badge.innerHTML = "Personal Verified";
+    badge.classList.add("verified");
+    limit.innerHTML = "KSh 10,000";
+
+    businessBtn.disabled = true;
+    businessBtn.innerHTML = "Business Verification Submitted";
+
+// BUSINESS NOT SUBMITTED
+} else {
+
+    badge.innerHTML = "Personal Verified";
+    badge.classList.add("verified");
+    limit.innerHTML = "KSh 10,000";
+
+    businessBtn.disabled = false;
+    businessBtn.innerHTML = "Submit Business Verification";
+
+}
 
 break;
 
 case "Rejected":
 
-badge.innerHTML =
-"Rejected";
-
+badge.innerHTML = "Verification Rejected";
 badge.classList.add("rejected");
+limit.innerHTML = "KSh 0";
 
-limit.innerHTML="KSh 0";
+submitBtn.disabled = false;
+submitBtn.innerHTML = "Submit Personal Verification";
+
+rejectCard.style.display = "block";
+
+rejectReason.innerHTML =
+kyc.rejectionReason ||
+"Your verification was rejected. Please correct the issue and submit again.";
 
 break;
 
 default:
 
-badge.innerHTML =
-"Pending Verification";
+badge.innerHTML = "KYC Required‼️";
+badge.classList.add("rejected");
+limit.innerHTML = "KSh 0";
 
-badge.classList.add("pending");
+submitBtn.disabled = false;
+submitBtn.innerHTML = "Submit Personal Verification";
 
 }
+
 }
 // Submit
 document.getElementById("submitPersonal").onclick = async()=>{
@@ -1127,39 +1220,192 @@ const result = await response.json();
 
 if(result.success){
 
+btn.disabled = true;
+
+btn.innerHTML = "Verification Submitted";
+
+document.getElementById("statusBadge").innerHTML =
+"Pending Verification";
+
+document.getElementById("statusBadge").className =
+"status-badge pending";
+
 showPopup(
 "Verification Submitted",
-"Your personal verification has been submitted successfully.",
+"Your documents have been submitted successfully. Our team will review them shortly.",
 "success"
 );
 
-location.reload();
-
 }else{
+
+btn.disabled = false;
+
+btn.innerHTML = "Submit Personal Verification";
 
 showPopup(
 "Submission Failed",
 result.message,
 "error"
 );
+
 }
 
 }catch(error){
 
 console.error(error);
 
+btn.disabled = false;
+
+btn.innerHTML = "Submit Personal Verification";
+
 showPopup(
 "Network Error",
-"Unable to submit verification. Please try again.",
+error.message,
 "error"
 );
 
 }
 
+};
+
+// =============================
+// BUSINESS VERIFICATION SUBMIT
+// =============================
+
+document.getElementById("submitBusiness").onclick = async()=>{
+
+if(!currentUser) return;
+
+const businessName =
+document.getElementById("businessName").value.trim();
+
+const businessType =
+document.getElementById("businessType").value.trim();
+
+const businessEmail =
+document.getElementById("businessEmail").value.trim();
+
+const registrationNumber =
+document.getElementById("registrationNumber").value.trim();
+
+if(
+!businessName ||
+!businessType ||
+!businessEmail ||
+!registrationNumber
+){
+
+showPopup(
+"Missing Information",
+"Please complete all business details.",
+"warning"
+);
+
+return;
+
+}
+
+if(
+!document.getElementById("permit").files.length ||
+!document.getElementById("kraPin").files.length
+){
+
+showPopup(
+"Missing Documents",
+"Please upload your Business Permit and KRA PIN Certificate.",
+"warning"
+);
+
+return;
+
+}
+
+const btn =
+document.getElementById("submitBusiness");
+
+btn.disabled = true;
+btn.innerHTML = "Submitting...";
+
+const form = new FormData();
+
+form.append("uid", currentUser.uid);
+form.append("businessName", businessName);
+form.append("businessType", businessType);
+form.append("businessEmail", businessEmail);
+form.append("registrationNumber", registrationNumber);
+
+form.append(
+"permit",
+document.getElementById("permit").files[0]
+);
+
+form.append(
+"kraPin",
+document.getElementById("kraPin").files[0]
+);
+
+const support =
+document.getElementById("supportDocs").files;
+
+for(let i=0;i<support.length;i++){
+
+form.append("supportDocs", support[i]);
+
+}
+
+try{
+
+const response = await fetch(
+"https://autopay.co.ke/api/kyc/business-upload",
+{
+method:"POST",
+body:form
+});
+
+const result = await response.json();
+
+if(result.success){
+
+btn.disabled = true;
+
+btn.innerHTML =
+"Business Verification Submitted";
+
+showPopup(
+"Business Verification Submitted",
+"Your business documents have been submitted successfully.",
+"success"
+);
+
+}else{
+
 btn.disabled = false;
 
 btn.innerHTML =
-"Submit Personal Verification";
+"Submit Business Verification";
+
+showPopup(
+"Submission Failed",
+result.message,
+"error"
+);
+
+}
+
+}catch(error){
+
+btn.disabled = false;
+
+btn.innerHTML =
+"Submit Business Verification";
+
+showPopup(
+"Network Error",
+error.message,
+"error"
+);
+
+}
 
 };
 
@@ -1228,5 +1474,6 @@ popupRedirect=null;
 };
 
 </script>
+
 </body>
 </html>
