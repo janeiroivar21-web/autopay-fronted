@@ -1,0 +1,2115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<title>WhatsApp Billing | AUTOPAY</title>
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#0c1424;
+color:#fff;
+transition:.3s;
+}
+
+body.light{
+background:#f5f7fb;
+color:#111827;
+}
+
+.container{
+max-width:430px;
+margin:auto;
+padding:18px;
+padding-bottom:100px;
+}
+
+/*==========================
+HEADER
+==========================*/
+
+.top{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:22px;
+}
+
+.back-btn,
+.avatar{
+
+width:48px;
+height:48px;
+
+border-radius:14px;
+
+background:#182235;
+
+border:1px solid #293650;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+cursor:pointer;
+
+transition:.25s;
+
+}
+
+.back-btn:hover,
+.avatar:hover{
+
+transform:translateY(-2px);
+
+}
+
+.title{
+
+display:flex;
+align-items:center;
+gap:10px;
+
+font-size:22px;
+font-weight:bold;
+
+}
+
+.title i{
+
+color:#25D366;
+
+}
+
+/*==========================
+WHATSAPP HERO
+==========================*/
+
+.hero{
+
+background:linear-gradient(135deg,#25D366,#1DA851);
+
+border-radius:22px;
+
+padding:22px;
+
+box-shadow:0 15px 35px rgba(37,211,102,.25);
+
+margin-bottom:22px;
+
+color:#fff;
+
+}
+
+.hero-top{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+margin-bottom:18px;
+
+}
+
+.hero-title{
+
+font-size:18px;
+
+font-weight:bold;
+
+display:flex;
+
+align-items:center;
+
+gap:10px;
+
+}
+
+.hero-title i{
+
+font-size:28px;
+
+}
+
+.hero-status{
+
+display:flex;
+
+align-items:center;
+
+gap:8px;
+
+padding:8px 14px;
+
+border-radius:30px;
+
+font-size:13px;
+
+font-weight:bold;
+
+background:#ef4444;
+
+color:#fff;
+
+}
+
+.hero-status.active{
+
+background:#16a34a;
+
+}
+
+.hero-status.disabled{
+
+background:#ef4444;
+
+}
+
+.hero-status i{
+
+font-size:10px;
+
+}
+
+.credit-number{
+
+font-size:38px;
+
+font-weight:bold;
+
+margin-top:8px;
+
+}
+
+.credit-label{
+
+margin-top:5px;
+
+opacity:.9;
+
+}
+
+.hero-footer{
+
+display:flex;
+
+justify-content:space-between;
+
+gap:18px;
+
+flex-wrap:wrap;
+
+}
+
+.footer-box{
+
+flex:1 1 140px;
+
+text-align:center;
+
+}
+
+.footer-box h3{
+
+font-size:22px;
+
+margin-bottom:4px;
+
+}
+
+.footer-box span{
+
+font-size:13px;
+
+opacity:.9;
+
+}
+
+/*==========================
+INFO CARD
+==========================*/
+
+.info-card{
+
+background:#182235;
+
+border:1px solid #293650;
+
+border-radius:20px;
+
+padding:20px;
+
+margin-bottom:22px;
+
+}
+
+.info-title{
+
+display:flex;
+
+align-items:center;
+
+gap:10px;
+
+font-size:18px;
+
+font-weight:bold;
+
+margin-bottom:18px;
+
+}
+
+.info-title i{
+
+color:#25D366;
+
+}
+
+.feature{
+
+display:flex;
+
+align-items:center;
+
+gap:12px;
+
+padding:12px 0;
+
+border-bottom:1px solid #293650;
+
+}
+
+.feature:last-child{
+
+border:none;
+
+}
+
+.feature i{
+
+color:#22c55e;
+
+font-size:18px;
+
+width:22px;
+
+}
+
+.feature span{
+
+font-size:15px;
+
+}
+
+.price-note{
+
+margin-top:18px;
+
+padding:14px;
+
+background:#111827;
+
+border-radius:14px;
+
+text-align:center;
+
+font-size:15px;
+
+font-weight:bold;
+
+color:#25D366;
+
+}
+
+/*==========================
+SECTION TITLE
+==========================*/
+
+.section-title{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+margin:28px 0 16px;
+
+font-size:18px;
+
+font-weight:bold;
+
+}
+
+/*==========================
+PACKAGES
+==========================*/
+
+.packages{
+
+display:flex;
+flex-direction:column;
+gap:18px;
+
+}
+
+.package-card{
+
+background:#182235;
+
+border:1px solid #293650;
+
+border-radius:22px;
+
+padding:20px;
+
+position:relative;
+
+transition:.3s;
+
+overflow:hidden;
+
+}
+
+.package-card:hover{
+
+transform:translateY(-4px);
+
+box-shadow:0 15px 35px rgba(0,0,0,.25);
+
+}
+
+.package-header{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+margin-bottom:18px;
+
+}
+
+.package-header i{
+
+font-size:34px;
+
+color:#25D366;
+
+}
+
+.package-name{
+
+font-size:22px;
+
+font-weight:bold;
+
+}
+
+.package-sub{
+
+font-size:13px;
+
+color:#94a3b8;
+
+margin-top:4px;
+
+}
+
+.package-messages{
+
+font-size:30px;
+
+font-weight:bold;
+
+margin:18px 0 6px;
+
+line-height:1.2;
+
+}
+
+.package-price{
+
+font-size:22px;
+
+font-weight:bold;
+
+color:#25D366;
+
+margin-bottom:20px;
+
+}
+
+.buy-btn{
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+width:100%;
+
+min-height:52px;
+
+padding:14px 18px;
+
+border:none;
+
+border-radius:14px;
+
+background:#2563eb;
+
+color:#fff;
+
+font-size:16px;
+
+font-weight:700;
+
+cursor:pointer;
+
+transition:.25s;
+
+white-space:nowrap;
+
+}
+
+.buy-btn:hover{
+
+background:#1d4ed8;
+
+transform:translateY(-2px);
+
+}
+
+.buy-btn:active{
+
+transform:scale(.98);
+
+}
+
+.topup-btn{
+
+width:auto;
+
+min-width:120px;
+
+height:46px;
+
+padding:0 18px;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+gap:8px;
+
+font-size:15px;
+
+}
+
+.balance-row{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+gap:18px;
+
+flex-wrap:wrap;
+
+}
+
+.balance-amount{
+
+font-size:30px;
+
+font-weight:bold;
+
+margin-top:6px;
+
+word-break:break-word;
+
+}
+
+.popular{
+
+border:2px solid #2563eb;
+
+}
+
+.popular-badge{
+
+position:absolute;
+
+top:-12px;
+
+right:18px;
+
+background:#2563eb;
+
+padding:7px 16px;
+
+border-radius:20px;
+
+font-size:12px;
+
+font-weight:bold;
+
+}
+
+.ultimate{
+
+border:2px solid #f59e0b;
+
+}
+
+.ultimate .package-header i{
+
+color:#f59e0b;
+
+}
+
+body.light .package-card{
+
+background:#fff;
+
+border-color:#dbe2ea;
+
+}
+
+body.light .package-sub{
+
+color:#64748b;
+
+}
+
+/*==========================
+PURCHASE HISTORY
+==========================*/
+
+.history-card{
+
+background:#182235;
+
+border:1px solid #293650;
+
+border-radius:20px;
+
+padding:20px;
+
+margin-top:18px;
+
+}
+
+.history-empty{
+
+text-align:center;
+
+padding:35px 10px;
+
+}
+
+.history-empty i{
+
+font-size:55px;
+
+color:#25D366;
+
+margin-bottom:16px;
+
+}
+
+.history-empty h3{
+
+margin-bottom:8px;
+
+}
+
+.history-empty p{
+
+color:#94a3b8;
+
+line-height:1.6;
+
+}
+
+/*==========================
+BUY POPUP
+==========================*/
+
+.popup-overlay{
+
+position:fixed;
+
+top:0;
+
+left:0;
+
+width:100%;
+
+height:100%;
+
+background:rgba(0,0,0,.6);
+
+display:none;
+
+justify-content:center;
+
+align-items:center;
+
+padding:20px;
+
+z-index:9999;
+
+}
+
+.popup-box{
+
+background:#182235;
+
+width:100%;
+
+max-width:340px;
+
+border-radius:22px;
+
+padding:24px;
+
+text-align:center;
+
+animation:popup .25s;
+
+}
+
+.popup-icon{
+
+width:70px;
+
+height:70px;
+
+border-radius:50%;
+
+background:#25D366;
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+margin:auto;
+
+margin-bottom:18px;
+
+font-size:30px;
+
+color:#fff;
+
+}
+
+.popup-box h3{
+
+margin-bottom:12px;
+
+}
+
+.popup-box p{
+
+line-height:1.6;
+
+margin-bottom:22px;
+
+color:#94a3b8;
+
+}
+
+.popup-box button{
+
+width:100%;
+
+height:50px;
+
+border:none;
+
+border-radius:14px;
+
+font-size:16px;
+
+font-weight:bold;
+
+cursor:pointer;
+
+background:#2563eb;
+
+color:#fff;
+
+}
+
+body.light .history-card,
+body.light .popup-box{
+
+background:#fff;
+
+border:1px solid #dbe2ea;
+
+}
+
+body.light .history-empty p{
+
+color:#64748b;
+
+}
+/*==========================
+LIGHT MODE
+==========================*/
+
+body.light .info-card,
+body.light .back-btn,
+body.light .avatar{
+
+background:#fff;
+
+border-color:#dbe2ea;
+
+color:#111827;
+
+}
+
+body.light .price-note{
+
+background:#f3f4f6;
+
+}
+
+@keyframes loading{
+
+0%{
+
+transform:translateX(-100%);
+
+}
+
+100%{
+
+transform:translateX(320%);
+
+}
+
+}
+
+/*==========================
+MOBILE RESPONSIVE
+==========================*/
+
+@media (max-width:390px){
+
+.container{
+
+padding:14px;
+
+}
+
+.title{
+
+font-size:18px;
+
+}
+
+.hero{
+
+padding:18px;
+
+}
+
+.hero-top{
+
+flex-direction:column;
+
+align-items:flex-start;
+
+gap:12px;
+
+}
+
+.credit-number{
+
+font-size:30px;
+
+}
+
+.balance-row{
+
+flex-direction:column;
+
+align-items:flex-start;
+
+}
+
+.topup-btn{
+
+width:100%;
+
+}
+
+.package-name{
+
+font-size:19px;
+
+}
+
+.package-messages{
+
+font-size:26px;
+
+}
+
+.package-price{
+
+font-size:20px;
+
+}
+
+.buy-btn{
+
+font-size:15px;
+
+min-height:48px;
+
+}
+
+}
+
+@media (min-width:391px){
+
+.container{
+
+max-width:430px;
+
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="top">
+
+<div class="back-btn" id="backBtn">
+<i class="fas fa-arrow-left"></i>
+</div>
+
+<div class="title">
+<i class="fab fa-whatsapp"></i>
+<span>WhatsApp Billing</span>
+</div>
+
+<div class="avatar" onclick="location.href='settings.html'">
+<i class="fas fa-gear"></i>
+</div>
+
+</div>
+
+<!-- HERO -->
+
+<div class="hero">
+
+<div class="hero-top">
+
+<div class="hero-title">
+
+<i class="fab fa-whatsapp"></i>
+
+<div>
+
+WhatsApp Credits
+
+</div>
+
+</div>
+
+<div
+class="hero-status disabled"
+id="waStatus">
+
+<i class="fas fa-circle"></i>
+
+Disabled
+
+</div>
+
+</div>
+
+<div
+class="credit-number"
+id="messageCredits">
+
+0
+
+</div>
+
+<div class="credit-label">
+
+Available Message Credits
+
+</div>
+
+<div class="hero-footer">
+
+<div class="footer-box">
+
+<h3 id="messagesSent">
+
+0
+
+</h3>
+
+<span>Messages Sent</span>
+
+</div>
+
+<div class="footer-box">
+
+<h3>
+
+KES 1
+
+</h3>
+
+<span>1 Message</span>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="info-card">
+
+<div class="info-title">
+
+<i class="fas fa-coins"></i>
+
+WhatsApp Coins
+
+</div>
+
+<div class="balance-row">
+
+<div>
+
+<div style="font-size:13px;color:#94a3b8;">
+Available Coins
+</div>
+
+<div
+class="balance-amount"
+id="coinBalance">
+
+0 Coins
+
+</div>
+
+</div>
+
+<button
+class="buy-btn topup-btn"
+id="topupCoins">
+
+<i class="fas fa-coins"></i>
+
+<span>Buy Coins</span>
+
+</button>
+
+</div>
+
+</div>
+
+<!-- INFORMATION -->
+
+<div class="info-card">
+
+<div class="info-title">
+
+<i class="fas fa-circle-info"></i>
+
+Automatic Notifications
+
+</div>
+
+<div class="feature">
+
+<i class="fas fa-wallet"></i>
+
+<span>Wallet Top-ups</span>
+
+</div>
+
+<div class="feature">
+
+<i class="fas fa-coins"></i>
+
+<span>Service Top-ups</span>
+
+</div>
+
+<div class="feature">
+
+<i class="fas fa-money-bill-transfer"></i>
+
+<span>Withdrawals</span>
+
+</div>
+
+<div class="feature">
+
+<i class="fas fa-bell"></i>
+
+<span>More notifications coming soon</span>
+
+</div>
+
+<div class="price-note">
+
+1 Credit = 1 WhatsApp Message
+
+</div>
+
+</div>
+
+<div class="section-title">
+
+<span>Buy Message Credits</span>
+
+</div>
+<div class="packages">
+
+<!-- STARTER -->
+
+<div class="package-card">
+
+<div class="package-header">
+
+<div>
+
+<div class="package-name">
+Starter
+</div>
+
+<div class="package-sub">
+Perfect for new merchants
+</div>
+
+</div>
+
+<i class="fab fa-whatsapp"></i>
+
+</div>
+
+<div class="package-messages">
+
+50 Messages
+
+</div>
+
+<div class="package-price">
+
+KES 50
+
+</div>
+
+<button
+class="buy-btn buyPackage"
+data-coins="50"
+data-price="50">
+
+Buy Now
+
+</button>
+
+</div>
+
+<!-- BASIC -->
+
+<div class="package-card popular">
+
+<div class="popular-badge">
+
+⭐ MOST POPULAR
+
+</div>
+
+<div class="package-header">
+
+<div>
+
+<div class="package-name">
+Basic
+</div>
+
+<div class="package-sub">
+Best for everyday use
+</div>
+
+</div>
+
+<i class="fab fa-whatsapp"></i>
+
+</div>
+
+<div class="package-messages">
+
+100 Messages
+
+</div>
+
+<div class="package-price">
+
+KES 100
+
+</div>
+
+<button
+class="buy-btn buyPackage"
+data-coins="100"
+data-price="100">
+
+Buy Now
+
+</button>
+
+</div>
+
+<!-- BUSINESS -->
+
+<div class="package-card">
+
+<div class="package-header">
+
+<div>
+
+<div class="package-name">
+Business
+</div>
+
+<div class="package-sub">
+Growing merchants
+</div>
+
+</div>
+
+<i class="fas fa-briefcase"></i>
+
+</div>
+
+<div class="package-messages">
+
+500 Messages
+
+</div>
+
+<div class="package-price">
+
+KES 500
+
+</div>
+
+<button
+class="buy-btn buyPackage"
+data-coins="500"
+data-price="500">
+
+Buy Now
+
+</button>
+
+</div>
+
+<!-- ENTERPRISE -->
+
+<div class="package-card">
+
+<div class="package-header">
+
+<div>
+
+<div class="package-name">
+Enterprise
+</div>
+
+<div class="package-sub">
+High notification volume
+</div>
+
+</div>
+
+<i class="fas fa-building"></i>
+
+</div>
+
+<div class="package-messages">
+
+1000 Messages
+
+</div>
+
+<div class="package-price">
+
+KES 1000
+
+</div>
+
+<button
+class="buy-btn buyPackage"
+data-coins="1000"
+data-price="1000">
+
+Buy Now
+
+</button>
+
+</div>
+
+<!-- ULTIMATE -->
+
+<div class="package-card ultimate">
+
+<div class="package-header">
+
+<div>
+
+<div class="package-name">
+Ultimate
+</div>
+
+<div class="package-sub">
+Maximum value
+</div>
+
+</div>
+
+<i class="fas fa-crown"></i>
+
+</div>
+
+<div class="package-messages">
+
+5000 Messages
+
+</div>
+
+<div class="package-price">
+
+KES 5000
+
+</div>
+
+<button
+class="buy-btn buyPackage"
+data-coins="5000"
+data-price="5000">
+
+Buy Now
+
+</button>
+
+</div>
+
+</div>
+</div>
+
+<div class="section-title">
+
+<span>Recent Purchases</span>
+
+</div>
+
+<div class="history-card">
+
+    <div id="purchaseHistory">
+
+        <div class="history-empty">
+
+            <i class="fas fa-spinner fa-spin"></i>
+
+            <h3>Loading Purchases...</h3>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- BUY COINS POPUP -->
+
+<div id="buyPopup" class="popup-overlay">
+
+<div class="popup-box">
+
+<div class="popup-icon">
+<i class="fab fa-whatsapp"></i>
+</div>
+
+<h3>Buy WhatsApp Coins</h3>
+
+<p>
+Purchase WhatsApp Coins using M-PESA.
+</p>
+
+<div style="text-align:left;margin-bottom:18px;">
+
+<div style="
+background:#111827;
+border:1px solid #293650;
+border-radius:14px;
+padding:16px;
+margin-bottom:16px;
+">
+
+<div style="
+font-size:13px;
+color:#94a3b8;
+margin-bottom:6px;
+">
+Coins
+</div>
+
+<div
+id="popupCoins"
+style="
+font-size:24px;
+font-weight:bold;
+color:#25D366;
+">
+
+🪙 0 Coins
+
+</div>
+
+</div>
+
+<label style="font-size:14px;">
+Amount (KES)
+</label>
+
+<input
+id="popupAmount"
+type="number"
+min="20"
+max="1000"
+placeholder="Enter amount (20 - 1000)"
+style="
+width:100%;
+margin-top:8px;
+margin-bottom:18px;
+padding:14px;
+border:none;
+border-radius:12px;
+background:#111827;
+color:#fff;
+font-size:18px;">
+
+<label style="font-size:14px;">
+M-PESA Phone Number
+</label>
+
+<input
+id="popupPhone"
+type="tel"
+placeholder="07XXXXXXXX or 2547XXXXXXXX"
+style="
+width:100%;
+margin-top:8px;
+padding:14px;
+border:none;
+border-radius:12px;
+background:#111827;
+color:#fff;
+font-size:16px;">
+<p style="
+margin-top:12px;
+margin-bottom:20px;
+font-size:13px;
+color:#94a3b8;
+line-height:1.6;
+">
+
+Supported formats:
+
+<br>07XXXXXXXX
+
+<br>01XXXXXXXX
+
+<br>2547XXXXXXXX
+
+<br>+2547XXXXXXXX
+
+</p>
+
+</div>
+
+<button
+id="sendStkBtn">
+
+Send STK Push
+
+</button>
+
+<button
+id="cancelPopup"
+style="
+margin-top:12px;
+background:#374151;">
+
+Cancel
+
+</button>
+
+</div>
+
+</div>
+
+<!-- PAYMENT LOADING -->
+
+<div id="loadingPopup" class="popup-overlay">
+
+<div class="popup-box">
+
+<div class="popup-icon">
+
+<i class="fas fa-mobile-screen-button"></i>
+
+</div>
+
+<h3>Sending STK Push</h3>
+
+<p id="loadingText">
+
+Please wait while we send the payment request to your phone...
+
+</p>
+
+<div style="
+margin-top:18px;
+width:100%;
+height:6px;
+background:#2b3750;
+border-radius:20px;
+overflow:hidden;
+">
+
+<div style="
+width:40%;
+height:100%;
+background:#25D366;
+animation:loading 1s linear infinite;
+">
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- RESULT POPUP -->
+
+<div id="resultPopup" class="popup-overlay">
+
+    <div class="popup-box">
+
+        <div id="resultIcon" class="popup-icon">
+            <i class="fas fa-check"></i>
+        </div>
+
+        <h3 id="resultTitle">
+            Payment Successful
+        </h3>
+
+        <p id="resultMessage">
+            Your WhatsApp Coins have been added successfully.
+        </p>
+
+        <button id="closeResultPopup">
+            OK
+        </button>
+
+    </div>
+
+</div>
+<script type="module">
+
+import { auth, db } from "./firebase.js";
+
+import {
+    onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
+
+import {
+    doc,
+    getDoc,
+    collection,
+    query,
+    orderBy,
+    onSnapshot
+} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
+
+const BACKEND_URL = "https://autopay.co.ke";
+
+let userId = "";
+let checkoutRequestId = "";
+
+onAuthStateChanged(auth, async(user)=>{
+
+    if(!user){
+        location.href = "login.html";
+        return;
+    }
+
+    userId = user.uid;
+    
+    const historyRef = query(
+    collection(db,"users",user.uid,"whatsappPurchases"),
+    orderBy("createdAt","desc")
+);
+
+onSnapshot(historyRef,(snapshot)=>{
+
+    const history =
+    document.getElementById("purchaseHistory");
+
+    if(snapshot.empty){
+
+        history.innerHTML=`
+
+        <div class="history-empty">
+
+            <i class="fas fa-receipt"></i>
+
+            <h3>No Credit Purchases</h3>
+
+            <p>
+
+            After purchasing WhatsApp credits,
+            your payment history will appear here.
+
+            </p>
+
+        </div>
+
+        `;
+
+        return;
+
+    }
+
+    let html="";
+
+    snapshot.forEach(doc=>{
+
+        const data=doc.data();
+
+        const date =
+        data.createdAt?.toDate().toLocaleString() || "";
+
+        html+=`
+
+        <div style="
+        padding:16px 0;
+        border-bottom:1px solid #293650;
+        ">
+
+            <div style="
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            ">
+
+                <strong>
+                ${data.credits} Credits
+                </strong>
+
+                <span style="
+                color:#22c55e;
+                font-weight:bold;
+                ">
+                KES ${Number(data.amount).toLocaleString()}
+                </span>
+
+            </div>
+
+            <div style="
+            margin-top:6px;
+            font-size:13px;
+            color:#94a3b8;
+            ">
+            ${date}
+            </div>
+
+            <div style="
+            margin-top:8px;
+            display:inline-block;
+            padding:5px 10px;
+            border-radius:30px;
+            background:#16a34a;
+            font-size:12px;
+            font-weight:bold;
+            ">
+            ${data.status}
+            </div>
+
+        </div>
+
+        `;
+
+    });
+
+    history.innerHTML = html;
+
+});
+
+    onSnapshot(doc(db,"users",user.uid), (docSnap)=>{
+
+    if(!docSnap.exists()) return;
+
+    const merchant = docSnap.data();
+
+    document.getElementById("coinBalance").innerHTML =
+        Number(merchant.whatsappCoins || 0).toLocaleString() + " Coins";
+
+    document.getElementById("messageCredits").innerHTML =
+        Number(merchant.messageCredits || 0).toLocaleString();
+
+    document.getElementById("messagesSent").innerHTML =
+        Number(merchant.totalMessagesSent || 0).toLocaleString();
+
+    document.getElementById("popupPhone").value =
+        merchant.phone || "";
+
+    const status = document.getElementById("waStatus");
+
+    if((merchant.messageCredits || 0) > 0){
+
+        status.className = "hero-status active";
+        status.innerHTML =
+            '<i class="fas fa-circle"></i> Active';
+
+    }else{
+
+        status.className = "hero-status disabled";
+        status.innerHTML =
+            '<i class="fas fa-circle"></i> Disabled';
+
+    }
+
+});
+
+
+
+const popup=document.getElementById("buyPopup");
+
+document.querySelectorAll(".buyPackage").forEach(btn=>{
+
+btn.onclick=function(){
+
+document.getElementById("popupCoins").innerHTML =
+"🪙 " + this.dataset.coins + " Coins";
+
+document.getElementById("popupAmount").value =
+this.dataset.price;
+
+popup.style.display="flex";
+
+};
+
+});
+
+document.getElementById("topupCoins").onclick=function(){
+
+document.getElementById("popupCoins").innerHTML =
+"🪙 0 Coins";
+
+document.getElementById("popupAmount").value = "";
+
+popup.style.display="flex";
+
+};
+
+document.getElementById("cancelPopup").onclick=function(){
+
+popup.style.display="none";
+
+};
+
+document.getElementById("backBtn").onclick = function () {
+    history.back();
+};
+
+const loadingPopup =
+document.getElementById("loadingPopup");
+
+const resultPopup = document.getElementById("resultPopup");
+
+function showPopup(type,title,message){
+
+    const icon = document.getElementById("resultIcon");
+
+    const titleEl = document.getElementById("resultTitle");
+
+    const messageEl = document.getElementById("resultMessage");
+
+    titleEl.innerHTML = title;
+
+    messageEl.innerHTML = message;
+
+    if(type==="success"){
+
+        icon.style.background="#16a34a";
+
+        icon.innerHTML='<i class="fas fa-check"></i>';
+
+    }else{
+
+        icon.style.background="#ef4444";
+
+        icon.innerHTML='<i class="fas fa-times"></i>';
+
+    }
+
+    resultPopup.style.display="flex";
+
+}
+
+document.getElementById("closeResultPopup").onclick=function(){
+
+    resultPopup.style.display="none";
+
+};
+
+document.getElementById("sendStkBtn").onclick = async function(){
+
+    const phone = document.getElementById("popupPhone").value.trim();
+
+    const amount = Number(document.getElementById("popupAmount").value);
+
+    if(phone===""){
+
+        showPopup(
+    "error",
+    "Phone Number Required",
+    "Please enter your M-PESA phone number."
+);
+        return;
+
+    }
+
+    if(amount < 20 || amount > 1000){
+
+         showPopup(
+    "error",
+    "Invalid Amount",
+    "Amount must be between KES 20 and KES 1000."
+);
+        return;
+
+    }
+
+    popup.style.display = "none";
+    loadingPopup.style.display = "flex";
+
+    try{
+
+        const token = await auth.currentUser.getIdToken();
+
+        const response = await fetch(
+
+            BACKEND_URL + "/api/stk-push",
+
+            {
+
+                method:"POST",
+
+                headers:{
+
+                    "Content-Type":"application/json",
+
+                    "Authorization":`Bearer ${token}`
+
+                },
+
+                body:JSON.stringify({
+
+                    uid:userId,
+
+                    phone:phone,
+
+                    amount:amount,
+
+                    balanceType:"whatsapp"
+
+                })
+
+            }
+
+        );
+
+        const text = await response.text();
+
+console.log("Raw Response:", text);
+
+let result;
+
+try{
+    result = JSON.parse(text);
+}catch(e){
+
+    loadingPopup.style.display = "none";
+
+    showPopup(
+    "error",
+    "Server Response",
+    text
+);
+
+    return;
+
+}
+
+        if(!result.success){
+
+            throw new Error(result.message);
+
+        }
+
+        checkoutRequestId =
+    result.checkout_request_id ||
+    result.data?.checkout_request_id ||
+    result.data?.CheckoutRequestID;
+
+// Save current credits before waiting
+const currentSnap = await getDoc(doc(db, "users", userId));
+
+const previousCredits =
+    Number(currentSnap.data()?.messageCredits || 0);
+
+checkStatus(previousCredits);
+
+    }catch(error){
+
+        loadingPopup.style.display="none";
+
+        showPopup(
+    "error",
+    "Error",
+    error.message
+);
+
+    }
+
+};
+
+async function checkStatus(previousCredits){
+
+const timer = setInterval(async()=>{
+
+try{
+
+const token = await auth.currentUser.getIdToken();
+
+const response = await fetch(
+
+BACKEND_URL + "/api/check-status",
+
+{
+
+method:"POST",
+
+headers:{
+
+"Content-Type":"application/json",
+
+"Authorization":`Bearer ${token}`
+
+},
+
+body:JSON.stringify({
+
+uid:userId,
+
+checkout_request_id:checkoutRequestId,
+
+balanceType:"whatsapp"
+
+})
+
+}
+
+);
+
+const text = await response.text();
+
+console.log("Status Response:", text);
+
+let result;
+
+try{
+    result = JSON.parse(text);
+}catch(e){
+    console.log(text);
+    return;
+}
+
+if(
+    result.status==="SUCCESS" ||
+    result.status==="COMPLETED" ||
+    result.data?.status==="SUCCESS" ||
+    result.data?.status==="COMPLETED"
+){
+
+clearInterval(timer);
+
+// Wait until the webhook increases the user's credits
+let merchant;
+
+while (true) {
+
+    const snap = await getDoc(doc(db, "users", userId));
+
+    if (snap.exists()) {
+
+        merchant = snap.data();
+
+        if (
+            Number(merchant.messageCredits || 0) >
+            Number(previousCredits)
+        ) {
+            break;
+        }
+
+    }
+
+    await new Promise(resolve => setTimeout(resolve, 1000));
+}
+
+// Refresh the UI
+document.getElementById("coinBalance").innerHTML =
+    Number(merchant.whatsappCoins || 0).toLocaleString() + " Coins";
+
+document.getElementById("messageCredits").innerHTML =
+    Number(merchant.messageCredits || 0).toLocaleString();
+
+document.getElementById("messagesSent").innerHTML =
+    Number(merchant.totalMessagesSent || 0).toLocaleString();
+
+const status = document.getElementById("waStatus");
+
+if ((merchant.messageCredits || 0) > 0) {
+
+    status.className = "hero-status active";
+    status.innerHTML =
+        '<i class="fas fa-circle"></i> Active';
+
+} else {
+
+    status.className = "hero-status disabled";
+    status.innerHTML =
+        '<i class="fas fa-circle"></i> Disabled';
+
+}
+
+loadingPopup.style.display = "none";
+
+showPopup(
+    "success",
+    "Payment Successful",
+    "Your WhatsApp Coins have been added successfully."
+);
+
+return;
+
+}
+
+
+if(
+    result.status==="FAILED" ||
+    result.status==="CANCELLED" ||
+    result.data?.status==="FAILED" ||
+    result.data?.status==="CANCELLED"
+){
+
+clearInterval(timer);
+
+loadingPopup.style.display="none";
+
+showPopup(
+    "error",
+    "Payment Failed",
+    result.message || "Unable to complete the payment."
+);
+
+return;
+
+}
+
+}catch(e){
+
+console.log(e);
+
+}
+
+},4000);
+
+}
+
+});
+/*
+Example:
+
+fetch("https://autopay.co.ke/whatsapp-stk",{
+    method:"POST",
+    headers:{
+        "Content-Type":"application/json"
+    },
+    body:JSON.stringify({
+        phone:phone,
+        amount:amount,
+        coins:amount
+    })
+})
+.then(res=>res.json())
+.then(data=>{
+    console.log(data);
+});
+
+*/
+
+</script>
+
+</body>
+
+</html>
