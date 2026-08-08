@@ -965,7 +965,7 @@ Disabled
 
 <div
 class="credit-number"
-id="messageCredits">
+id="whatsappCoins">
 
 0
 
@@ -973,7 +973,7 @@ id="messageCredits">
 
 <div class="credit-label">
 
-Available Message Credits
+Available WhatsApp Coins
 
 </div>
 
@@ -1421,7 +1421,7 @@ id="popupAmount"
 type="number"
 min="20"
 max="1000"
-placeholder="Enter amount (20 - 1000)"
+placeholder="Enter amount (20 - 5000)"
 style="
 width:100%;
 margin-top:8px;
@@ -1699,11 +1699,14 @@ onSnapshot(historyRef,(snapshot)=>{
 
     const merchant = docSnap.data();
 
-    document.getElementById("coinBalance").innerHTML =
-        Number(merchant.whatsappCoins || 0).toLocaleString() + " Coins";
+    const whatsappCoins =
+        Number(merchant.whatsappCoins || 0);
 
-    document.getElementById("messageCredits").innerHTML =
-        Number(merchant.messageCredits || 0).toLocaleString();
+    document.getElementById("coinBalance").innerHTML =
+        whatsappCoins.toLocaleString() + " Coins";
+
+    document.getElementById("whatsappCoins").innerHTML =
+        whatsappCoins.toLocaleString();
 
     document.getElementById("messagesSent").innerHTML =
         Number(merchant.totalMessagesSent || 0).toLocaleString();
@@ -1711,17 +1714,36 @@ onSnapshot(historyRef,(snapshot)=>{
     document.getElementById("popupPhone").value =
         merchant.phone || "";
 
-    const status = document.getElementById("waStatus");
+    const status =
+        document.getElementById("waStatus");
 
-    if((merchant.messageCredits || 0) > 0){
+    /*
+    =========================================
+    WHATSAPP STATUS
+    =========================================
 
-        status.className = "hero-status active";
+    Active only when:
+    1. WhatsApp notifications are enabled
+    2. Merchant has at least 1 coin
+    =========================================
+    */
+
+    if(
+        merchant.whatsappEnabled === true &&
+        whatsappCoins > 0
+    ){
+
+        status.className =
+            "hero-status active";
+
         status.innerHTML =
             '<i class="fas fa-circle"></i> Active';
 
     }else{
 
-        status.className = "hero-status disabled";
+        status.className =
+            "hero-status disabled";
+
         status.innerHTML =
             '<i class="fas fa-circle"></i> Disabled';
 
@@ -1828,12 +1850,12 @@ document.getElementById("sendStkBtn").onclick = async function(){
 
     }
 
-    if(amount < 20 || amount > 1000){
+    if(amount < 20 || amount > 5000){
 
          showPopup(
     "error",
     "Invalid Amount",
-    "Amount must be between KES 20 and KES 1000."
+    "Amount must be between KES 20 and KES 5000."
 );
         return;
 
@@ -1911,13 +1933,14 @@ try{
     result.data?.checkout_request_id ||
     result.data?.CheckoutRequestID;
 
-// Save current credits before waiting
-const currentSnap = await getDoc(doc(db, "users", userId));
+// Save current WhatsApp Coins before waiting
+const currentSnap =
+    await getDoc(doc(db, "users", userId));
 
-const previousCredits =
-    Number(currentSnap.data()?.messageCredits || 0);
+const previousCoins =
+    Number(currentSnap.data()?.whatsappCoins || 0);
 
-checkStatus(previousCredits);
+checkStatus(previousCoins);
 
     }catch(error){
 
@@ -1933,7 +1956,7 @@ checkStatus(previousCredits);
 
 };
 
-async function checkStatus(previousCredits){
+async function checkStatus(previousCoins){
 
 const timer = setInterval(async()=>{
 
@@ -1993,50 +2016,66 @@ if(
 
 clearInterval(timer);
 
-// Wait until the webhook increases the user's credits
+// Wait until the backend increases WhatsApp Coins
 let merchant;
 
 while (true) {
 
-    const snap = await getDoc(doc(db, "users", userId));
+    const snap =
+        await getDoc(doc(db, "users", userId));
 
     if (snap.exists()) {
 
         merchant = snap.data();
 
-        if (
-            Number(merchant.messageCredits || 0) >
-            Number(previousCredits)
-        ) {
+        const currentCoins =
+            Number(merchant.whatsappCoins || 0);
+
+        if (currentCoins > Number(previousCoins)) {
             break;
         }
 
     }
 
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    await new Promise(resolve =>
+        setTimeout(resolve, 1000)
+    );
+
 }
 
 // Refresh the UI
-document.getElementById("coinBalance").innerHTML =
-    Number(merchant.whatsappCoins || 0).toLocaleString() + " Coins";
 
-document.getElementById("messageCredits").innerHTML =
-    Number(merchant.messageCredits || 0).toLocaleString();
+const currentCoins =
+    Number(merchant.whatsappCoins || 0);
+
+document.getElementById("coinBalance").innerHTML =
+    currentCoins.toLocaleString() + " Coins";
+
+document.getElementById("whatsappCoins").innerHTML =
+    currentCoins.toLocaleString();
 
 document.getElementById("messagesSent").innerHTML =
     Number(merchant.totalMessagesSent || 0).toLocaleString();
 
-const status = document.getElementById("waStatus");
+const status =
+    document.getElementById("waStatus");
 
-if ((merchant.messageCredits || 0) > 0) {
+if(
+    merchant.whatsappEnabled === true &&
+    currentCoins > 0
+){
 
-    status.className = "hero-status active";
+    status.className =
+        "hero-status active";
+
     status.innerHTML =
         '<i class="fas fa-circle"></i> Active';
 
-} else {
+}else{
 
-    status.className = "hero-status disabled";
+    status.className =
+        "hero-status disabled";
+
     status.innerHTML =
         '<i class="fas fa-circle"></i> Disabled';
 
@@ -2112,4 +2151,4 @@ fetch("https://autopay.co.ke/whatsapp-stk",{
 
 </body>
 
-</html>
+    </html>
