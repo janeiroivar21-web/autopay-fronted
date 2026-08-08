@@ -2,22 +2,40 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
 <title>AUTOPAY Dashboard</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Roboto',sans-serif;
+}
+
 body{
 background:#0c1424;
 color:#fff;
 transition:.3s;
+-webkit-font-smoothing:antialiased;
+-moz-osx-font-smoothing:grayscale;
+text-rendering:optimizeLegibility;
 }
 
 body.light{
 background:#f5f7fb;
 color:#111827;
 }
-.container{max-width:430px;margin:auto;padding:14px}
+
+.container{
+width:100%;
+max-width:430px;
+margin:auto;
+padding:14px;
+}
+
 .top{display:flex;justify-content:space-between;align-items:center;margin:8px 0 18px}
 
 .left{
@@ -32,13 +50,20 @@ position:relative;
 
 .dot{
 position:absolute;
-top:11px;
-right:11px;
-width:8px;
-height:8px;
+top:2px;
+right:2px;
+min-width:20px;
+height:20px;
+padding:0 6px;
 background:#ef4444;
-border-radius:50%;
+border-radius:20px;
 border:2px solid #182235;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:11px;
+font-weight:bold;
+color:#fff;
 }
 
 .logo i{
@@ -54,17 +79,54 @@ transition:.3s;
 .menu-btn:hover{
 transform:rotate(90deg);
 }
-.logo{font-size:30px;font-weight:700}
-.logo span{color:#3b82f6}
-.icon,.avatar{width:48px;height:48px;border-radius:14px;background:#182235;display:flex;align-items:center;justify-content:center}
+
+.logo{
+font-size:clamp(24px,6vw,30px);
+font-weight:700;
+letter-spacing:-0.5px;
+font-family:'Roboto',sans-serif;
+white-space:nowrap;
+}
+
+.logo span{
+color:#3b82f6;
+}
+
+.icon,
+.avatar{
+width:46px;
+height:46px;
+min-width:46px;
+min-height:46px;
+border-radius:14px;
+background:#182235;
+display:flex;
+align-items:center;
+justify-content:center;
+flex-shrink:0;
+}
+
 .right{display:flex;gap:10px}
 .card{background:#182235;border-radius:18px;padding:16px;margin-bottom:16px;border:1px solid #253149}
 .greet{display:flex;justify-content:space-between;align-items:center}
 .small{color:#9aa7bd;font-size:13px}
+
+#greeting{
+font-size:22px;
+font-weight:500;
+}
+
 .balances{display:grid;grid-template-columns:1fr 1fr}
 .bal{padding:14px}
 .bal:first-child{border-right:1px solid #293650}
-.amount{font-size:18px;font-weight:bold;margin:10px 0}
+
+.amount{
+font-size:clamp(16px,4vw,18px);
+font-weight:700;
+margin:10px 0;
+white-space:nowrap;
+}
+
 .badge{
 display:inline-flex;
 align-items:center;
@@ -73,8 +135,8 @@ padding:8px 16px;
 border-radius:12px;
 background:#1e3a8a;
 color:#dbeafe;
-font-size:13px;
-font-weight:600;
+font-size:14px;
+font-weight:500;
 cursor:pointer;
 transition:.3s;
 min-width:90px;
@@ -85,15 +147,26 @@ height:38px;
 background:#2563eb;
 transform:translateY(-2px);
 }
-.actions{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+
+.actions{
+display:grid;
+grid-template-columns:repeat(2,minmax(0,1fr));
+gap:12px;
+margin-bottom:16px;
+}
+
 .btn{
-padding:18px;
+padding:16px;
 border-radius:14px;
 text-align:center;
-font-weight:bold;
+font-size:15px;
+font-weight:600;
 cursor:pointer;
 transition:.3s;
 user-select:none;
+white-space:nowrap;
+overflow:hidden;
+text-overflow:ellipsis;
 }
 
 .btn:hover{
@@ -125,7 +198,34 @@ padding:14px;
 
 }
 .status{color:#f59e0b}
-.float{position:fixed;right:20px;bottom:20px;width:60px;height:60px;background:#2563eb;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:28px}
+
+.float{
+position:fixed;
+right:18px;
+bottom:18px;
+width:56px;
+height:56px;
+background:#25D366;
+border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
+cursor:pointer;
+box-shadow:0 8px 20px rgba(37,211,102,.35);
+transition:.25s ease;
+z-index:9999;
+}
+
+.float:hover{
+transform:scale(1.06);
+}
+
+.float img{
+width:28px;
+height:28px;
+display:block;
+}
+
 /* ===== Sidebar ===== */
 
 .sidebar{
@@ -281,6 +381,24 @@ cursor:pointer;
 
 transition:.3s;
 
+position:relative;
+
+}
+
+.notification-item.unread{
+
+background:rgba(37,99,235,.12);
+
+border-left:4px solid #2563eb;
+
+}
+
+.notification-item.read{
+
+background:transparent;
+
+border-left:4px solid transparent;
+
 }
 
 .notification-item:hover{
@@ -344,6 +462,30 @@ padding:14px 0;
 border-bottom:1px solid #2b3750;
 }
 
+.new-transaction{
+
+animation:fadeIn .6s ease;
+
+}
+
+@keyframes fadeIn{
+
+0%{
+
+opacity:0;
+transform:translateY(-12px);
+
+}
+
+100%{
+
+opacity:1;
+transform:translateY(0);
+
+}
+
+}
+
 .activity-item:last-child{
 border-bottom:none;
 }
@@ -390,16 +532,52 @@ margin-top:2px;
 }
 
 .activity-amount{
-font-size:17px;
+font-size:clamp(15px,4vw,17px);
 font-weight:700;
+white-space:nowrap;
 }
 
 .activity-right{
 font-size:15px;
+transition:all .35s ease;
 }
 
 .activity-right i{
 font-size:11px;
+transition:all .35s ease;
+}
+
+.activity-right.success{
+color:#22c55e;
+animation:statusPulse .45s ease;
+}
+
+.activity-right.pending{
+color:#f59e0b;
+animation:statusPulse .45s ease;
+}
+
+.activity-right.failed{
+color:#ef4444;
+animation:statusPulse .45s ease;
+}
+
+@keyframes statusPulse{
+
+0%{
+transform:scale(.85);
+opacity:.5;
+}
+
+50%{
+transform:scale(1.08);
+}
+
+100%{
+transform:scale(1);
+opacity:1;
+}
+
 }
 
 .activity-columns{
@@ -521,6 +699,33 @@ body.light .dot{
 border:2px solid #fff;
 
 }
+
+@media (max-width:360px){
+
+.container{
+padding:10px;
+}
+
+.logo{
+font-size:24px;
+}
+
+.btn{
+font-size:14px;
+padding:14px;
+}
+
+.amount{
+font-size:16px;
+}
+
+.icon,
+.avatar{
+width:42px;
+height:42px;
+}
+
+}
 </style>
 </head>
 <body>
@@ -571,6 +776,11 @@ Payment Links
 <a href="apikeys.html">
 <i class="fas fa-key"></i>
 API Keys
+</a>
+
+<a href="whatsapp-billing.html">
+<i class="fab fa-whatsapp"></i>
+WhatsApp Billing
 </a>
 
 <a href="callback.html">
@@ -632,7 +842,7 @@ AUTO<span>PAY</span>
 
 <i class="fas fa-bell"></i>
 
-<span class="dot"></span>
+<span class="dot" id="notificationBadge">0</span>
 
 </div>
 
@@ -740,7 +950,13 @@ KES 0.00
 
 </div>
   
-<div class="float"><i class="fa-brands fa-whatsapp"></i></div>
+<div class="float">
+
+<img
+src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"
+alt="WhatsApp">
+
+</div>
 
 <div class="notification-panel" id="notificationPanel">
 
@@ -748,75 +964,30 @@ KES 0.00
 
 <span>Notifications</span>
 
-<i class="fas fa-times close-notification" id="closeNotification"></i>
+<div style="display:flex;align-items:center;gap:15px;">
 
-</div>
 
-<div class="notification-body">
+<i class="fas fa-trash"
+id="clearNotifications"
+style="color:#ef4444;cursor:pointer;"
+title="Clear All"></i>
 
-<div class="notification-item">
-
-<div class="notification-title">
-
-Welcome to AUTOPAY
-
-</div>
-
-<div>
-
-Your merchant account has been created successfully.
-
-</div>
-
-<div class="notification-time">
-
-Just now
+<i id="closeNotification"
+class="fas fa-times close-notification"></i>
 
 </div>
 
 </div>
 
-<div class="notification-item">
+<div class="notification-body" id="notificationBody">
 
-<div class="notification-title">
+<div style="
+padding:25px;
+text-align:center;
+color:#94a3b8;
+">
 
-API Ready
-
-</div>
-
-<div>
-
-Generate your first API key from Developer Settings.
-
-</div>
-
-<div class="notification-time">
-
-5 min ago
-
-</div>
-
-</div>
-
-<div class="notification-item">
-
-<div class="notification-title">
-
-Security
-
-</div>
-
-<div>
-
-Enable Two-Factor Authentication to protect your account.
-
-</div>
-
-<div class="notification-time">
-
-Yesterday
-
-</div>
+Loading notifications...
 
 </div>
 
@@ -845,9 +1016,11 @@ where,
 orderBy,
 limit,
 getDocs,
-onSnapshot
+onSnapshot,
+updateDoc,
+deleteDoc
 } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
-  
+
 const now=new Date();
 
 document.getElementById("date").innerHTML=
@@ -878,7 +1051,16 @@ greet="Good Afternoon";
 const cached = Cache.get("merchant");
 
 if (cached) {
+
     loadDashboard(cached);
+
+    // Start loading transactions immediately
+    if (cached.merchantId) {
+
+        loadProcessingActivity(cached.merchantId);
+
+    }
+
 }
 
 const cachedTransactions =
@@ -886,7 +1068,7 @@ Cache.get("merchantTransactions");
 
 if(cachedTransactions){
 
-renderTransactions(cachedTransactions);
+renderTransactions(cachedTransactions.slice(0,4));
 
 }
 
@@ -920,7 +1102,10 @@ return;
   
 const userRef = doc(db,"users",user.uid);
 
-let processingLoaded = false;
+let processingLoaded = !!cached?.merchantId;
+
+// Load notifications immediately if already authenticated
+loadNotifications(user.uid);
 
 onSnapshot(userRef,(snap)=>{
 
@@ -991,9 +1176,31 @@ document.querySelector(".avatar").onclick = function(){
 const notificationPanel =
 document.getElementById("notificationPanel");
 
-document.querySelector(".notify").onclick = function(){
+document.querySelector(".notify").onclick = async function(){
 
 notificationPanel.classList.toggle("show");
+
+if(notificationPanel.classList.contains("show")){
+
+const items =
+document.querySelectorAll(".notification-item");
+
+for(const item of items){
+
+try{
+
+await updateDoc(
+doc(db,"notifications",item.dataset.id),
+{
+read:true
+}
+);
+
+}catch(e){}
+
+}
+
+}
 
 };
 
@@ -1031,6 +1238,27 @@ document.getElementById("closeSidebar").onclick = closeSidebar;
 document.getElementById("closeNotification").onclick=function(){
 
 notificationPanel.classList.remove("show");
+
+};
+
+document.getElementById("clearNotifications").onclick = async () => {
+
+if(!confirm("Delete all notifications?")) return;
+
+const uid = auth.currentUser.uid;
+
+const q = query(
+collection(db,"notifications"),
+where("uid","==",uid)
+);
+
+const snap = await getDocs(q);
+
+for(const d of snap.docs){
+
+await deleteDoc(d.ref);
+
+}
 
 };
 
@@ -1193,7 +1421,15 @@ function renderTransactions(transactions){
 const recentContainer =
 document.getElementById("recentTransactions");
 
+// Keep current transactions to detect changes
+const existing = {};
+
+recentContainer.querySelectorAll(".activity-item").forEach(item=>{
+    existing[item.dataset.id]=true;
+});
+
 recentContainer.innerHTML="";
+
 
 transactions.forEach(item=>{
 
@@ -1202,30 +1438,52 @@ item.createdAt?.toDate
 ? item.createdAt.toDate()
 : new Date();
 
-const status=(item.status||"PENDING").toUpperCase();
+const status =
+String(item.status || "PENDING").toUpperCase();
 
 let css="pending";
-let text="Pending";
+let icon="fa-clock";
+let text="PENDING";
 
 if(status==="SUCCESS"){
+
 css="success";
-text="Completed";
+icon="fa-circle-check";
+text="SUCCESS";
+
 }else if(status==="FAILED"){
+
 css="failed";
-text="Failed";
+icon="fa-circle-xmark";
+text="FAILED";
+
 }
 
-const ref=item.checkoutRequestId||item.id;
+const ref =
+item.checkoutRequestId ||
+item.checkout_request_id ||
+item.reference ||
+item.id;
 
-recentContainer.innerHTML+=`
-<div class="activity-item">
+const type =
+item.balanceType==="wallet"
+? "Wallet Top-up"
+: item.balanceType==="service"
+? "Service Top-up"
+: "Transaction";
+
+const isNew = !existing[item.id];
+
+recentContainer.innerHTML += `
+
+<div class="activity-item ${isNew ? "new-transaction":""}" data-id="${item.id}">
 
 <div class="activity-left">
 
 <div class="activity-title">${ref}</div>
 
 <div class="activity-time">
-${date.toLocaleString()}
+${type} • ${date.toLocaleString()}
 </div>
 
 </div>
@@ -1239,11 +1497,15 @@ KES ${Number(item.amount||0).toLocaleString()}
 </div>
 
 <div class="activity-right ${css}">
-<i class="fas fa-circle"></i>
+
+<i class="fas ${icon}"></i>
+
 ${text}
+
 </div>
 
 </div>
+
 `;
 
 });
@@ -1263,6 +1525,50 @@ document.getElementById("serviceBalance").innerHTML =
 
 document.getElementById("avatar").innerHTML =
 (data.fullName || "A").charAt(0).toUpperCase();
+
+}
+
+function calculateDashboardStats(transactions){
+
+    const monthlyRevenue = Array(12).fill(0);
+
+    let totalTransactions = 0;
+
+    let completedAmount = 0;
+
+    transactions.forEach(data=>{
+
+        totalTransactions++;
+
+        if(String(data.status || "").toUpperCase()==="SUCCESS"){
+
+            completedAmount += Number(data.amount || 0);
+
+            const d = data.createdAt?.toDate
+                ? data.createdAt.toDate()
+                : new Date(data.createdAt);
+
+            if(d && !isNaN(d)){
+
+                monthlyRevenue[d.getMonth()] +=
+                    Number(data.amount || 0);
+
+            }
+
+        }
+
+    });
+
+    document.getElementById("transactions").innerHTML =
+        totalTransactions.toLocaleString();
+
+    document.getElementById("completed").innerHTML =
+        "KES " + completedAmount.toLocaleString();
+
+    revenueChart.data.datasets[0].data =
+        monthlyRevenue;
+
+    revenueChart.update();
 
 }
   
@@ -1295,73 +1601,84 @@ accountsSnap.size;
 
 // TRANSACTIONS
 const transactionsQuery = query(
-
-collection(db,"transactions"),
-
-where("merchantId","==",merchantId)
-
+    collection(db, "transactions"),
+    where("merchantId", "==", merchantId),
+    orderBy("createdAt", "desc"),
+    limit(4)
 );
 
-onSnapshot(
+onSnapshot(transactionsQuery,(snapshot)=>{
 
-transactionsQuery,
+    const transactions = snapshot.docs.map(doc=>({
+        id:doc.id,
+        ...doc.data()
+    }));
 
-(snapshot)=>{
+    renderTransactions(transactions);
 
-console.log("Dashboard transactions:", snapshot.size);
+    Cache.set("merchantTransactions",transactions);
 
-const monthlyRevenue = Array(12).fill(0);
+},(error)=>{
 
-let totalTransactions=0;
-
-let completedAmount=0;
-
-renderTransactions(
-snapshot.docs.map(doc=>({
-id:doc.id,
-...doc.data()
-}))
-);
-  
-snapshot.forEach(doc=>{
-
-    const data = doc.data();
-
-    if((data.status || "").toUpperCase() === "SUCCESS"){
-
-        const d = data.createdAt?.toDate();
-
-        if(d){
-
-            const month = d.getMonth();
-
-monthlyRevenue[month] += Number(data.amount || 0);
-
-        }
-
-    }
-
-    totalTransactions++;
-
-    if((data.status || "").toUpperCase() === "SUCCESS"){
-
-        completedAmount += Number(data.amount || 0);
-
-    }
+    console.error(error);
 
 });
 
-// Update revenue chart
-revenueChart.data.datasets[0].data = monthlyRevenue;
-revenueChart.update();
+// Use cached data immediately if available
+const cachedHistory = Cache.get("merchantTransactions");
 
-document.getElementById("transactions").innerHTML =
-totalTransactions.toLocaleString();
-  
-document.getElementById("completed").innerHTML =
-"KES "+completedAmount.toLocaleString();
+if (cachedHistory && cachedHistory.length) {
 
-Cache.set("dashboardStats", {
+    calculateDashboardStats(cachedHistory);
+
+}
+
+// Then listen for updates
+const statsQuery = query(
+    collection(db,"transactions"),
+    where("merchantId","==",merchantId)
+);
+
+onSnapshot(statsQuery,(snapshot)=>{
+
+    const monthlyRevenue = Array(12).fill(0);
+
+    let totalTransactions = 0;
+
+    let completedAmount = 0;
+    
+    const allTransactions = [];
+
+    snapshot.forEach(doc=>{
+
+        const data = doc.data();
+
+allTransactions.push({
+    id: doc.id,
+    ...data
+});
+
+totalTransactions++;
+        if((data.status || "").toUpperCase() === "SUCCESS"){
+
+            completedAmount += Number(data.amount || 0);
+
+            const d = data.createdAt?.toDate();
+
+            if(d){
+
+                monthlyRevenue[d.getMonth()] +=
+                    Number(data.amount || 0);
+
+            }
+
+        }
+
+    });
+
+    calculateDashboardStats(allTransactions);
+
+    Cache.set("dashboardStats",{
 
     activeLinks: linksSnap.size,
 
@@ -1375,20 +1692,205 @@ Cache.set("dashboardStats", {
 
 });
 
-Cache.set("merchantTransactions",
-snapshot.docs.map(doc=>({
-id:doc.id,
-...doc.data()
-}))
+// Cache only the latest 4 transactions
+Cache.set(
+    "merchantTransactions",
+    allTransactions
+        .sort((a,b)=>
+            (b.createdAt?.toMillis?.() || 0) -
+            (a.createdAt?.toMillis?.() || 0)
+        )
+        .slice(0,4)
 );
 
-},
+},(error)=>{
 
-(error)=>{
+    console.error(error);
 
-console.error("Dashboard Firestore Error:",error);
+});
 
-alert(error.message);
+}
+
+function loadNotifications(uid){
+
+const body=document.getElementById("notificationBody");
+
+const dot = document.getElementById("notificationBadge");
+
+const q=query(
+
+collection(db,"notifications"),
+
+where("uid","==",uid),
+
+orderBy("createdAt","desc"),
+
+limit(20)
+
+);
+
+onSnapshot(q,(snapshot)=>{
+
+let html="";
+
+let unread=0;
+
+if(snapshot.empty){
+
+body.innerHTML=`
+<div style="
+padding:25px;
+text-align:center;
+color:#94a3b8;
+">
+No notifications yet.
+</div>
+`;
+
+dot.style.display="none";
+
+return;
+
+}
+
+snapshot.forEach(docSnap=>{
+
+const n=docSnap.data();
+
+if(!n.read) unread++;
+
+const time=n.createdAt?.toDate()
+? n.createdAt.toDate().toLocaleString()
+: "Just now";
+
+html += `
+
+<div class="notification-item ${n.read ? "read" : "unread"}"
+data-id="${docSnap.id}">
+
+<div style="
+display:flex;
+justify-content:space-between;
+align-items:flex-start;
+">
+
+<div style="flex:1;">
+
+<div class="notification-title">
+${n.title}
+</div>
+
+<div>
+${n.message}
+</div>
+
+<div class="notification-time">
+${time}
+</div>
+
+</div>
+
+<i
+class="fas fa-trash deleteNotification"
+data-id="${docSnap.id}"
+style="
+cursor:pointer;
+color:#ef4444;
+margin-left:12px;
+"></i>
+
+</div>
+
+</div>
+
+`;
+
+});
+
+body.innerHTML=html;
+
+if(unread){
+
+dot.style.display="flex";
+
+dot.innerHTML =
+unread>9 ? "9+" : unread;
+
+}else{
+
+dot.style.display="none";
+
+}
+
+body.querySelectorAll(".notification-item")
+.forEach(item=>{
+
+item.onclick = async () => {
+
+try{
+
+await updateDoc(
+doc(db,"notifications",item.dataset.id),
+{
+read:true
+}
+);
+
+// Remove unread background immediately
+item.classList.remove("unread");
+
+item.classList.add("read");
+
+}catch(err){
+
+console.error(err);
+
+}
+
+};
+
+});
+
+body.querySelectorAll(".deleteNotification")
+.forEach(btn=>{
+
+btn.onclick = async(e)=>{
+
+e.stopPropagation();
+
+if(!confirm("Delete this notification?")) return;
+
+try{
+
+await deleteDoc(
+doc(db,"notifications",btn.dataset.id)
+);
+
+}catch(err){
+
+alert(err.message);
+
+}
+
+};
+
+});
+
+}, (error) => {
+
+console.error(error);
+
+alert(error.code + "\n\n" + error.message);
+
+body.innerHTML = `
+<div style="
+padding:25px;
+text-align:center;
+color:#ef4444;
+">
+Unable to load notifications.
+</div>
+`;
 
 });
 
@@ -1452,4 +1954,4 @@ alert("Logout failed: " + error.message);
 };
 </script>
 </body>
-</html>
+  </html>
