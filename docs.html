@@ -435,7 +435,7 @@ Current Environment:
 
 <p>
 Base URL:
-<strong>https://autopay.co.ke</strong>
+<strong>https://autopaydigital.co.ke</strong>
 </p>
 
 <p>
@@ -688,7 +688,7 @@ AUTOPAY automatically routes the payment based on your merchant settings.
 <div class="code-box">
 
 <pre id="javascriptExample">
-fetch("https://autopay.co.ke/api/stk-push",{
+fetch("https://autopaydigital.co.ke/api/stk-push",{
 
 method:"POST",
 
@@ -859,7 +859,7 @@ $payload = [
     "balanceType" => "wallet"
 ];
 
-$curl = curl_init("https://autopay.co.ke/api/stk-push");
+$curl = curl_init("https://autopaydigital.co.ke/api/stk-push");
 
 curl_setopt_array($curl, [
     CURLOPT_POST => true,
@@ -1098,7 +1098,7 @@ async function initiatePayment(){
 
 const response = await axios.post(
 
-"https://autopay.co.ke/api/stk-push",
+"https://autopaydigital.co.ke/api/stk-push",
 
 {
 phone:"254712345678",
@@ -1247,7 +1247,7 @@ Use the Health endpoint to verify that the AUTOPAY API is online.
 
 <pre id="healthExample">
 
-GET https://autopay.co.ke/health
+GET https://autopaydigital.co.ke/health
 
 </pre>
 
