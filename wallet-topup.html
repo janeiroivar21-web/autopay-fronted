@@ -1,1174 +1,1283 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Top Up Wallet | AUTOPAY</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-<style>
-/* Information Card */
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:'Inter',sans-serif;
-}
-
-body{
-min-height:100vh;
-transition:background .3s,color .3s;
-}
-
-/* Header */
-
-.header{
-height:65px;
-background:#2563eb;
-color:#fff;
-display:flex;
-align-items:center;
-padding:0 18px;
-font-size:20px;
-font-weight:700;
-box-shadow:0 2px 12px rgba(0,0,0,.08);
-}
-
-.header a{
-color:#fff;
-text-decoration:none;
-font-size:24px;
-margin-right:16px;
-}
-
-/* Container */
-
-.container{
-max-width:550px;
-margin:25px auto;
-padding:15px;
-}
-
-/* Cards */
-
-.card{
-background:#fff;
-border-radius:18px;
-padding:22px;
-margin-bottom:20px;
-box-shadow:0 8px 25px rgba(0,0,0,.06);
-}
-
-.balanceTitle{
-font-size:14px;
-color:#64748b;
-margin-bottom:10px;
-}
-
-.balance{
-font-size:34px;
-font-weight:700;
-color:#2563eb;
-}
-
-.balance small{
-font-size:16px;
-}
-
-/* Form */
-
-label{
-display:block;
-margin-top:18px;
-margin-bottom:8px;
-font-size:14px;
-font-weight:600;
-color:#334155;
-}
-
-input{
-width:100%;
-padding:15px;
-border:1px solid #dbe2ea;
-border-radius:14px;
-font-size:15px;
-outline:none;
-transition:.25s;
-background:#fff;
-}
-
-input:focus{
-border-color:#2563eb;
-box-shadow:0 0 0 3px rgba(37,99,235,.15);
-}
-
-/* Summary */
-
-.summary{
-margin-top:20px;
-padding:18px;
-background:#eff6ff;
-border-radius:14px;
-display:flex;
-justify-content:space-between;
-align-items:center;
-}
-
-.summary span:first-child{
-color:#64748b;
-font-size:15px;
-}
-
-.summary strong{
-font-size:22px;
-color:#2563eb;
-}
-
-/* Information Card */
-
-.info-card{
-display:flex;
-gap:15px;
-align-items:flex-start;
-margin-top:22px;
-padding:18px;
-background:#111827;
-border:1px solid #2b3750;
-border-radius:16px;
-}
-
-.info-icon{
-width:48px;
-height:48px;
-background:#2563eb;
-border-radius:14px;
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:22px;
-color:#fff;
-flex-shrink:0;
-}
-
-.info-text h4{
-font-size:16px;
-margin-bottom:8px;
-color:#fff;
-}
-
-.info-text p{
-font-size:14px;
-line-height:1.6;
-color:#94a3b8;
-}
-
-/* Button */
-
-#topupBtn{
-width:100%;
-margin-top:24px;
-padding:16px;
-border:none;
-border-radius:14px;
-background:#2563eb;
-color:#fff;
-font-size:16px;
-font-weight:700;
-cursor:pointer;
-transition:.3s;
-}
-
-#topupBtn:hover{
-background:#1d4ed8;
-transform:translateY(-2px);
-}
-
-#topupBtn:disabled{
-opacity:.6;
-cursor:not-allowed;
-transform:none;
-}
-
-/* Note */
-
-.note{
-margin-top:18px;
-display:flex;
-align-items:center;
-justify-content:center;
-gap:8px;
-font-size:14px;
-color:#64748b;
-}
-
-/* Loader */
-
-.loader{
-position:fixed;
-top:0;
-left:0;
-right:0;
-bottom:0;
-display:none;
-align-items:center;
-justify-content:center;
-flex-direction:column;
-background:rgba(255,255,255,.95);
-z-index:9999;
-}
-
-.spinner{
-width:60px;
-height:60px;
-border:6px solid #dbeafe;
-border-top:6px solid #2563eb;
-border-radius:50%;
-animation:spin 1s linear infinite;
-margin-bottom:18px;
-}
-
-@keyframes spin{
-100%{
-transform:rotate(360deg);
-}
-}
-
-.loader p{
-font-size:16px;
-font-weight:600;
-}
-
-/* Popup */
-
-.popup{
-position:fixed;
-left:50%;
-bottom:25px;
-transform:translateX(-50%);
-background:#fff;
-width:90%;
-max-width:360px;
-padding:20px;
-border-radius:18px;
-box-shadow:0 10px 35px rgba(0,0,0,.18);
-display:none;
-z-index:10000;
-animation:popup .25s ease;
-}
-
-@keyframes popup{
-
-from{
-opacity:0;
-transform:translate(-50%,20px);
-}
-
-to{
-opacity:1;
-transform:translate(-50%,0);
-}
-
-}
-
-.popupTitle{
-font-size:18px;
-font-weight:700;
-margin-bottom:10px;
-color:#2563eb;
-}
-
-#popupMessage{
-font-size:15px;
-line-height:1.6;
-color:#475569;
-}
-
-.popup button{
-width:100%;
-margin-top:18px;
-padding:14px;
-border:none;
-border-radius:12px;
-background:#2563eb;
-color:#fff;
-font-size:15px;
-font-weight:700;
-cursor:pointer;
-}
-
-.popup button:hover{
-background:#1d4ed8;
-}
-
-/* Confirmation Popup */
-
-.popup-details{
-margin:18px 0;
-padding:18px;
-background:#111827;
-border:1px solid #2b3750;
-border-radius:14px;
-}
-
-.popup-details p{
-display:flex;
-justify-content:space-between;
-padding:12px 0;
-font-size:15px;
-color:#fff;
-}
-
-.popup-details p:not(:last-child){
-border-bottom:1px solid #2b3750;
-}
-
-.popup-buttons{
-display:flex;
-gap:12px;
-margin-top:20px;
-}
-
-.popup-buttons button{
-flex:1;
-padding:14px;
-border:none;
-border-radius:12px;
-font-size:15px;
-font-weight:700;
-cursor:pointer;
-}
-
-.secondary-btn{
-background:#64748b;
-color:#fff;
-}
-
-/* Responsive */
-
-@media(max-width:480px){
-
-.header{
-font-size:18px;
-}
-
-.balance{
-font-size:28px;
-}
-
-.summary strong{
-font-size:18px;
-}
-
-.container{
-padding:12px;
-}
-
-.card{
-padding:18px;
-}
-
-}
-
-/* Light Theme */
-
-body.light{
-background:#f5f7fb;
-color:#1e293b;
-}
-
-body.light .card,
-body.light .popup{
-background:#fff;
-}
-
-body.light .info-card,
-body.light .popup-details{
-background:#f8fafc;
-border-color:#dbe2ea;
-}
-
-body.light .info-text h4{
-color:#1e293b;
-}
-
-body.light .info-text p{
-color:#64748b;
-}
-
-body.light .popup-details p{
-color:#1e293b;
-border-color:#e5e7eb;
-}
-/* Dark Theme */
-
-body.dark{
-background:#0f172a;
-color:#f8fafc;
-}
-
-body.dark .card{
-background:#1e293b;
-color:#fff;
-}
-
-body.dark label{
-color:#cbd5e1;
-}
-
-body.dark input{
-background:#334155;
-border-color:#475569;
-color:#fff;
-}
-
-body.dark input::placeholder{
-color:#94a3b8;
-}
-
-body.dark .balanceTitle,
-body.dark .note{
-color:#94a3b8;
-}
-
-body.dark .summary{
-background:#1e3a8a;
-}
-
-body.dark .summary span{
-color:#cbd5e1;
-}
-
-body.dark .loader{
-background:rgba(15,23,42,.95);
-color:#fff;
-}
-
-body.dark .popup{
-background:#1e293b;
-color:#fff;
-}
-
-body.dark #popupMessage{
-color:#cbd5e1;
-}
-
-body.dark .popup-details{
-background:#0f172a;
-border-color:#334155;
-}
-
-body.dark .popup-details p{
-color:#fff;
-border-color:#334155;
-}
-
-body.dark .header{
-background:#1e293b;
-}
-
-body.dark .balance{
-color:#60a5fa;
-}
-
-body.dark .summary strong{
-color:#93c5fd;
-}
-
-body.dark .summary span:first-child{
-color:#cbd5e1;
-}
-
-body.dark input:focus{
-border-color:#60a5fa;
-box-shadow:0 0 0 3px rgba(96,165,250,.2);
-}
-</style>
-
-</head>
-
-<body>
-
-<div class="header">
-<a href="dashboard.html">&#8592;</a>
-Top Up Wallet
-</div>
-
-<div class="container">
-
-<div class="card">
-
-<div class="balanceTitle">
-Current Wallet Balance
-</div>
-
-<div class="balance">
-<small>KSh</small>
-<span id="walletBalance">0.00</span>
-</div>
-
-</div>
-
-<div class="card">
-
-<label>
-M-Pesa Number
-</label>
-
-<input
-type="tel"
-id="phone"
+<!DOCTYPE html>  <html lang="en">  
+<head>  
+<meta charset="UTF-8">  
+<meta name="viewport" content="width=device-width, initial-scale=1.0">  
+<title>Top Up Wallet | AUTOPAY</title>  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">  <style>  
+/* Information Card */  
+*{  
+margin:0;  
+padding:0;  
+box-sizing:border-box;  
+font-family:'Inter',sans-serif;  
+}  
+  
+body{  
+min-height:100vh;  
+transition:background .3s,color .3s;  
+}  
+  
+/* Header */  
+  
+.header{  
+height:65px;  
+background:#2563eb;  
+color:#fff;  
+display:flex;  
+align-items:center;  
+padding:0 18px;  
+font-size:20px;  
+font-weight:700;  
+box-shadow:0 2px 12px rgba(0,0,0,.08);  
+}  
+  
+.header a{  
+color:#fff;  
+text-decoration:none;  
+font-size:24px;  
+margin-right:16px;  
+}  
+  
+/* Container */  
+  
+.container{  
+width:100%;  
+max-width:550px;  
+margin:25px auto;  
+padding:15px;  
+transition:.3s;  
+}  
+  
+/* Cards */  
+  
+.card{  
+background:#fff;  
+border-radius:18px;  
+padding:22px;  
+margin-bottom:20px;  
+box-shadow:0 8px 25px rgba(0,0,0,.06);  
+}  
+  
+.balanceTitle{  
+font-size:14px;  
+color:#64748b;  
+margin-bottom:10px;  
+}  
+  
+.balance{  
+font-size:34px;  
+font-weight:700;  
+color:#2563eb;  
+}  
+  
+.balance small{  
+font-size:16px;  
+}  
+  
+/* Form */  
+  
+label{  
+display:block;  
+margin-top:18px;  
+margin-bottom:8px;  
+font-size:14px;  
+font-weight:600;  
+color:#334155;  
+}  
+  
+input{  
+width:100%;  
+padding:15px;  
+border:1px solid #dbe2ea;  
+border-radius:14px;  
+font-size:15px;  
+outline:none;  
+transition:.25s;  
+background:#fff;  
+}  
+  
+input:focus{  
+border-color:#2563eb;  
+box-shadow:0 0 0 3px rgba(37,99,235,.15);  
+}  
+  
+/* Summary */  
+  
+.summary{  
+margin-top:20px;  
+padding:18px;  
+background:#eff6ff;  
+border-radius:14px;  
+display:flex;  
+justify-content:space-between;  
+align-items:center;  
+}  
+  
+.summary span:first-child{  
+color:#64748b;  
+font-size:15px;  
+}  
+  
+.summary strong{  
+font-size:22px;  
+color:#2563eb;  
+}  
+  
+/* Information Card */  
+  
+.info-card{  
+display:flex;  
+gap:15px;  
+align-items:flex-start;  
+margin-top:22px;  
+padding:18px;  
+background:#111827;  
+border:1px solid #2b3750;  
+border-radius:16px;  
+}  
+  
+.info-icon{  
+width:48px;  
+height:48px;  
+background:#2563eb;  
+border-radius:14px;  
+display:flex;  
+align-items:center;  
+justify-content:center;  
+font-size:22px;  
+color:#fff;  
+flex-shrink:0;  
+}  
+  
+.info-text h4{  
+font-size:16px;  
+margin-bottom:8px;  
+color:#fff;  
+}  
+  
+.info-text p{  
+font-size:14px;  
+line-height:1.6;  
+color:#94a3b8;  
+}  
+  
+/* Button */  
+  
+#topupBtn{  
+width:100%;  
+margin-top:24px;  
+padding:16px;  
+border:none;  
+border-radius:14px;  
+background:#2563eb;  
+color:#fff;  
+font-size:16px;  
+font-weight:700;  
+cursor:pointer;  
+transition:.3s;  
+}  
+  
+#topupBtn:hover{  
+background:#1d4ed8;  
+transform:translateY(-2px);  
+}  
+  
+#topupBtn:disabled{  
+opacity:.6;  
+cursor:not-allowed;  
+transform:none;  
+}  
+  
+/* Note */  
+  
+.note{  
+margin-top:18px;  
+display:flex;  
+align-items:center;  
+justify-content:center;  
+gap:8px;  
+font-size:14px;  
+color:#64748b;  
+}  
+  
+/* Loader */  
+  
+.loader{  
+position:fixed;  
+top:0;  
+left:0;  
+right:0;  
+bottom:0;  
+display:none;  
+align-items:center;  
+justify-content:center;  
+flex-direction:column;  
+background:rgba(255,255,255,.95);  
+z-index:9999;  
+}  
+  
+.spinner{  
+width:60px;  
+height:60px;  
+border:6px solid #dbeafe;  
+border-top:6px solid #2563eb;  
+border-radius:50%;  
+animation:spin 1s linear infinite;  
+margin-bottom:18px;  
+}  
+  
+@keyframes spin{  
+100%{  
+transform:rotate(360deg);  
+}  
+}  
+  
+.loader p{  
+font-size:16px;  
+font-weight:600;  
+}  
+  
+/* Popup */  
+  
+.popup{  
+position:fixed;  
+left:50%;  
+bottom:25px;  
+transform:translateX(-50%);  
+background:#fff;  
+width:90%;  
+max-width:360px;  
+padding:20px;  
+border-radius:18px;  
+box-shadow:0 10px 35px rgba(0,0,0,.18);  
+display:none;  
+z-index:10000;  
+animation:popup .25s ease;  
+}  
+  
+@keyframes popup{  
+  
+from{  
+opacity:0;  
+transform:translate(-50%,20px);  
+}  
+  
+to{  
+opacity:1;  
+transform:translate(-50%,0);  
+}  
+  
+}  
+  
+.popupTitle{  
+font-size:18px;  
+font-weight:700;  
+margin-bottom:10px;  
+color:#2563eb;  
+}  
+  
+#popupMessage{  
+font-size:15px;  
+line-height:1.6;  
+color:#475569;  
+}  
+  
+.popup button{  
+width:100%;  
+margin-top:18px;  
+padding:14px;  
+border:none;  
+border-radius:12px;  
+background:#2563eb;  
+color:#fff;  
+font-size:15px;  
+font-weight:700;  
+cursor:pointer;  
+}  
+  
+.popup button:hover{  
+background:#1d4ed8;  
+}  
+  
+/* Confirmation Popup */  
+  
+.popup-details{  
+margin:18px 0;  
+padding:18px;  
+background:#111827;  
+border:1px solid #2b3750;  
+border-radius:14px;  
+}  
+  
+.popup-details p{  
+display:flex;  
+justify-content:space-between;  
+padding:12px 0;  
+font-size:15px;  
+color:#fff;  
+}  
+  
+.popup-details p:not(:last-child){  
+border-bottom:1px solid #2b3750;  
+}  
+  
+.popup-buttons{  
+display:flex;  
+gap:12px;  
+margin-top:20px;  
+}  
+  
+.popup-buttons button{  
+flex:1;  
+padding:14px;  
+border:none;  
+border-radius:12px;  
+font-size:15px;  
+font-weight:700;  
+cursor:pointer;  
+}  
+  
+.secondary-btn{  
+background:#64748b;  
+color:#fff;  
+}  
+  
+/* Responsive */  
+  
+@media(max-width:480px){  
+  
+.header{  
+font-size:18px;  
+}  
+  
+.balance{  
+font-size:28px;  
+}  
+  
+.summary strong{  
+font-size:18px;  
+}  
+  
+.container{  
+padding:12px;  
+}  
+  
+.card{  
+padding:18px;  
+}  
+  
+}  
+  
+/* Light Theme */  
+  
+body.light{  
+background:#f5f7fb;  
+color:#1e293b;  
+}  
+  
+body.light .card,  
+body.light .popup{  
+background:#fff;  
+}  
+  
+body.light .info-card,  
+body.light .popup-details{  
+background:#f8fafc;  
+border-color:#dbe2ea;  
+}  
+  
+body.light .info-text h4{  
+color:#1e293b;  
+}  
+  
+body.light .info-text p{  
+color:#64748b;  
+}  
+  
+body.light .popup-details p{  
+color:#1e293b;  
+border-color:#e5e7eb;  
+}  
+/* Dark Theme */  
+  
+body.dark{  
+background:#0f172a;  
+color:#f8fafc;  
+}  
+  
+body.dark .card{  
+background:#1e293b;  
+color:#fff;  
+}  
+  
+body.dark label{  
+color:#cbd5e1;  
+}  
+  
+body.dark input{  
+background:#334155;  
+border-color:#475569;  
+color:#fff;  
+}  
+  
+body.dark input::placeholder{  
+color:#94a3b8;  
+}  
+  
+body.dark .balanceTitle,  
+body.dark .note{  
+color:#94a3b8;  
+}  
+  
+body.dark .summary{  
+background:#1e3a8a;  
+}  
+  
+body.dark .summary span{  
+color:#cbd5e1;  
+}  
+  
+body.dark .loader{  
+background:rgba(15,23,42,.95);  
+color:#fff;  
+}  
+  
+body.dark .popup{  
+background:#1e293b;  
+color:#fff;  
+}  
+  
+body.dark #popupMessage{  
+color:#cbd5e1;  
+}  
+  
+body.dark .popup-details{  
+background:#0f172a;  
+border-color:#334155;  
+}  
+  
+body.dark .popup-details p{  
+color:#fff;  
+border-color:#334155;  
+}  
+  
+body.dark .header{  
+background:#1e293b;  
+}  
+  
+body.dark .balance{  
+color:#60a5fa;  
+}  
+  
+body.dark .summary strong{  
+color:#93c5fd;  
+}  
+  
+body.dark .summary span:first-child{  
+color:#cbd5e1;  
+}  
+  
+body.dark input:focus{  
+border-color:#60a5fa;  
+box-shadow:0 0 0 3px rgba(96,165,250,.2);  
+}  
+  
+/* =========================================================  
+   DESKTOP / FULL SCREEN RESPONSIVE  
+   ========================================================= */  
+  
+@media (min-width:768px){  
+  
+    body{  
+        overflow-x:hidden;  
+    }  
+  
+    /* Header */  
+  
+    .header{  
+        height:72px;  
+        padding:0 30px;  
+        font-size:22px;  
+    }  
+  
+    .header a{  
+        font-size:26px;  
+        margin-right:18px;  
+    }  
+  
+    /* Main content */  
+  
+    .container{  
+        width:100%;  
+        max-width:none;  
+        margin:0;  
+        padding:30px 40px 60px;  
+    }  
+  
+    /* Cards */  
+  
+    .card{  
+        border-radius:20px;  
+        padding:28px;  
+        margin-bottom:22px;  
+    }  
+  
+    /* Balance */  
+  
+    .balanceTitle{  
+        font-size:15px;  
+    }  
+  
+    .balance{  
+        font-size:38px;  
+    }  
+  
+    .balance small{  
+        font-size:17px;  
+    }  
+  
+    /* Form */  
+  
+    label{  
+        font-size:15px;  
+        margin-top:22px;  
+    }  
+  
+    input{  
+        padding:17px;  
+        font-size:16px;  
+    }  
+  
+    /* Summary */  
+  
+    .summary{  
+        padding:20px;  
+        border-radius:16px;  
+    }  
+  
+    .summary span:first-child{  
+        font-size:15px;  
+    }  
+  
+    .summary strong{  
+        font-size:24px;  
+    }  
+  
+    /* Information */  
+  
+    .info-card{  
+        padding:22px;  
+        border-radius:18px;  
+    }  
+  
+    .info-icon{  
+        width:52px;  
+        height:52px;  
+    }  
+  
+    .info-text h4{  
+        font-size:17px;  
+    }  
+  
+    .info-text p{  
+        font-size:15px;  
+    }  
+  
+    /* Button */  
+  
+    #topupBtn{  
+        padding:18px;  
+        font-size:17px;  
+    }  
+  
+}  
+  
+  
+/* =========================================================  
+   LARGE DESKTOP  
+   ========================================================= */  
+  
+@media (min-width:1200px){  
+  
+    .header{  
+        height:76px;  
+        padding:0 40px;  
+    }  
+  
+    .container{  
+        padding:35px 50px 70px;  
+    }  
+  
+    .card{  
+        padding:32px;  
+        border-radius:22px;  
+    }  
+  
+    .balance{  
+        font-size:42px;  
+    }  
+  
+    input{  
+        padding:18px;  
+    }  
+  
+    .summary{  
+        padding:22px;  
+    }  
+  
+    .summary strong{  
+        font-size:26px;  
+    }  
+  
+    .info-card{  
+        padding:25px;  
+    }  
+  
+}  
+  
+  
+/* =========================================================  
+   EXTRA LARGE DESKTOP  
+   ========================================================= */  
+  
+@media (min-width:1600px){  
+  
+    .header{  
+        padding:0 55px;  
+    }  
+  
+    .container{  
+        padding:40px 60px 80px;  
+    }  
+  
+    .card{  
+        padding:36px;  
+        border-radius:24px;  
+    }  
+  
+    .balance{  
+        font-size:46px;  
+    }  
+  
+}  
+</style>  </head>  <body>  <div class="header">  
+<a href="dashboard.html">&#8592;</a>  
+Top Up Wallet  
+</div>  <div class="container">  <div class="card">  <div class="balanceTitle">  
+Current Wallet Balance  
+</div>  <div class="balance">  
+<small>KSh</small>  
+<span id="walletBalance">0.00</span>  
+</div>  </div>  <div class="card">  <label>  
+M-Pesa Number  
+</label>  <input  
+type="tel"  
+id="phone"  
 placeholder="254712345678">
 
-<label>
-Amount (KES)
-</label>
-
-<input
-type="number"
-id="amount"
+<label>  
+Amount (KES)  
+</label>  <input  
+type="number"  
+id="amount"  
 placeholder="Enter amount">
 
-<div class="summary">
-
-<span>
-You'll Receive
-</span>
-
-<strong>
-KSh <span id="receiveAmount">0</span>
-</strong>
-
-</div>
-
-<button
-class="btn"
+<div class="summary">  <span>  
+You'll Receive  
+</span>  <strong>  
+KSh <span id="receiveAmount">0</span>  
+</strong>  </div>  <button  
+class="btn"  
 id="topupBtn">
 
 Top Up Wallet
 
-</button>
-
-<div class="note">
-
-ðŸ”’ Secure payment via M-Pesa
-
-</div>
-
-</div>
-
-</div>
-
-<div class="loader" id="loader">
-
-<div class="spinner"></div>
-
-<p id="loaderText">
-Sending STK Push...
-</p>
-
-</div>
-
-<div class="popup" id="popup">
-
-<div class="popupTitle" id="popupTitle">
-
-Success
-
-</div>
-
-<div id="popupMessage">
-
-Message
-
-</div>
-
-<button onclick="closePopup()">
-
-OK
-
-</button>
-
-</div>
-
-<script type="module">
-
-import { auth, db } from "./firebase.js";
-
-import {
-    onAuthStateChanged
-} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
-
-import {
-    doc,
-    getDoc
-} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
-
-/*
-=========================================
-BACKEND URL
-=========================================
-*/
-
-const API_BASE = "https://autopaydigital.co.ke";
-
-/*
-=========================================
-CURRENT USER
-=========================================
-*/
-
-let currentUser = null;
-
-let paymentTimer = null;
-
-// Theme
-const theme = localStorage.getItem("theme");
-
-if(theme === "dark"){
-    document.body.classList.add("dark");
-}else{
-    document.body.classList.add("light");
-}
-
-/*
-=========================================
-AUTH
-=========================================
-*/
-
-onAuthStateChanged(auth, async (user) => {
-
-    if (!user) {
-        window.location.href = "login.html";
-        return;
-    }
-
-    currentUser = user;
-
-    // Load cached merchant immediately
-    const cached = JSON.parse(localStorage.getItem("merchant"));
-
-    if(cached){
-
-        document.getElementById("walletBalance").textContent =
-        Number(cached.walletBalance || 0).toLocaleString(undefined,{
-            minimumFractionDigits:2,
-            maximumFractionDigits:2
-        });
-
-        document.getElementById("phone").value =
-        cached.phone || "";
-
-    }
-
-    // Refresh from backend
-    loadMerchant();
-
-});
-
-/*
-=========================================
-LOAD MERCHANT
-=========================================
-*/
-
-async function loadMerchant() {
-
-    try {
-
-        const token = await currentUser.getIdToken();
-
-        const response = await fetch(
-    `${API_BASE}/api/merchant/${currentUser.uid}`,
-            {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            }
-        );
-
-        const result = await response.json();
-
-        if (!result.success) {
-
-            showPopup(
-                "Error",
-                result.message
-            );
-
-            return;
-
-        }
-
-        const merchant = result.merchant;
-
-        // Update local cache
-localStorage.setItem(
-    "merchant",
-    JSON.stringify(merchant)
-);
-
-        document.getElementById("walletBalance").textContent =
-            Number(
-                merchant.walletBalance || 0
-            ).toLocaleString(undefined,{
-                minimumFractionDigits:2,
-                maximumFractionDigits:2
-            });
-
-        document.getElementById("phone").value =
-            merchant.phone || "";
-
-    } catch(err){
-
-    console.error("LOAD MERCHANT ERROR:", err);
-
-    showPopup(
-        "Error",
-        err.message
-    );
-
-  }
-
-}
-
-/*
-=========================================
-LIVE AMOUNT
-=========================================
-*/
-
-const amountInput =
-document.getElementById("amount");
-
-amountInput.addEventListener("input", () => {
-
-    const amount =
-        Number(amountInput.value) || 0;
-
-    document.getElementById("receiveAmount")
-        .textContent =
-        amount.toLocaleString();
-
-});
-
-/*
-=========================================
-POPUP
-=========================================
-*/
-
-window.showPopup = function(title, message) {
-
-    document.getElementById("popupTitle").innerHTML =
-        title;
-
-    document.getElementById("popupMessage").innerHTML =
-        message;
-
-    document.getElementById("popup").style.display =
-        "block";
-
-}
-
-window.closePopup = function() {
-
-    document.getElementById("popup").style.display =
-        "none";
-
-}
-
-/*
-=========================================
-TOP UP WALLET
-=========================================
-*/
-
-document.getElementById("topupBtn")
-.addEventListener("click", topupWallet);
-
-async function topupWallet() {
-
-    if(document.getElementById("topupBtn").disabled){
-    return;
-    }
-
-    const phone =
-        document.getElementById("phone").value.trim();
-
-    const amount =
-        Number(document.getElementById("amount").value);
-
-    if(!/^254(7|1)\d{8}$/.test(phone)){
-
-    showPopup(
-        "Invalid Number",
-        "Enter a valid M-Pesa number in the format 254712345678."
-    );
-
-    return;
-
-        }
-
-    if(!amount){
-
-    showPopup(
-        "Invalid Amount",
-        "Enter a valid amount."
-    );
-
-    return;
-
-}
-
-if(amount < 10){
-
-    showPopup(
-        "Minimum Amount",
-        "Minimum wallet top up is KES 10."
-    );
-
-    return;
-
-}
-
-if(amount > 300000){
-
-    showPopup(
-        "Maximum Amount",
-        "Maximum wallet top up is KES 300,000."
-    );
-
-    return;
-
-    }
-
-    try {
-
-        document.getElementById("loader").style.display =
-            "flex";
-
-        document.getElementById("topupBtn").disabled = true;
-
-document.getElementById("topupBtn").innerHTML =
-"Processing...";
-
-        const token =
-            await currentUser.getIdToken();
-
-        const response =
-            await fetch(
-                `${API_BASE}/api/stk-push`,
-                {
-                    method: "POST",
-
-                    headers: {
-
-                        "Content-Type":
-                        "application/json",
-
-                        "Authorization":
-                        `Bearer ${token}`
-
-                    },
-
-                    body: JSON.stringify({
-
-                        uid: currentUser.uid,
-
-                        phone,
-
-                        amount,
-
-                        balanceType: "wallet"
-
-                    })
-
-                }
-            );
-
-        const text = await response.text();
-
-console.log("STK Response:", text);
-
-let result;
-
-try {
-
-    result = JSON.parse(text);
-
-} catch (e) {
-
-    document.getElementById("loader").style.display = "none";
-
-    document.getElementById("topupBtn").disabled = false;
-
-    document.getElementById("topupBtn").innerHTML =
-    "Top Up Wallet";
-
-    showPopup(
-        "Server Error",
-        text
-    );
-
-    return;
-
-    }
-        if (!response.ok || !result.success) {
-
-            document.getElementById("loader").style.display =
-                "none";
-
-            document.getElementById("topupBtn").disabled = false;
-
-document.getElementById("topupBtn").innerHTML =
-"Top Up Wallet";
-
-            showPopup(
-                "Payment Failed",
-                result.message ||
-                "Unable to initiate payment."
-            );
-
-            return;
-
-        }
-
-        const checkoutRequestId =
-            result.checkout_request_id ||
-            result.data?.checkout_request_id ||
-            result.data?.CheckoutRequestID;
-
-        if (!checkoutRequestId) {
-
-    document.getElementById("loader").style.display = "none";
-
-    document.getElementById("topupBtn").disabled = false;
-
-    document.getElementById("topupBtn").innerHTML =
-    "Top Up Wallet";
-
-    showPopup(
-        "Error",
-        "Checkout Request ID not returned by the server."
-    );
-
-    return;
-
-    }
-
-        document.getElementById("loaderText").innerHTML =
-"Waiting for M-Pesa confirmation...";
-
-checkPaymentStatus(checkoutRequestId);
-
-    } catch (err) {
-
-        console.error(err);
-
-        document.getElementById("loader").style.display = "none";
-
-        document.getElementById("topupBtn").disabled = false;
-
-        document.getElementById("topupBtn").innerHTML =
-        "Top Up Wallet";
-
-        showPopup(
-            "Connection Error",
-            "Unable to connect to the server."
-        );
-
-    }
-
-}
-
-/*
-=========================================
-CHECK PAYMENT STATUS
-=========================================
-*/
-
-async function checkPaymentStatus(checkoutRequestId) {
-
-    if (paymentTimer) {
-        clearInterval(paymentTimer);
-        paymentTimer = null;
-    }
-
-    let attempts = 0;
-
-    paymentTimer = setInterval(async () => {
-
-        attempts++;
-
-        try {
-
-            const token =
-                await currentUser.getIdToken();
-
-            const response =
-                await fetch(
-                    `${API_BASE}/api/check-status`,
-                    {
-                        method: "POST",
-
-                        headers: {
-
-                            "Content-Type":
-                            "application/json",
-
-                            "Authorization":
-                            `Bearer ${token}`
-
-                        },
-
-                        body: JSON.stringify({
-
-                            uid: currentUser.uid,
-
-                            checkout_request_id:
-                            checkoutRequestId,
-
-                            balanceType:
-                            "wallet"
-
-                        })
-
-                    }
-                );
-
-            let result;
-
-try {
-    result = await response.json();
-} catch (e) {
-    throw new Error("Server returned an invalid response.");
-    }
-
-            if (!response.ok) {
-
-    clearInterval(paymentTimer);
-paymentTimer = null;
-
-    document.getElementById("loader").style.display = "none";
-
-    document.getElementById("topupBtn").disabled = false;
-    document.getElementById("topupBtn").innerHTML = "Top Up Wallet";
-
-    showPopup(
-        "Error",
-        result.message || "Unable to check payment status."
-    );
-
-    return;
-
-            }
-
-            if (
-    result.status === "completed" ||
-    result.data?.status === "completed"
-) {
-
-    clearInterval(paymentTimer);
-    paymentTimer = null;
-
-    document.getElementById("loader").style.display =
-        "none";
-
-    document.getElementById("loaderText").innerHTML =
-    "Sending STK Push...";
-
-                await loadMerchant();
-
-document.getElementById("amount").value = "";
-
-document.getElementById("receiveAmount").textContent = "0";
-
-document.getElementById("topupBtn").disabled = false;
-document.getElementById("topupBtn").innerHTML = "Top Up Wallet";
-
-showPopup(
-    "Payment Successful",
-    "Your wallet has been credited successfully."
-);
-
-            }
-
-            if (
-    result.status === "failed" ||
-    result.status === "cancelled" ||
-    result.data?.status === "failed" ||
-    result.data?.status === "cancelled"
-) {
-
-    clearInterval(paymentTimer);
-    paymentTimer = null;
-
-    document.getElementById("loader").style.display =
-        "none";
-
-    document.getElementById("loaderText").innerHTML =
-    "Sending STK Push...";
-
-                document.getElementById("topupBtn").disabled = false;
-document.getElementById("topupBtn").innerHTML = "Top Up Wallet";
-
-showPopup(
-    "Payment Failed",
-    "The transaction was not completed."
-);
-
-            }
-
-            if (attempts >= 24) {
-
-    clearInterval(paymentTimer);
-    paymentTimer = null;
-
-    document.getElementById("loader").style.display =
-        "none";
-
-    document.getElementById("loaderText").innerHTML =
-    "Sending STK Push...";
-                document.getElementById("topupBtn").disabled = false;
-document.getElementById("topupBtn").innerHTML = "Top Up Wallet";
-
-showPopup(
-    "Timed Out",
-    "The payment is taking longer than expected. Please check your transaction history later."
-);
-
-            }
-
-        } catch (err) {
-
-    console.error(err);
-
-    clearInterval(paymentTimer);
-    paymentTimer = null;
-
-    document.getElementById("loader").style.display = "none";
-
-    document.getElementById("loaderText").innerHTML =
-    "Sending STK Push...";
-
-    document.getElementById("topupBtn").disabled = false;
-
-    document.getElementById("topupBtn").innerHTML =
-    "Top Up Wallet";
-
-    showPopup(
-        "Connection Error",
-        "Unable to verify payment status. Please try again."
-    );
-
-    }
-
-    }, 3000);
-
-}
+</button>  <div class="note">  ðŸ”’ Secure payment via M-Pesa
+
+</div>  </div>  </div>  <div class="loader" id="loader">  <div class="spinner"></div>  <p id="loaderText">  
+Sending STK Push...  
+</p>  </div>  <div class="popup" id="popup">  <div class="popupTitle" id="popupTitle">  Success
+
+</div>  <div id="popupMessage">  Message
+
+</div>  <button onclick="closePopup()">  OK
+
+</button>  </div>  <script type="module">  
+  
+import { auth, db } from "./firebase.js";  
+  
+import {  
+    onAuthStateChanged  
+} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";  
+  
+import {  
+    doc,  
+    getDoc  
+} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";  
+  
+/*  
+=========================================  
+BACKEND URL  
+=========================================  
+*/  
+  
+const API_BASE = "https://api.autopaydigital.co.ke";  
+  
+/*  
+=========================================  
+CURRENT USER  
+=========================================  
+*/  
+  
+let currentUser = null;  
+  
+let paymentTimer = null;  
+  
+// Theme  
+const theme = localStorage.getItem("theme");  
+  
+if(theme === "dark"){  
+    document.body.classList.add("dark");  
+}else{  
+    document.body.classList.add("light");  
+}  
+  
+/*  
+=========================================  
+AUTH  
+=========================================  
+*/  
+  
+onAuthStateChanged(auth, async (user) => {  
+  
+    if (!user) {  
+        window.location.href = "login.html";  
+        return;  
+    }  
+  
+    currentUser = user;  
+  
+    // Load cached merchant immediately  
+    const cached = JSON.parse(localStorage.getItem("merchant"));  
+  
+    if(cached){  
+  
+        document.getElementById("walletBalance").textContent =  
+        Number(cached.walletBalance || 0).toLocaleString(undefined,{  
+            minimumFractionDigits:2,  
+            maximumFractionDigits:2  
+        });  
+  
+        document.getElementById("phone").value =  
+        cached.phone || "";  
+  
+    }  
+  
+    // Refresh from backend  
+    loadMerchant();  
+  
+});  
+  
+/*  
+=========================================  
+LOAD MERCHANT  
+=========================================  
+*/  
+  
+async function loadMerchant() {  
+  
+    try {  
+  
+        const token = await currentUser.getIdToken();  
+  
+        const response = await fetch(  
+    `${API_BASE}/api/merchant/${currentUser.uid}`,  
+            {  
+                headers: {  
+                    Authorization: `Bearer ${token}`  
+                }  
+            }  
+        );  
+  
+        const result = await response.json();  
+  
+        if (!result.success) {  
+  
+            showPopup(  
+                "Error",  
+                result.message  
+            );  
+  
+            return;  
+  
+        }  
+  
+        const merchant = result.merchant;  
+  
+        // Update local cache  
+localStorage.setItem(  
+    "merchant",  
+    JSON.stringify(merchant)  
+);  
+  
+        document.getElementById("walletBalance").textContent =  
+            Number(  
+                merchant.walletBalance || 0  
+            ).toLocaleString(undefined,{  
+                minimumFractionDigits:2,  
+                maximumFractionDigits:2  
+            });  
+  
+        document.getElementById("phone").value =  
+            merchant.phone || "";  
+  
+    } catch(err){  
+  
+    console.error("LOAD MERCHANT ERROR:", err);  
+  
+    showPopup(  
+        "Error",  
+        err.message  
+    );  
+  
+  }  
+  
+}  
+  
+/*  
+=========================================  
+LIVE AMOUNT  
+=========================================  
+*/  
+  
+const amountInput =  
+document.getElementById("amount");  
+  
+amountInput.addEventListener("input", () => {  
+  
+    const amount =  
+        Number(amountInput.value) || 0;  
+  
+    document.getElementById("receiveAmount")  
+        .textContent =  
+        amount.toLocaleString();  
+  
+});  
+  
+/*  
+=========================================  
+POPUP  
+=========================================  
+*/  
+  
+window.showPopup = function(title, message) {  
+  
+    document.getElementById("popupTitle").innerHTML =  
+        title;  
+  
+    document.getElementById("popupMessage").innerHTML =  
+        message;  
+  
+    document.getElementById("popup").style.display =  
+        "block";  
+  
+}  
+  
+window.closePopup = function() {  
+  
+    document.getElementById("popup").style.display =  
+        "none";  
+  
+}  
+  
+/*  
+=========================================  
+TOP UP WALLET  
+=========================================  
+*/  
+  
+document.getElementById("topupBtn")  
+.addEventListener("click", topupWallet);  
+  
+async function topupWallet() {  
+  
+    if(document.getElementById("topupBtn").disabled){  
+    return;  
+    }  
+  
+    const phone =  
+        document.getElementById("phone").value.trim();  
+  
+    const amount =  
+        Number(document.getElementById("amount").value);  
+  
+    if(!/^254(7|1)\d{8}$/.test(phone)){  
+  
+    showPopup(  
+        "Invalid Number",  
+        "Enter a valid M-Pesa number in the format 254712345678."  
+    );  
+  
+    return;  
+  
+        }  
+  
+    if(!amount){  
+  
+    showPopup(  
+        "Invalid Amount",  
+        "Enter a valid amount."  
+    );  
+  
+    return;  
+  
+}  
+  
+if(amount < 10){  
+  
+    showPopup(  
+        "Minimum Amount",  
+        "Minimum wallet top up is KES 10."  
+    );  
+  
+    return;  
+  
+}  
+  
+if(amount > 300000){  
+  
+    showPopup(  
+        "Maximum Amount",  
+        "Maximum wallet top up is KES 300,000."  
+    );  
+  
+    return;  
+  
+    }  
+  
+    try {  
+  
+        document.getElementById("loader").style.display =  
+            "flex";  
+  
+        document.getElementById("topupBtn").disabled = true;  
+  
+document.getElementById("topupBtn").innerHTML =  
+"Processing...";  
+  
+        const token =  
+            await currentUser.getIdToken();  
+  
+        const response =  
+            await fetch(  
+                `${API_BASE}/api/stk-push`,  
+                {  
+                    method: "POST",  
+  
+                    headers: {  
+  
+                        "Content-Type":  
+                        "application/json",  
+  
+                        "Authorization":  
+                        `Bearer ${token}`  
+  
+                    },  
+  
+                    body: JSON.stringify({  
+  
+                        uid: currentUser.uid,  
+  
+                        phone,  
+  
+                        amount,  
+  
+                        balanceType: "wallet"  
+  
+                    })  
+  
+                }  
+            );  
+  
+        const text = await response.text();  
+  
+console.log("STK Response:", text);  
+  
+let result;  
+  
+try {  
+  
+    result = JSON.parse(text);  
+  
+} catch (e) {  
+  
+    document.getElementById("loader").style.display = "none";  
+  
+    document.getElementById("topupBtn").disabled = false;  
+  
+    document.getElementById("topupBtn").innerHTML =  
+    "Top Up Wallet";  
+  
+    showPopup(  
+        "Server Error",  
+        text  
+    );  
+  
+    return;  
+  
+    }  
+        if (!response.ok || !result.success) {  
+  
+            document.getElementById("loader").style.display =  
+                "none";  
+  
+            document.getElementById("topupBtn").disabled = false;  
+  
+document.getElementById("topupBtn").innerHTML =  
+"Top Up Wallet";  
+  
+            showPopup(  
+                "Payment Failed",  
+                result.message ||  
+                "Unable to initiate payment."  
+            );  
+  
+            return;  
+  
+        }  
+  
+        const checkoutRequestId =  
+            result.checkout_request_id ||  
+            result.data?.checkout_request_id ||  
+            result.data?.CheckoutRequestID;  
+  
+        if (!checkoutRequestId) {  
+  
+    document.getElementById("loader").style.display = "none";  
+  
+    document.getElementById("topupBtn").disabled = false;  
+  
+    document.getElementById("topupBtn").innerHTML =  
+    "Top Up Wallet";  
+  
+    showPopup(  
+        "Error",  
+        "Checkout Request ID not returned by the server."  
+    );  
+  
+    return;  
+  
+    }  
+  
+        document.getElementById("loaderText").innerHTML =  
+"Waiting for M-Pesa confirmation...";  
+  
+checkPaymentStatus(checkoutRequestId);  
+  
+    } catch (err) {  
+  
+        console.error(err);  
+  
+        document.getElementById("loader").style.display = "none";  
+  
+        document.getElementById("topupBtn").disabled = false;  
+  
+        document.getElementById("topupBtn").innerHTML =  
+        "Top Up Wallet";  
+  
+        showPopup(  
+            "Connection Error",  
+            "Unable to connect to the server."  
+        );  
+  
+    }  
+  
+}  
+  
+/*  
+=========================================  
+CHECK PAYMENT STATUS  
+=========================================  
+*/  
+  
+async function checkPaymentStatus(checkoutRequestId) {  
+  
+    if (paymentTimer) {  
+        clearInterval(paymentTimer);  
+        paymentTimer = null;  
+    }  
+  
+    let attempts = 0;  
+  
+    paymentTimer = setInterval(async () => {  
+  
+        attempts++;  
+  
+        try {  
+  
+            const token =  
+                await currentUser.getIdToken();  
+  
+            const response =  
+                await fetch(  
+                    `${API_BASE}/api/check-status`,  
+                    {  
+                        method: "POST",  
+  
+                        headers: {  
+  
+                            "Content-Type":  
+                            "application/json",  
+  
+                            "Authorization":  
+                            `Bearer ${token}`  
+  
+                        },  
+  
+                        body: JSON.stringify({  
+  
+                            uid: currentUser.uid,  
+  
+                            checkout_request_id:  
+                            checkoutRequestId,  
+  
+                            balanceType:  
+                            "wallet"  
+  
+                        })  
+  
+                    }  
+                );  
+  
+            let result;  
+  
+try {  
+    result = await response.json();  
+} catch (e) {  
+    throw new Error("Server returned an invalid response.");  
+    }  
+  
+            if (!response.ok) {  
+  
+    clearInterval(paymentTimer);  
+paymentTimer = null;  
+  
+    document.getElementById("loader").style.display = "none";  
+  
+    document.getElementById("topupBtn").disabled = false;  
+    document.getElementById("topupBtn").innerHTML = "Top Up Wallet";  
+  
+    showPopup(  
+        "Error",  
+        result.message || "Unable to check payment status."  
+    );  
+  
+    return;  
+  
+            }  
+  
+            if (  
+    result.status === "completed" ||  
+    result.data?.status === "completed"  
+) {  
+  
+    clearInterval(paymentTimer);  
+    paymentTimer = null;  
+  
+    document.getElementById("loader").style.display =  
+        "none";  
+  
+    document.getElementById("loaderText").innerHTML =  
+    "Sending STK Push...";  
+  
+                await loadMerchant();  
+  
+document.getElementById("amount").value = "";  
+  
+document.getElementById("receiveAmount").textContent = "0";  
+  
+document.getElementById("topupBtn").disabled = false;  
+document.getElementById("topupBtn").innerHTML = "Top Up Wallet";  
+  
+showPopup(  
+    "Payment Successful",  
+    "Your wallet has been credited successfully."  
+);  
+  
+            }  
+  
+            if (  
+    result.status === "failed" ||  
+    result.status === "cancelled" ||  
+    result.data?.status === "failed" ||  
+    result.data?.status === "cancelled"  
+) {  
+  
+    clearInterval(paymentTimer);  
+    paymentTimer = null;  
+  
+    document.getElementById("loader").style.display =  
+        "none";  
+  
+    document.getElementById("loaderText").innerHTML =  
+    "Sending STK Push...";  
+  
+                document.getElementById("topupBtn").disabled = false;  
+document.getElementById("topupBtn").innerHTML = "Top Up Wallet";  
+  
+showPopup(  
+    "Payment Failed",  
+    "The transaction was not completed."  
+);  
+  
+            }  
+  
+            if (attempts >= 24) {  
+  
+    clearInterval(paymentTimer);  
+    paymentTimer = null;  
+  
+    document.getElementById("loader").style.display =  
+        "none";  
+  
+    document.getElementById("loaderText").innerHTML =  
+    "Sending STK Push...";  
+                document.getElementById("topupBtn").disabled = false;  
+document.getElementById("topupBtn").innerHTML = "Top Up Wallet";  
+  
+showPopup(  
+    "Timed Out",  
+    "The payment is taking longer than expected. Please check your transaction history later."  
+);  
+  
+            }  
+  
+        } catch (err) {  
+  
+    console.error(err);  
+  
+    clearInterval(paymentTimer);  
+    paymentTimer = null;  
+  
+    document.getElementById("loader").style.display = "none";  
+  
+    document.getElementById("loaderText").innerHTML =  
+    "Sending STK Push...";  
+  
+    document.getElementById("topupBtn").disabled = false;  
+  
+    document.getElementById("topupBtn").innerHTML =  
+    "Top Up Wallet";  
+  
+    showPopup(  
+        "Connection Error",  
+        "Unable to verify payment status. Please try again."  
+    );  
+  
+    }  
+  
+    }, 3000);  
+  
+}  
 </script>
-
-</body>
-    </html>
+</body>  
+</html>
