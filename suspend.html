@@ -1,0 +1,1483 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+
+<meta name="theme-color" content="#0c1424">
+
+<meta name="color-scheme" content="dark">
+
+<title>Account Suspended | AUTOPAY</title>
+
+<link
+rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+<style>
+
+/* =========================================================
+   RESET
+========================================================= */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    -webkit-tap-highlight-color:transparent;
+}
+
+html{
+    width:100%;
+    min-height:100%;
+    background:#0c1424;
+}
+
+body{
+    width:100%;
+    min-width:0;
+    min-height:100vh;
+    min-height:100dvh;
+
+    margin:0;
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    background:
+        radial-gradient(
+            circle at top,
+            rgba(37,99,235,.10),
+            transparent 38%
+        ),
+        #0c1424;
+
+    color:#fff;
+
+    overflow-x:hidden;
+    overflow-y:auto;
+
+    -webkit-overflow-scrolling:touch;
+
+    padding:
+        max(18px, env(safe-area-inset-top))
+        max(14px, env(safe-area-inset-right))
+        max(28px, env(safe-area-inset-bottom))
+        max(14px, env(safe-area-inset-left));
+}
+
+
+/* =========================================================
+   PAGE WRAPPER
+========================================================= */
+
+.page{
+    width:100%;
+    max-width:470px;
+    margin:0 auto;
+}
+
+
+/* =========================================================
+   LOGO
+========================================================= */
+
+.logo{
+    width:100%;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    font-size:25px;
+    font-weight:800;
+
+    letter-spacing:.6px;
+
+    padding:
+        8px
+        0
+        20px;
+}
+
+.logo span{
+    color:#3b82f6;
+}
+
+
+/* =========================================================
+   MAIN CARD
+========================================================= */
+
+.card{
+
+    width:100%;
+
+    background:
+        linear-gradient(
+            180deg,
+            #111c2f 0%,
+            #101a2c 100%
+        );
+
+    border:1px solid rgba(255,255,255,.07);
+
+    border-radius:22px;
+
+    padding:26px 18px 22px;
+
+    box-shadow:
+        0 18px 45px rgba(0,0,0,.30);
+
+}
+
+
+/* =========================================================
+   LOCK / SECURITY ICON
+========================================================= */
+
+.lock-wrapper{
+
+    width:82px;
+    height:82px;
+
+    margin:0 auto 19px;
+
+    border-radius:50%;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    position:relative;
+
+    background:
+        rgba(239,68,68,.10);
+
+    border:
+        1px solid
+        rgba(239,68,68,.18);
+
+    animation:pulse 2.2s infinite;
+}
+
+.lock-wrapper i{
+
+    font-size:34px;
+
+    color:#ef4444;
+}
+
+
+/* =========================================================
+   PULSE
+========================================================= */
+
+@keyframes pulse{
+
+    0%{
+        box-shadow:
+            0 0 0 0
+            rgba(239,68,68,.30);
+    }
+
+    70%{
+        box-shadow:
+            0 0 0 14px
+            rgba(239,68,68,0);
+    }
+
+    100%{
+        box-shadow:
+            0 0 0 0
+            rgba(239,68,68,0);
+    }
+
+}
+
+
+/* =========================================================
+   TITLE
+========================================================= */
+
+h1{
+
+    text-align:center;
+
+    font-size:25px;
+
+    line-height:1.25;
+
+    font-weight:800;
+
+    margin-bottom:10px;
+
+    color:#f8fafc;
+}
+
+
+/* =========================================================
+   SUBTITLE
+========================================================= */
+
+.subtitle{
+
+    width:100%;
+
+    text-align:center;
+
+    color:#94a3b8;
+
+    font-size:14px;
+
+    line-height:1.65;
+
+    margin:0 auto 22px;
+
+}
+
+
+/* =========================================================
+   MERCHANT INFORMATION
+========================================================= */
+
+.user-box{
+
+    width:100%;
+
+    background:#0c1424;
+
+    border:
+        1px solid
+        rgba(255,255,255,.055);
+
+    border-radius:15px;
+
+    padding:13px 15px;
+
+    margin-bottom:18px;
+
+}
+
+
+.user-row{
+
+    width:100%;
+
+    min-width:0;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:flex-start;
+
+    gap:12px;
+
+    padding:11px 0;
+
+    border-bottom:
+        1px solid
+        rgba(255,255,255,.055);
+
+}
+
+
+.user-row:last-child{
+    border-bottom:none;
+}
+
+
+.user-row span{
+
+    flex:0 0 auto;
+
+    font-size:12px;
+
+    color:#64748b;
+
+    line-height:1.5;
+
+}
+
+
+.user-row strong{
+
+    min-width:0;
+
+    max-width:65%;
+
+    font-size:13px;
+
+    font-weight:700;
+
+    color:#e2e8f0;
+
+    text-align:right;
+
+    line-height:1.5;
+
+    overflow-wrap:anywhere;
+
+    word-break:break-word;
+
+}
+
+
+/* =========================================================
+   WARNING CARD
+========================================================= */
+
+.warning{
+
+    width:100%;
+
+    background:
+        rgba(239,68,68,.075);
+
+    border:
+        1px solid
+        rgba(239,68,68,.18);
+
+    border-radius:15px;
+
+    padding:17px 15px;
+
+    margin-bottom:17px;
+
+    color:#fca5a5;
+
+    font-size:13px;
+
+    line-height:1.65;
+
+    text-align:left;
+
+}
+
+
+.warning-title{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:8px;
+
+    margin-bottom:11px;
+
+    color:#fca5a5;
+
+    font-size:16px;
+
+    font-weight:800;
+
+    text-align:center;
+
+}
+
+
+.warning-title i{
+    font-size:15px;
+}
+
+
+/* =========================================================
+   WHAT HAPPENS NEXT
+========================================================= */
+
+.next-box{
+
+    width:100%;
+
+    background:#0c1424;
+
+    border:
+        1px solid
+        rgba(59,130,246,.18);
+
+    border-radius:15px;
+
+    padding:17px 15px;
+
+    margin-bottom:18px;
+
+    text-align:left;
+}
+
+
+.next-title{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:8px;
+
+    color:#60a5fa;
+
+    font-size:15px;
+
+    font-weight:800;
+
+    margin-bottom:10px;
+}
+
+
+.next-title i{
+    font-size:14px;
+}
+
+
+.next-box p{
+
+    color:#94a3b8;
+
+    font-size:13px;
+
+    line-height:1.7;
+}
+
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+.buttons{
+
+    width:100%;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:10px;
+}
+
+
+button{
+
+    width:100%;
+
+    min-height:52px;
+
+    border:none;
+
+    border-radius:13px;
+
+    padding:14px 16px;
+
+    font-family:inherit;
+
+    font-size:15px;
+
+    font-weight:700;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:9px;
+
+    cursor:pointer;
+
+    -webkit-appearance:none;
+
+    transition:
+        transform .15s ease,
+        opacity .15s ease,
+        background .15s ease;
+}
+
+
+button:active{
+    transform:scale(.985);
+}
+
+
+.support{
+
+    background:#3b82f6;
+
+    color:#fff;
+
+    box-shadow:
+        0 7px 18px
+        rgba(59,130,246,.20);
+}
+
+
+.support:hover{
+    background:#2563eb;
+}
+
+
+.logout{
+
+    background:#1e293b;
+
+    color:#cbd5e1;
+
+    border:
+        1px solid
+        rgba(255,255,255,.06);
+}
+
+
+.logout:hover{
+    background:#263449;
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.footer{
+
+    text-align:center;
+
+    margin-top:18px;
+
+    padding:0 5px;
+
+    font-size:11px;
+
+    line-height:1.6;
+
+    color:#475569;
+}
+
+
+.footer strong{
+    color:#64748b;
+}
+
+
+/* =========================================================
+   LOADING
+========================================================= */
+
+.loading{
+
+    position:fixed;
+
+    inset:0;
+
+    width:100%;
+    height:100%;
+
+    height:100dvh;
+
+    background:#0c1424;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    z-index:99999;
+
+    padding:
+        env(safe-area-inset-top)
+        env(safe-area-inset-right)
+        env(safe-area-inset-bottom)
+        env(safe-area-inset-left);
+}
+
+
+.spinner{
+
+    width:40px;
+    height:40px;
+
+    border:
+        4px solid
+        rgba(255,255,255,.10);
+
+    border-top-color:#3b82f6;
+
+    border-radius:50%;
+
+    animation:
+        spin .8s linear infinite;
+}
+
+
+@keyframes spin{
+
+    to{
+        transform:rotate(360deg);
+    }
+
+}
+
+
+/* =========================================================
+   VERY SMALL PHONES
+========================================================= */
+
+@media(max-width:360px){
+
+    body{
+        padding-left:10px;
+        padding-right:10px;
+    }
+
+    .logo{
+        font-size:23px;
+        padding-bottom:17px;
+    }
+
+    .card{
+        padding:22px 14px 18px;
+        border-radius:19px;
+    }
+
+    .lock-wrapper{
+        width:72px;
+        height:72px;
+        margin-bottom:16px;
+    }
+
+    .lock-wrapper i{
+        font-size:30px;
+    }
+
+    h1{
+        font-size:22px;
+    }
+
+    .subtitle{
+        font-size:13px;
+        line-height:1.6;
+    }
+
+    .user-box,
+    .warning,
+    .next-box{
+        padding-left:13px;
+        padding-right:13px;
+    }
+
+    .user-row strong{
+        max-width:62%;
+        font-size:12px;
+    }
+
+    .warning,
+    .next-box p{
+        font-size:12.5px;
+    }
+
+    button{
+        min-height:50px;
+        font-size:14px;
+    }
+
+}
+
+
+/* =========================================================
+   SHORT PHONES
+========================================================= */
+
+@media(max-height:680px){
+
+    body{
+        padding-top:
+            max(10px, env(safe-area-inset-top));
+
+        padding-bottom:
+            max(20px, env(safe-area-inset-bottom));
+    }
+
+    .logo{
+        padding-top:3px;
+        padding-bottom:13px;
+    }
+
+    .card{
+        padding-top:20px;
+    }
+
+    .lock-wrapper{
+        width:70px;
+        height:70px;
+        margin-bottom:14px;
+    }
+
+    .lock-wrapper i{
+        font-size:29px;
+    }
+
+    h1{
+        font-size:22px;
+        margin-bottom:8px;
+    }
+
+    .subtitle{
+        margin-bottom:17px;
+    }
+
+    .user-box{
+        margin-bottom:14px;
+    }
+
+    .warning{
+        margin-bottom:14px;
+        padding-top:14px;
+        padding-bottom:14px;
+    }
+
+    .next-box{
+        margin-bottom:14px;
+        padding-top:14px;
+        padding-bottom:14px;
+    }
+
+    .footer{
+        margin-top:13px;
+    }
+
+}
+
+
+/* =========================================================
+   TABLETS
+========================================================= */
+
+@media(min-width:600px){
+
+    body{
+        padding:
+            28px
+            24px
+            40px;
+    }
+
+    .page{
+        max-width:500px;
+    }
+
+    .logo{
+        font-size:28px;
+        padding-bottom:25px;
+    }
+
+    .card{
+        padding:32px 28px 27px;
+        border-radius:25px;
+    }
+
+    .lock-wrapper{
+        width:96px;
+        height:96px;
+    }
+
+    .lock-wrapper i{
+        font-size:42px;
+    }
+
+    h1{
+        font-size:28px;
+    }
+
+    .subtitle{
+        font-size:15px;
+    }
+
+}
+
+
+/* =========================================================
+   DESKTOP
+========================================================= */
+
+@media(min-width:1000px){
+
+    body{
+        padding-top:45px;
+        padding-bottom:55px;
+    }
+
+    .page{
+        max-width:510px;
+    }
+
+}
+
+
+/* =========================================================
+   REDUCE MOTION
+========================================================= */
+
+@media(prefers-reduced-motion:reduce){
+
+    *,
+    *::before,
+    *::after{
+        animation-duration:.01ms !important;
+        animation-iteration-count:1 !important;
+        transition:none !important;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     PAGE
+===================================================== -->
+
+<div class="page">
+
+
+    <!-- LOGO -->
+
+    <div class="logo">
+        AUTO<span>PAY</span>
+    </div>
+
+
+    <!-- MAIN CARD -->
+
+    <main class="card">
+
+
+        <!-- SECURITY ICON -->
+
+        <div class="lock-wrapper">
+
+            <i class="fas fa-shield-halved"></i>
+
+        </div>
+
+
+        <!-- TITLE -->
+
+        <h1>
+            Account Suspended
+        </h1>
+
+
+        <!-- DESCRIPTION -->
+
+        <p class="subtitle">
+
+            Your AUTOPAY merchant account has been temporarily
+            suspended following the detection of suspicious
+            activity associated with your account.
+
+        </p>
+
+
+        <!-- =================================================
+             MERCHANT INFORMATION
+        ================================================== -->
+
+        <div class="user-box">
+
+
+            <div class="user-row">
+
+                <span>
+                    Merchant
+                </span>
+
+                <strong id="merchantName">
+                    Loading...
+                </strong>
+
+            </div>
+
+
+            <div class="user-row">
+
+                <span>
+                    Merchant ID
+                </span>
+
+                <strong id="merchantId">
+                    Loading...
+                </strong>
+
+            </div>
+
+
+            <div class="user-row">
+
+                <span>
+                    Email
+                </span>
+
+                <strong id="merchantEmail">
+                    Loading...
+                </strong>
+
+            </div>
+
+
+            <div class="user-row">
+
+                <span>
+                    Account Status
+                </span>
+
+                <strong style="color:#ef4444;">
+                    Suspended
+                </strong>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- =================================================
+             SECURITY ALERT
+        ================================================== -->
+
+        <div class="warning">
+
+
+            <div class="warning-title">
+
+                <i class="fas fa-triangle-exclamation"></i>
+
+                <span>
+                    Security Alert
+                </span>
+
+            </div>
+
+
+            AUTOPAY's security system detected unusual or
+            suspicious activity associated with this merchant
+            account. The activity may include transactions or
+            account activity that appears inconsistent with
+            normal usage or may be associated with fraudulent
+            or unauthorized activity.
+
+            <br><br>
+
+            For your protection, access to your merchant
+            dashboard and certain account services has been
+            temporarily suspended while the account is reviewed.
+
+
+        </div>
+
+
+        <!-- =================================================
+             WHAT HAPPENS NEXT
+        ================================================== -->
+
+        <div class="next-box">
+
+
+            <div class="next-title">
+
+                <i class="fas fa-circle-info"></i>
+
+                <span>
+                    What happens next?
+                </span>
+
+            </div>
+
+
+            <p>
+
+                Our security team may review recent transactions,
+                login activity, payment activity and other account
+                events to determine whether the activity was
+                authorized.
+
+                <br><br>
+
+                If the activity is verified and the account is
+                cleared, access may be restored.
+
+            </p>
+
+
+        </div>
+
+
+        <!-- =================================================
+             ACTION BUTTONS
+        ================================================== -->
+
+        <div class="buttons">
+
+
+            <button
+                class="support"
+                id="supportBtn"
+                type="button">
+
+                <i class="fas fa-headset"></i>
+
+                <span>
+                    Contact AUTOPAY Support
+                </span>
+
+            </button>
+
+
+            <button
+                class="logout"
+                id="logoutBtn"
+                type="button">
+
+                <i class="fas fa-right-from-bracket"></i>
+
+                <span>
+                    Logout
+                </span>
+
+            </button>
+
+
+        </div>
+
+
+    </main>
+
+
+    <!-- FOOTER -->
+
+    <div class="footer">
+
+        <strong>AUTOPAY</strong>
+
+        <br>
+
+        Secure Payments &amp; Merchant Services
+
+    </div>
+
+
+</div>
+
+
+<!-- =====================================================
+     LOADING
+===================================================== -->
+
+<div
+    class="loading"
+    id="loading">
+
+    <div class="spinner"></div>
+
+</div>
+
+
+<script type="module">
+
+
+/* =========================================================
+   FIREBASE
+========================================================= */
+
+import {
+    auth,
+    db
+}
+from "./firebase.js";
+
+
+import {
+    onAuthStateChanged,
+    signOut
+}
+from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
+
+
+import {
+    doc,
+    getDoc
+}
+from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
+
+
+
+/* =========================================================
+   SUPPORT NUMBER
+========================================================= */
+
+const SUPPORT_NUMBER =
+    "254103147454";
+
+
+
+/* =========================================================
+   ELEMENTS
+========================================================= */
+
+const loading =
+    document.getElementById("loading");
+
+const merchantName =
+    document.getElementById("merchantName");
+
+const merchantId =
+    document.getElementById("merchantId");
+
+const merchantEmail =
+    document.getElementById("merchantEmail");
+
+const supportBtn =
+    document.getElementById("supportBtn");
+
+const logoutBtn =
+    document.getElementById("logoutBtn");
+
+
+
+/* =========================================================
+   AUTH CHECK
+========================================================= */
+
+onAuthStateChanged(
+    auth,
+    async(user)=>{
+
+
+        /*
+        ================================================
+        NO USER
+        ================================================
+        */
+
+        if(!user){
+
+            location.replace("index.html");
+
+            return;
+
+        }
+
+
+        try{
+
+
+            /*
+            ============================================
+            LOAD MERCHANT
+            ============================================
+            */
+
+            const merchantSnap =
+                await getDoc(
+                    doc(
+                        db,
+                        "users",
+                        user.uid
+                    )
+                );
+
+
+            /*
+            ============================================
+            ACCOUNT NOT FOUND
+            ============================================
+            */
+
+            if(!merchantSnap.exists()){
+
+                alert(
+                    "Merchant account not found."
+                );
+
+                await signOut(auth);
+
+                location.replace("index.html");
+
+                return;
+
+            }
+
+
+            /*
+            ============================================
+            MERCHANT DATA
+            ============================================
+            */
+
+            const merchant =
+                merchantSnap.data() || {};
+
+
+            /*
+            ============================================
+            MERCHANT NAME
+            ============================================
+            */
+
+            merchantName.textContent =
+                merchant.fullName ||
+                merchant.businessName ||
+                "Merchant";
+
+
+            /*
+            ============================================
+            MERCHANT ID
+            ============================================
+            */
+
+            merchantId.textContent =
+                merchant.merchantId ||
+                user.uid;
+
+
+            /*
+            ============================================
+            EMAIL
+            ============================================
+            */
+
+            merchantEmail.textContent =
+                merchant.email ||
+                user.email ||
+                "-";
+
+
+            /*
+            ============================================
+            ACCOUNT STATUS
+            ============================================
+            */
+
+            const status =
+                String(
+                    merchant.accountStatus ||
+                    merchant.status ||
+                    "Active"
+                )
+                .trim()
+                .toLowerCase();
+
+
+            /*
+            ============================================
+            ACCOUNT IS NOT SUSPENDED
+            ============================================
+            */
+
+            if(
+                status !== "suspended" &&
+                status !== "blocked" &&
+                status !== "disabled"
+            ){
+
+                location.replace(
+                    "dashboard.html"
+                );
+
+                return;
+
+            }
+
+
+            /*
+            ============================================
+            SHOW PAGE
+            ============================================
+            */
+
+            loading.style.display =
+                "none";
+
+
+        }catch(error){
+
+
+            console.error(
+                "SUSPEND PAGE ERROR:",
+                error
+            );
+
+
+            alert(
+                "Unable to load your account."
+            );
+
+
+            try{
+
+                await signOut(auth);
+
+            }catch(signOutError){
+
+                console.error(
+                    "SIGN OUT ERROR:",
+                    signOutError
+                );
+
+            }
+
+
+            location.replace(
+                "index.html"
+            );
+
+        }
+
+    }
+);
+
+
+
+/* =========================================================
+   CONTACT SUPPORT
+========================================================= */
+
+supportBtn.onclick = ()=>{
+
+
+    const name =
+        merchantName.textContent ||
+        "Merchant";
+
+
+    const id =
+        merchantId.textContent ||
+        "-";
+
+
+    const message =
+        encodeURIComponent(
+
+`Hello AUTOPAY Support,
+
+My merchant account has been suspended.
+
+I would like assistance regarding the suspension.
+
+Merchant ID:
+${id}
+
+Merchant:
+${name}`
+
+        );
+
+
+    const whatsappUrl =
+        "https://wa.me/" +
+        SUPPORT_NUMBER +
+        "?text=" +
+        message;
+
+
+    window.open(
+        whatsappUrl,
+        "_blank",
+        "noopener,noreferrer"
+    );
+
+};
+
+
+
+/* =========================================================
+   LOGOUT
+========================================================= */
+
+logoutBtn.onclick =
+    async()=>{
+
+
+        /*
+        Prevent repeated taps
+        */
+
+        if(logoutBtn.disabled){
+            return;
+        }
+
+
+        logoutBtn.disabled =
+            true;
+
+
+        logoutBtn.style.opacity =
+            ".7";
+
+
+        logoutBtn.innerHTML = `
+            <i class="fas fa-spinner fa-spin"></i>
+            <span>Logging out...</span>
+        `;
+
+
+        try{
+
+
+            await signOut(auth);
+
+
+            location.replace(
+                "index.html"
+            );
+
+
+        }catch(error){
+
+
+            console.error(
+                "LOGOUT ERROR:",
+                error
+            );
+
+
+            logoutBtn.disabled =
+                false;
+
+
+            logoutBtn.style.opacity =
+                "1";
+
+
+            logoutBtn.innerHTML = `
+                <i class="fas fa-right-from-bracket"></i>
+                <span>Logout</span>
+            `;
+
+
+            alert(
+                "Unable to logout. Please try again."
+            );
+
+        }
+
+    };
+
+
+</script>
+
+</body>
+
+</html>
