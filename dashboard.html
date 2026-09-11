@@ -1,14 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
-<title>AUTOPAY Dashboard</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
-
-*{
+<html lang="en">  
+<head>  
+<meta charset="UTF-8">  
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">  
+<title>AUTOPAY Dashboard</title>  
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">  
+<style>  
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');  *{
 margin:0;
 padding:0;
 box-sizing:border-box;
@@ -31,9 +29,10 @@ color:#111827;
 
 .container{
 width:100%;
-max-width:430px;
-margin:auto;
+max-width:none;
+margin:0;
 padding:14px;
+transition:margin-left .35s ease;
 }
 
 .top{display:flex;justify-content:space-between;align-items:center;margin:8px 0 18px}
@@ -181,7 +180,7 @@ transform:scale(.97);
 .grid{display:grid;grid-template-columns:1fr 1fr;border:1px solid #2b3750;border-radius:16px;overflow:hidden}
 .cell{padding:18px;border-right:1px solid #2b3750;border-bottom:1px solid #2b3750}
 .cell:nth-child(2n){border-right:none}
-  
+
 .chart{
 height:160px;
 padding:6px 8px 0;
@@ -224,6 +223,168 @@ transform:scale(1.06);
 width:28px;
 height:28px;
 display:block;
+}
+
+/* =========================================
+SYSTEM WARNING POPUP
+========================================= */
+
+.system-popup-overlay{
+
+position:fixed;
+
+inset:0;
+
+background:rgba(0,0,0,.65);
+
+backdrop-filter:blur(5px);
+
+display:none;
+
+align-items:center;
+
+justify-content:center;
+
+padding:20px;
+
+z-index:99999;
+
+}
+
+.system-popup-overlay.show{
+
+display:flex;
+
+}
+
+.system-popup{
+
+width:100%;
+
+max-width:390px;
+
+background:#182235;
+
+border:1px solid #2b3750;
+
+border-radius:22px;
+
+padding:28px 22px;
+
+text-align:center;
+
+box-shadow:0 20px 60px rgba(0,0,0,.55);
+
+animation:popupShow .25s ease;
+
+}
+
+@keyframes popupShow{
+
+from{
+
+opacity:0;
+
+transform:scale(.9) translateY(15px);
+
+}
+
+to{
+
+opacity:1;
+
+transform:scale(1) translateY(0);
+
+}
+
+}
+
+.system-popup-icon{
+
+width:68px;
+
+height:68px;
+
+margin:0 auto 18px;
+
+border-radius:50%;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+background:rgba(245,158,11,.15);
+
+color:#f59e0b;
+
+font-size:30px;
+
+}
+
+.system-popup h2{
+
+font-size:21px;
+
+margin-bottom:10px;
+
+}
+
+.system-popup p{
+
+color:#9aa7bd;
+
+font-size:14px;
+
+line-height:1.6;
+
+margin-bottom:22px;
+
+}
+
+.system-popup button{
+
+width:100%;
+
+border:none;
+
+padding:14px;
+
+border-radius:12px;
+
+background:#2563eb;
+
+color:#fff;
+
+font-size:15px;
+
+font-weight:700;
+
+cursor:pointer;
+
+}
+
+.system-popup button:active{
+
+transform:scale(.98);
+
+}
+
+body.light .system-popup{
+
+background:#fff;
+
+border-color:#dbe2ea;
+
+color:#111827;
+
+}
+
+body.light .system-popup p{
+
+color:#64748b;
+
 }
 
 /* ===== Sidebar ===== */
@@ -602,7 +763,7 @@ width:28%;
 width:27%;
 text-align:right;
 }
-  
+
 .success i{
 color:#22c55e;
 }
@@ -676,6 +837,12 @@ color:#fff;
 
 }
 
+body.light .sidebar{
+background:#ffffff;
+color:#111827;
+border-right:1px solid #dbe2ea;
+}
+
 body.light .notification-item{
 
 border-bottom:1px solid #e5e7eb;
@@ -697,6 +864,259 @@ box-shadow:0 10px 25px rgba(37,99,235,.25);
 body.light .dot{
 
 border:2px solid #fff;
+
+}
+
+/* =========================================================
+DESKTOP / FULL SCREEN RESPONSIVE MODE
+========================================================= */
+
+@media (min-width: 768px){
+
+body{  
+    overflow-x:hidden;  
+}  
+
+/* Desktop sidebar */  
+.sidebar{  
+    left:0;  
+    width:260px;  
+    box-shadow:5px 0 25px rgba(0,0,0,.25);  
+    z-index:1000;  
+}  
+
+/* Hide the mobile overlay on desktop */  
+.overlay{  
+    display:none !important;  
+}  
+
+/* Desktop content area */  
+.container{  
+    width:calc(100% - 260px);  
+    max-width:none;  
+    margin-left:260px;  
+    padding:24px 30px 40px;  
+}  
+
+/* Mobile menu button becomes unnecessary */  
+.menu-btn{  
+    display:none;  
+}  
+
+/* Top navigation */  
+.top{  
+    margin:0 0 22px;  
+    width:100%;  
+}  
+
+.left{  
+    gap:16px;  
+}  
+
+.logo{  
+    font-size:28px;  
+}  
+
+.right{  
+    gap:12px;  
+}  
+
+.icon,  
+.avatar{  
+    width:48px;  
+    height:48px;  
+    min-width:48px;  
+    min-height:48px;  
+}  
+
+/* Greeting */  
+.greet{  
+    min-height:85px;  
+}  
+
+#greeting{  
+    font-size:24px;  
+}  
+
+/* Balance section */  
+.balances{  
+    grid-template-columns:1fr 1fr;  
+}  
+
+.bal{  
+    padding:22px;  
+}  
+
+.amount{  
+    font-size:22px;  
+    margin:12px 0;  
+}  
+
+/* Main action buttons */  
+.actions{  
+    grid-template-columns:1fr 1fr;  
+    gap:16px;  
+}  
+
+.btn{  
+    padding:18px;  
+    font-size:16px;  
+}  
+
+/* Processing statistics */  
+.grid{  
+    grid-template-columns:repeat(4,1fr);  
+}  
+
+.cell{  
+    border-bottom:none;  
+    padding:24px;  
+}  
+
+.cell:nth-child(2){  
+    border-right:1px solid #2b3750;  
+}  
+
+.cell:nth-child(3){  
+    border-right:1px solid #2b3750;  
+}  
+
+.cell:nth-child(4){  
+    border-right:none;  
+}  
+
+/* Revenue chart */  
+.revenue-card{  
+    padding:20px;  
+}  
+
+.chart{  
+    height:260px;  
+    padding:10px 15px 0;  
+}  
+
+/* Recent activity */  
+.activity-item{  
+    padding:18px 4px;  
+}  
+
+.activity-title{  
+    font-size:15px;  
+}  
+
+.activity-middle{  
+    width:150px;  
+}  
+
+.activity-right{  
+    width:130px;  
+}  
+
+/* Cards get more breathing room */  
+.card{  
+    border-radius:18px;  
+    margin-bottom:18px;  
+}  
+
+/* Notification panel stays on the right */  
+.notification-panel{  
+    top:90px;  
+    right:-400px;  
+    width:380px;  
+}  
+
+.notification-panel.show{  
+    right:25px;  
+}  
+
+/* WhatsApp button */  
+.float{  
+    right:28px;  
+    bottom:28px;  
+    width:60px;  
+    height:60px;  
+}
+
+}
+
+/* =========================================================
+WIDE DESKTOP
+========================================================= */
+
+@media (min-width: 1200px){
+
+.container{  
+    padding:28px 40px 50px;  
+}  
+
+/*  
+   Two-column desktop workspace:  
+   Revenue + Recent Activity  
+*/  
+
+.revenue-card{  
+    width:100%;  
+}  
+
+.chart{  
+    height:300px;  
+}  
+
+.activity-item{  
+    padding:20px 6px;  
+}  
+
+.activity-middle{  
+    width:180px;  
+}  
+
+.activity-right{  
+    width:150px;  
+}  
+
+.greet{  
+    min-height:95px;  
+}  
+
+#greeting{  
+    font-size:26px;  
+}  
+
+.bal{  
+    padding:26px;  
+}  
+
+.amount{  
+    font-size:24px;  
+}  
+
+.cell{  
+    padding:26px;  
+}
+
+}
+
+/* =========================================================
+EXTRA LARGE SCREENS
+========================================================= */
+
+@media (min-width: 1600px){
+
+.container{  
+    padding:30px 50px 60px;  
+}  
+
+.card{  
+    border-radius:20px;  
+}  
+
+.chart{  
+    height:340px;  
+}  
+
+.logo{  
+    font-size:30px;  
+}
 
 }
 
@@ -727,1231 +1147,1921 @@ height:42px;
 
 }
 </style>
-</head>
-<body>
-<div class="overlay"></div>
 
-<div class="sidebar">
+</head>  
+<body>  
+<div class="overlay"></div>  <!-- ================================  
+     SYSTEM WARNING POPUP  
+================================= -->  <div id="systemPopup" class="system-popup-overlay">  <div class="system-popup">  
 
-<div class="side-header" style="display:flex;justify-content:space-between;align-items:center;">
+    <div id="systemPopupIcon" class="system-popup-icon">  
+        <i class="fas fa-triangle-exclamation"></i>  
+    </div>  
 
-<div>
-<i class="fas fa-bolt"></i>
-AUTO<span>PAY</span>
-</div>
+    <h2 id="systemPopupTitle">  
+        Access Restricted  
+    </h2>  
 
-<div id="closeSidebar" style="cursor:pointer;">
-<i class="fas fa-times"></i>
-</div>
+    <p id="systemPopupMessage">  
+        This activity is currently unavailable.  
+    </p>  
 
-</div>
-
-<div class="side-menu">
-
-<a href="dashboard.html" class="active">
-<i class="fas fa-home"></i>
-Dashboard
-</a>
-
-<a href="transactions.html">
-<i class="fas fa-money-check-dollar"></i>
-Transactions
-</a>
-
-<a href="verification.html">
-<i class="fas fa-wallet"></i>
-KYC Verification
-</a>
-
-<a href="accounts.html">
-<i class="fas fa-building-columns"></i>
-Payment Accounts
-</a>
-
-<a href="links.html">
-<i class="fas fa-link"></i>
-Payment Links
-</a>
-
-<a href="apikeys.html">
-<i class="fas fa-key"></i>
-API Keys
-</a>
-
-<a href="whatsapp-billing.html">
-<i class="fab fa-whatsapp"></i>
-WhatsApp Billing
-</a>
-
-<a href="callback.html">
-<i class="fas fa-link"></i>
-Callback Link
-</a>
-
-<a href="apilogs.html">
-<i class="fas fa-file-lines"></i>
-API Logs
-</a>
-
-<a href="docs.html">
-<i class="fas fa-book"></i>
-Documentation
-</a>
-
-<a href="profile.html">
-<i class="fas fa-user"></i>
-Profile
-</a>
-
-<a href="settings.html">
-<i class="fas fa-gear"></i>
-Settings
-</a>
-
-<a href="#" id="logoutBtn">
-<i class="fas fa-right-from-bracket"></i>
-Logout
-</a>
+    <button id="systemPopupClose">  
+        <i class="fas fa-check"></i>  
+        OK  
+    </button>  
 
 </div>
 
-</div>
-<div class="container">
-<div class="top">
+</div>  <div class="sidebar">  <div class="side-header" style="display:flex;justify-content:space-between;align-items:center;">  <div>  
+<i class="fas fa-bolt"></i>  
+AUTO<span>PAY</span>  
+</div>  <div id="closeSidebar" style="cursor:pointer;">  
+<i class="fas fa-times"></i>  
+</div>  </div>  <div class="side-menu">  <a href="dashboard.html" class="active">  
+<i class="fas fa-home"></i>  
+Dashboard  
+</a>  <a href="transactions.html">  
+<i class="fas fa-money-check-dollar"></i>  
+Transactions  
+</a>  <a href="verification.html">  
+<i class="fas fa-wallet"></i>  
+KYC Verification  
+</a>  <a href="accounts.html">  
+<i class="fas fa-building-columns"></i>  
+Payment Accounts  
+</a>  <a href="links.html">  
+<i class="fas fa-link"></i>  
+Payment Links  
+</a>  <a href="apikeys.html">  
+<i class="fas fa-key"></i>  
+API Keys  
+</a>  <a href="whatsapp-billing.html">  
+<i class="fab fa-whatsapp"></i>  
+WhatsApp Billing  
+</a>  <a href="callback.html">  
+<i class="fas fa-link"></i>  
+Callback Link  
+</a>  <a href="apilogs.html">  
+<i class="fas fa-file-lines"></i>  
+API Logs  
+</a>  <a href="docs.html">  <i class="fas fa-book"></i>  
 
-<div class="left">
+Kenya API Docs
 
-<div class="icon menu-btn">
-<i class="fas fa-bars"></i>
-</div>
+</a>  <a href="global-docs.html">  <i class="fas fa-globe"></i>  
 
-<div class="logo">
-<i class="fas fa-bolt"></i>
-AUTO<span>PAY</span>
-</div>
+Global API Docs
 
-</div>
-
-<div class="right">
-
-<div class="icon" id="themeToggle">
-<i class="fas fa-moon" id="themeIcon"></i>
-</div>
-
-<div class="icon notify">
-
-<i class="fas fa-bell"></i>
+</a>  <a href="profile.html">  
+<i class="fas fa-user"></i>  
+Profile  
+</a>  <a href="settings.html">  
+<i class="fas fa-gear"></i>  
+Settings  
+</a>  <a href="#" id="logoutBtn">  
+<i class="fas fa-right-from-bracket"></i>  
+Logout  
+</a>  </div>  </div>  
+<div class="container">  
+<div class="top">  <div class="left">  <div class="icon menu-btn">  
+<i class="fas fa-bars"></i>  
+</div>  <div class="logo">  
+<i class="fas fa-bolt"></i>  
+AUTO<span>PAY</span>  
+</div>  </div>  <div class="right">  <div class="icon" id="themeToggle">  
+<i class="fas fa-moon" id="themeIcon"></i>  
+</div>  <div class="icon notify">  <i class="fas fa-bell"></i>
 
 <span class="dot" id="notificationBadge">0</span>
 
-</div>
+</div>  <div class="avatar" id="avatar">  
+AC  
+</div>  </div>  </div>  <div class="card greet">  <div>  <h2 id="greeting">  
+Good Morning  
+</h2>  <p id="date" class="small"></p>  </div>  </div>  <div class="card balances">  
+<div class="bal">  
+<div class="small">SERVICE BALANCE</div>  
+<div class="amount" id="serviceBalance">  
+KES 0.00  
+</div>  
+<span class="badge" id="serviceTopup">Topup</span>  
+</div>  
+<div class="bal">  
+<div class="small">WALLET BALANCE</div>  
+<div class="amount" id="walletBalance">  
+KES 0.00  
+</div>  
+<span class="badge" id="walletTopup">Topup</span>  
+</div>  
+</div>  <div class="actions">  
+<div class="btn primary" id="gatewayBtn">AUTOPAY Global</div>  
+<div class="btn secondary" id="withdrawBtn">Withdraw</div>  
+</div>  <div class="small" style="margin:8px 0">PROCESSING ACTIVITY</div>  
+<div class="grid card" style="padding:0">  
+<div class="cell"><div class="small">ACTIVE LINKS</div><h2 id="activeLinks">0</h2></div>  
+<div class="cell"><div class="small">TRANSACTIONS</div><h2 id="transactions">0</h2></div>  
+<div class="cell"><div class="small">PAYMENT ACCOUNTS</div><h2 id="accounts">0</h2></div>  
+<div class="cell"><div class="small">COMPLETED</div><h2 id="completed">KES 0</h2></div>  
+</div>  <div class="card revenue-card">  <div style="display:flex;justify-content:space-between;align-items:center">  <b>REVENUE HORIZON</b>
 
-<div class="avatar" id="avatar">
-AC
-</div>
+<span class="small">  
+12 Month Tracker  
+</span>  </div>  <div class="chart">  <canvas id="revenueChart"></canvas>
 
-</div>
+</div>  </div>  <div class="card">  <div class="activity-header">  <h3>RECENT ACTIVITY STREAM</h3>  <a href="transactions.html">View Archive</a>
 
-</div>
-
-<div class="card greet">
-
-<div>
-
-<h2 id="greeting">
-Good Morning
-</h2>
-
-<p id="date" class="small"></p>
-
-</div>
-
-</div>
-
-<div class="card balances">
-<div class="bal">
-<div class="small">SERVICE BALANCE</div>
-<div class="amount" id="serviceBalance">
-KES 0.00
-</div>
-<span class="badge" id="serviceTopup">Topup</span>
-</div>
-<div class="bal">
-<div class="small">WALLET BALANCE</div>
-<div class="amount" id="walletBalance">
-KES 0.00
-</div>
-<span class="badge" id="walletTopup">Topup</span>
-</div>
-</div>
-
-<div class="actions">
-<div class="btn primary" id="gatewayBtn">AUTOPAY Gateway</div>
-<div class="btn secondary" id="withdrawBtn">Withdraw</div>
-</div>
-
-<div class="small" style="margin:8px 0">PROCESSING ACTIVITY</div>
-<div class="grid card" style="padding:0">
-<div class="cell"><div class="small">ACTIVE LINKS</div><h2 id="activeLinks">0</h2></div>
-<div class="cell"><div class="small">TRANSACTIONS</div><h2 id="transactions">0</h2></div>
-<div class="cell"><div class="small">PAYMENT ACCOUNTS</div><h2 id="accounts">0</h2></div>
-<div class="cell"><div class="small">COMPLETED</div><h2 id="completed">KES 0</h2></div>
-</div>
-
-<div class="card revenue-card">
-
-<div style="display:flex;justify-content:space-between;align-items:center">
-
-<b>REVENUE HORIZON</b>
-
-<span class="small">
-12 Month Tracker
-</span>
-
-</div>
-
-<div class="chart">
-
-<canvas id="revenueChart"></canvas>
-
-</div>
-
-</div>
-
-<div class="card">
-
-<div class="activity-header">
-
-<h3>RECENT ACTIVITY STREAM</h3>
-
-<a href="transactions.html">View Archive</a>
-
-</div>
-
-<div class="activity-list">
-
-<div class="activity-columns">
-
-<div>Reference Identifier</div>
-
-<div>Volume</div>
-
-<div style="text-align:right;">State</div>
-
-</div>
-
-<div id="recentTransactions"></div>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-  
-<div class="float">
-
-<img
-src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"
+</div>  <div class="activity-list">  <div class="activity-columns">  <div>Reference Identifier</div>  <div>Volume</div>  <div style="text-align:right;">State</div>  </div>  <div id="recentTransactions"></div>  </div>  </div>  </div>  </div>  <div class="float">  <img  
+src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"  
 alt="WhatsApp">
 
-</div>
+</div>  <div class="notification-panel" id="notificationPanel">  <div class="notification-header">  <span>Notifications</span>
 
-<div class="notification-panel" id="notificationPanel">
-
-<div class="notification-header">
-
-<span>Notifications</span>
-
-<div style="display:flex;align-items:center;gap:15px;">
-
-
-<i class="fas fa-trash"
-id="clearNotifications"
-style="color:#ef4444;cursor:pointer;"
+<div style="display:flex;align-items:center;gap:15px;">  <i class="fas fa-trash"  
+id="clearNotifications"  
+style="color:#ef4444;cursor:pointer;"  
 title="Clear All"></i>
 
-<i id="closeNotification"
+<i id="closeNotification"  
 class="fas fa-times close-notification"></i>
 
-</div>
+</div>  </div>  <div class="notification-body" id="notificationBody">  <div style="  
+padding:25px;  
+text-align:center;  
+color:#94a3b8;  
+">  Loading notifications...
 
-</div>
-
-<div class="notification-body" id="notificationBody">
-
-<div style="
-padding:25px;
-text-align:center;
-color:#94a3b8;
-">
-
-Loading notifications...
-
-</div>
-
-</div>
-
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</div>  </div>  </div>  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>  <script type="module">  
+import { auth, db } from "./firebase.js";  
   
-<script type="module">
-import { auth, db } from "./firebase.js";
-
-import Cache from "./cache.js";
-
-import {
-onAuthStateChanged,
-signOut
-} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
+import Cache from "./cache.js";  
   
-import {
-doc,
-getDoc,
-collection,
-query,
-where,
-orderBy,
-limit,
-getDocs,
-onSnapshot,
-updateDoc,
-deleteDoc
-} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
+import {  
+onAuthStateChanged,  
+signOut  
+} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";  
+    
+import {  
+doc,  
+getDoc,  
+collection,  
+query,  
+where,  
+orderBy,  
+limit,  
+getDocs,  
+onSnapshot,  
+updateDoc,  
+deleteDoc  
+} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";  
+  
+// =========================================  
+// SYSTEM ACCESS CONTROL  
+// =========================================  
+  
+let currentMerchantData = null;  
+let currentKYCData = null;  
+let maintenanceMode = false;  
+let accessRedirecting = false;  
+  
+const systemPopup =  
+    document.getElementById("systemPopup");  
+  
+const systemPopupTitle =  
+    document.getElementById("systemPopupTitle");  
+  
+const systemPopupMessage =  
+    document.getElementById("systemPopupMessage");  
+  
+const systemPopupIcon =  
+    document.getElementById("systemPopupIcon");  
+  
+const systemPopupClose =  
+    document.getElementById("systemPopupClose");  
+  
+  
+function showSystemPopup(  
+    title,  
+    message,  
+    type = "warning"  
+){  
+  
+    systemPopupTitle.innerHTML = title;  
+  
+    systemPopupMessage.innerHTML = message;  
+  
+    if(type === "maintenance"){  
+  
+        systemPopupIcon.innerHTML =  
+            '<i class="fas fa-screwdriver-wrench"></i>';  
+  
+        systemPopupIcon.style.color = "#f59e0b";  
+  
+        systemPopupIcon.style.background =  
+            "rgba(245,158,11,.15)";  
+  
+    }else if(type === "suspended"){  
+  
+        systemPopupIcon.innerHTML =  
+            '<i class="fas fa-ban"></i>';  
+  
+        systemPopupIcon.style.color = "#ef4444";  
+  
+        systemPopupIcon.style.background =  
+            "rgba(239,68,68,.15)";  
+  
+    }else if(type === "kyc"){  
+  
+        systemPopupIcon.innerHTML =  
+            '<i class="fas fa-id-card"></i>';  
+  
+        systemPopupIcon.style.color = "#3b82f6";  
+  
+        systemPopupIcon.style.background =  
+            "rgba(59,130,246,.15)";  
+  
+    }else{  
+  
+        systemPopupIcon.innerHTML =  
+            '<i class="fas fa-triangle-exclamation"></i>';  
+  
+        systemPopupIcon.style.color = "#f59e0b";  
+  
+        systemPopupIcon.style.background =  
+            "rgba(245,158,11,.15)";  
+  
+    }  
+  
+    systemPopup.classList.add("show");  
+  
+}  
+  
+// =========================================  
+// LOAD MERCHANT KYC  
+// =========================================  
+  
+async function loadMerchantKYC(uid){  
+  
+    try {  
+  
+        const kycRef = doc(  
+            db,  
+            "kyc",  
+            uid  
+        );  
+  
+        const kycSnap = await getDoc(kycRef);  
+  
+        if(!kycSnap.exists()){  
+  
+            currentKYCData = null;  
+  
+            return null;  
+  
+        }  
+  
+        currentKYCData = kycSnap.data();  
+  
+        return currentKYCData;  
+  
+    } catch(err){  
+  
+        console.error(  
+            "KYC LOAD ERROR:",  
+            err  
+        );  
+  
+        currentKYCData = null;  
+  
+        return null;  
+  
+    }  
+  
+}  
+  
+  
+function closeSystemPopup(){  
+  
+    systemPopup.classList.remove("show");  
+  
+}  
+  
+  
+systemPopupClose.onclick =  
+    closeSystemPopup;  
+  
+// =========================================  
+// CHECK MERCHANT ACCESS  
+// =========================================  
+  
+async function checkMerchantAccess(){  
+  
+    if(!currentMerchantData){  
+  
+        return false;  
+  
+    }  
+  
+  
+    // =====================================  
+    // SUSPENDED ACCOUNT  
+    // =====================================  
+  
+    const accountStatus =  
+        currentMerchantData.accountStatus ||  
+        currentMerchantData.status ||  
+        "Active";  
+  
+  
+    if(  
+        String(accountStatus)  
+            .trim()  
+            .toLowerCase()  
+        === "suspended"  
+    ){  
+  
+        if(!accessRedirecting){  
+  
+            accessRedirecting = true;  
+  
+            window.location.href =  
+                "suspend.html";  
+  
+        }  
+  
+        return false;  
+  
+    }  
+  
+  
+    // =====================================  
+    // MAINTENANCE MODE  
+    // =====================================  
+  
+    if(maintenanceMode){  
+  
+        showSystemPopup(  
+  
+            "System Maintenance",  
+  
+            "AUTOPAY is currently under maintenance. " +  
+            "Transactions and account activities are temporarily unavailable. " +  
+            "Please try again later.",  
+  
+            "maintenance"  
+  
+        );  
+  
+        return false;  
+  
+    }  
+  
+  
+    // =====================================  
+    // LOAD AUTHORITATIVE KYC RECORD  
+    // =====================================  
+  
+    const uid =  
+        currentMerchantData.uid ||  
+        localStorage.getItem("merchantUid");  
+  
+  
+    if(!uid){  
+  
+        showSystemPopup(  
+  
+            "KYC Verification Required",  
+  
+            "We could not identify your merchant account. " +  
+            "Please log in again and complete your KYC verification.",  
+  
+            "kyc"  
+  
+        );  
+  
+        return false;  
+  
+    }  
+  
+  
+    const kycData =  
+        await loadMerchantKYC(uid);  
+  
+  
+    // =====================================  
+    // NO KYC RECORD  
+    // =====================================  
+  
+    if(!kycData){  
+  
+        showSystemPopup(  
+  
+            "KYC Verification Required",  
+  
+            "Please complete your KYC verification before " +  
+            "you can perform transactions or use restricted " +  
+            "AUTOPAY services.",  
+  
+            "kyc"  
+  
+        );  
+  
+        return false;  
+  
+    }  
+  
+  
+    // =====================================  
+    // PERSONAL KYC STATUS  
+    // =====================================  
+  
+    const personalStatus =  
+        String(  
+            kycData.personalStatus || ""  
+        )  
+        .trim()  
+        .toLowerCase();  
+  
+  
+    const verificationLevel =  
+        Number(  
+            kycData.verificationLevel || 0  
+        );  
+  
+  
+    // =====================================  
+    // KYC PENDING  
+    // =====================================  
+  
+    if(personalStatus === "pending"){  
+  
+        showSystemPopup(  
+  
+            "KYC Verification Pending",  
+  
+            "Your personal KYC documents have been submitted " +  
+            "and are currently awaiting approval. " +  
+            "Transactions will become available once your " +  
+            "KYC verification is approved.",  
+  
+            "kyc"  
+  
+        );  
+  
+        return false;  
+  
+    }  
+  
+  
+    // =====================================  
+    // KYC REJECTED  
+    // =====================================  
+  
+    if(  
+        personalStatus === "rejected" ||  
+        personalStatus === "declined"  
+    ){  
+  
+        showSystemPopup(  
+  
+            "KYC Verification Rejected",  
+  
+            "Your KYC verification was not approved. " +  
+            "Please review your verification details and " +  
+            "submit the required documents again.",  
+  
+            "kyc"  
+  
+        );  
+  
+        return false;  
+  
+    }  
+  
+  
+    // =====================================  
+    // PERSONAL KYC MUST BE APPROVED  
+    // =====================================  
+  
+    if(  
+        personalStatus !== "approved" ||  
+        verificationLevel < 1  
+    ){  
+  
+        showSystemPopup(  
+  
+            "KYC Verification Required",  
+  
+            "Please complete and obtain approval for your " +  
+            "personal KYC verification before you can " +  
+            "perform transactions or use restricted " +  
+            "AUTOPAY services.",  
+  
+            "kyc"  
+  
+        );  
+  
+        return false;  
+  
+    }  
+  
+  
+    // =====================================  
+    // KYC APPROVED  
+    // =====================================  
+  
+    console.log(  
+        "KYC ACCESS APPROVED:",  
+        {  
+            uid,  
+            personalStatus,  
+            verificationLevel,  
+            businessStatus:  
+                kycData.businessStatus || "Not Started"  
+        }  
+    );  
+  
+  
+    return true;  
+  
+}  
+  
+  
+// =========================================  
+// LOAD MAINTENANCE SETTING  
+// =========================================  
+  
+function listenForMaintenanceMode(){  
+  
+    const settingsRef =  
+        doc(  
+            db,  
+            "config",  
+            "platform_settings"  
+        );  
+  
+  
+    onSnapshot(  
+  
+        settingsRef,  
+  
+        (snapshot)=>{  
+  
+            if(!snapshot.exists()){  
+  
+                maintenanceMode = false;  
+  
+                return;  
+  
+            }  
+  
+  
+            const settings =  
+                snapshot.data();  
+  
+  
+            maintenanceMode =  
+                settings.maintenanceMode === true ||  
+                settings.maintenance === true;  
+  
+  
+            /*  
+            If admin turns maintenance ON  
+            while merchant is already inside  
+            dashboard, block activities  
+            immediately.  
+            */  
+  
+            if(maintenanceMode){  
+  
+                console.log(  
+                    "AUTOPAY maintenance mode is ACTIVE."  
+                );  
+  
+            }  
+  
+        },  
+  
+        (error)=>{  
+  
+            console.error(  
+                "MAINTENANCE MODE ERROR:",  
+                error  
+            );  
+  
+        }  
+  
+    );  
+  
+}  
+  
+  
+// =========================================  
+// GLOBAL ACTION GUARD  
+// =========================================  
+  
+function requireAccess(callback){  
+  
+    return async function(e){  
+  
+        if(e){  
+  
+            e.preventDefault();  
+  
+        }  
+  
+  
+        const allowed =  
+            await checkMerchantAccess();  
+  
+  
+        if(!allowed){  
+  
+            return;  
+  
+        }  
+  
+  
+        callback();  
+  
+    };  
+  
+}  
+  
+const now=new Date();  
+  
+document.getElementById("date").innerHTML=  
+now.toLocaleDateString(  
+"en-US",  
+{  
+weekday:"short",  
+month:"short",  
+day:"numeric",  
+year:"numeric"  
+});  
+  
+let h=now.getHours();  
+  
+let greet="Good Evening";  
+  
+if(h<12){  
+  
+greet="Good Morning";  
+  
+}else if(h<18){  
+  
+greet="Good Afternoon";  
+  
+}  
+  
+// Load cached merchant instantly  
+const cached = Cache.get("merchant");  
+  
+if (cached) {  
+  
+    loadDashboard(cached);  
+  
+    // Start loading transactions immediately  
+    if (cached.merchantId) {  
+  
+        loadProcessingActivity(cached.merchantId);  
+  
+    }  
+  
+}  
+  
+const cachedTransactions =  
+Cache.get("merchantTransactions");  
+  
+if(cachedTransactions){  
+  
+renderTransactions(cachedTransactions.slice(0,4));  
+  
+}  
+  
+const cachedStats = Cache.get("dashboardStats");  
+  
+if (cachedStats) {  
+  
+    document.getElementById("activeLinks").innerHTML =  
+        cachedStats.activeLinks;  
+  
+    document.getElementById("accounts").innerHTML =  
+        cachedStats.accounts;  
+  
+    document.getElementById("transactions").innerHTML =  
+        cachedStats.transactions;  
+  
+    document.getElementById("completed").innerHTML =  
+        "KES " + Number(cachedStats.completed).toLocaleString();  
+  
+  }  
+    
+onAuthStateChanged(auth, async(user)=>{  
+  
+if(!user){  
+  
+window.location.href="login.html";  
+  
+return;  
+  
+}  
+  
+listenForMaintenanceMode();  
+    
+const userRef = doc(db,"users",user.uid);  
+  
+let processingLoaded = !!cached?.merchantId;  
+  
+// Load notifications  
+loadNotifications(user.uid);  
+  
+// Load authoritative KYC record  
+await loadMerchantKYC(user.uid);  
+  
+onSnapshot(userRef,(snap)=>{  
+  
+if(!snap.exists()){  
+  
+window.location.href="login.html";  
+  
+return;  
+  
+}  
+  
+const data = snap.data();  
+  
+  
+// =====================================  
+// SAVE CURRENT MERCHANT DATA  
+// =====================================  
+  
+currentMerchantData = data;  
+  
+  
+// =====================================  
+// SAVE CACHE  
+// =====================================  
+  
+Cache.set(  
+    "merchant",  
+    data  
+);  
+  
+localStorage.setItem(  
+    "merchantUid",  
+    user.uid  
+);  
+  
+  
+// =====================================  
+// SUSPENSION CHECK  
+// =====================================  
+  
+const accountStatus =  
+    data.accountStatus ||  
+    data.status ||  
+    "Active";  
+  
+  
+if(  
+    String(accountStatus).toLowerCase()  
+    === "suspended"  
+){  
+  
+    if(!accessRedirecting){  
+  
+        accessRedirecting = true;  
+  
+        window.location.href =  
+            "suspend.html";  
+  
+    }  
+  
+    return;  
+  
+}  
+  
+  
+// =====================================  
+// UPDATE DASHBOARD  
+// =====================================  
+  
+loadDashboard(data);  
+  
+  
+// =====================================  
+// LOAD PROCESSING ACTIVITY  
+// =====================================  
+  
+if(!processingLoaded){  
+  
+    processingLoaded = true;  
+  
+    loadProcessingActivity(  
+        data.merchantId  
+    );  
+  
+}  
+  
+},(error)=>{  
+  
+console.error(  
+    "MERCHANT LISTENER ERROR:",  
+    error  
+);  
+  
+});  
+  
+});  
+  
+// Navigation Function  
+function openPage(page){  
+    window.location.href = page;  
+}  
+  
+// AUTOPAY Gateway  
+document.getElementById("gatewayBtn").onclick =  
+    requireAccess(  
+        function(){  
+  
+            openPage("global.html");  
+  
+        }  
+    );  
+  
+// Withdraw  
+document.getElementById("withdrawBtn").onclick =  
+    requireAccess(  
+        function(){  
+  
+            openPage("withdraw.html");  
+  
+        }  
+    );  
+  
+// Service Topup  
+document.getElementById("serviceTopup").onclick =  
+    requireAccess(  
+        function(){  
+  
+            openPage("service-topup.html");  
+  
+        }  
+    );  
+  
+// Wallet Topup  
+document.getElementById("walletTopup").onclick =  
+    requireAccess(  
+        function(){  
+  
+            openPage("wallet-topup.html");  
+  
+        }  
+    );  
+  
+// Profile  
+document.querySelector(".avatar").onclick = function(){  
+    openPage("profile.html");  
+};  
+  
+// Notifications  
+const notificationPanel =  
+document.getElementById("notificationPanel");  
+  
+document.querySelector(".notify").onclick = async function(){  
+  
+notificationPanel.classList.toggle("show");  
+  
+if(notificationPanel.classList.contains("show")){  
+  
+const items =  
+document.querySelectorAll(".notification-item");  
+  
+for(const item of items){  
+  
+try{  
+  
+await updateDoc(  
+doc(db,"notifications",item.dataset.id),  
+{  
+read:true  
+}  
+);  
+  
+}catch(e){}  
+  
+}  
+  
+}  
+  
+};  
+  
+// WhatsApp Support  
+document.querySelector(".float").onclick = function(){  
+    window.open("https://wa.me/254103147454", "_blank");  
+};  
+  
+// Sidebar  
+  
+const menuBtn = document.querySelector(".menu-btn");  
+const sidebar = document.querySelector(".sidebar");  
+const overlay = document.querySelector(".overlay");  
+  
+menuBtn.onclick = function(){  
+  
+sidebar.classList.add("show");  
+overlay.classList.add("show");  
+document.body.style.overflow = "hidden";  
+  
+};  
+  
+function closeSidebar(){  
+  
+sidebar.classList.remove("show");  
+overlay.classList.remove("show");  
+document.body.style.overflow = "auto";  
+  
+}  
+  
+overlay.onclick = closeSidebar;  
+document.getElementById("closeSidebar").onclick = closeSidebar;  
+  
+  
+document.getElementById("closeNotification").onclick=function(){  
+  
+notificationPanel.classList.remove("show");  
+  
+};  
+  
+document.getElementById("clearNotifications").onclick = async () => {  
+  
+if(!confirm("Delete all notifications?")) return;  
+  
+const uid = auth.currentUser.uid;  
+  
+const q = query(  
+collection(db,"notifications"),  
+where("uid","==",uid)  
+);  
+  
+const snap = await getDocs(q);  
+  
+for(const d of snap.docs){  
+  
+await deleteDoc(d.ref);  
+  
+}  
+  
+};  
+  
+document.addEventListener("click",function(e){  
+  
+if(  
+  
+!notificationPanel.contains(e.target)  
+  
+&&  
+  
+!document.querySelector(".notify").contains(e.target)  
+  
+){  
+  
+notificationPanel.classList.remove("show");  
+  
+}  
+  
+});  
+  
+// Revenue Chart  
+  
+const ctx = document.getElementById("revenueChart");  
+  
+const revenueChart = new Chart(ctx,{  
+  
+type:"bar",  
+  
+data:{  
+  
+labels:[  
+"Jan",  
+"Feb",  
+"Mar",  
+"Apr",  
+"May",  
+"Jun",  
+"Jul",  
+"Aug",  
+"Sep",  
+"Oct",  
+"Nov",  
+"Dec"  
+],  
+  
+datasets:[{  
+  
+data:[0,25000,42000,38000,56000,72000],  
+  
+backgroundColor:[  
+"#94a3b8",  
+"#94a3b8",  
+"#94a3b8",  
+"#ef4444",  
+"#22c55e",  
+"#111827"  
+],  
+  
+borderRadius:8,  
+  
+borderSkipped:false,  
+  
+barThickness:18  
+  
+}]  
+  
+},  
+  
+options:{  
+  
+responsive:true,  
+  
+maintainAspectRatio:false,  
+  
+plugins:{  
+  
+legend:{  
+display:false  
+}  
+  
+},  
+  
+scales:{  
+  
+x:{  
+  
+grid:{  
+display:false  
+},  
+  
+border:{  
+display:false  
+},  
+  
+ticks:{  
+color:"#9aa7bd"  
+}  
+  
+},  
+  
+y:{  
+  
+display:false,  
+  
+grid:{  
+display:false  
+},  
+  
+border:{  
+display:false  
+}  
+  
+}  
+  
+}  
+  
+}  
+  
+});  
+  
+// Load cached chart data  
+if (cachedStats && cachedStats.monthlyRevenue) {  
+  
+    revenueChart.data.datasets[0].data =  
+        cachedStats.monthlyRevenue;  
+  
+    revenueChart.update();  
+  
+  }  
+  
+function animateCounter(id,end,prefix=""){  
+  
+let value=0;  
+  
+let step=Math.max(1,Math.ceil(end/60));  
+  
+const el=document.getElementById(id);  
+  
+const timer=setInterval(()=>{  
+  
+value+=step;  
+  
+if(value>=end){  
+  
+value=end;  
+  
+clearInterval(timer);  
+  
+}  
+  
+el.innerHTML=prefix+value.toLocaleString();  
+  
+},20);  
+  
+}  
+  
+function renderTransactions(transactions){  
+  
+const recentContainer =  
+document.getElementById("recentTransactions");  
+  
+// Keep current transactions to detect changes  
+const existing = {};  
+  
+recentContainer.querySelectorAll(".activity-item").forEach(item=>{  
+    existing[item.dataset.id]=true;  
+});  
+  
+recentContainer.innerHTML="";  
+  
+  
+transactions.forEach(item=>{  
+  
+const date =  
+item.createdAt?.toDate  
+? item.createdAt.toDate()  
+: new Date();  
+  
+const status =  
+String(item.status || "PENDING").toUpperCase();  
+  
+let css="pending";  
+let icon="fa-clock";  
+let text="PENDING";  
+  
+if(status==="SUCCESS"){  
+  
+css="success";  
+icon="fa-circle-check";  
+text="SUCCESS";  
+  
+}else if(status==="FAILED"){  
+  
+css="failed";  
+icon="fa-circle-xmark";  
+text="FAILED";  
+  
+}  
+  
+const ref =  
+item.checkoutRequestId ||  
+item.checkout_request_id ||  
+item.reference ||  
+item.id;  
+  
+const type =  
+item.country === "Uganda"  
+? "Uganda • " + (item.type || "Payment")  
+: item.balanceType === "wallet"  
+? "Wallet Top-up"  
+: item.balanceType === "service"  
+? "Service Top-up"  
+: item.type || "Transaction";  
+  
+const isNew = !existing[item.id];  
+  
+recentContainer.innerHTML += `  
+  
+<div class="activity-item ${isNew ? "new-transaction":""}" data-id="${item.id}">  
+  
+<div class="activity-left">  
+  
+<div class="activity-title">${ref}</div>  
+  
+<div class="activity-time">  
+${type} • ${date.toLocaleString()}  
+</div>  
+  
+</div>  
+  
+<div class="activity-middle">  
+  
+<div class="activity-amount">  
+${item.currency || "KES"} ${Number(item.amount || 0).toLocaleString()}  
+</div>  
+  
+</div>  
+  
+<div class="activity-right ${css}">  
+  
+<i class="fas ${icon}"></i>  
+  
+${text}  
+  
+</div>  
+  
+</div>  
+  
+`;  
+  
+});  
+  
+}  
+    
+function loadDashboard(data){  
+  
+document.getElementById("greeting").innerHTML =  
+greet + ", " + (data.fullName || "").split(" ")[0];  
+  
+document.getElementById("walletBalance").innerHTML =  
+"KES " + Math.floor(Number(data.walletBalance || 0)).toLocaleString();  
+  
+document.getElementById("serviceBalance").innerHTML =  
+"KES " + Math.floor(Number(data.serviceBalance || 0)).toLocaleString();  
+  
+document.getElementById("avatar").innerHTML =  
+(data.fullName || "A").charAt(0).toUpperCase();  
+  
+}  
+  
+function calculateDashboardStats(transactions){  
+  
+    const monthlyRevenue = Array(12).fill(0);  
+  
+    let totalTransactions = 0;  
+  
+    let completedAmount = 0;  
+  
+    transactions.forEach(data=>{  
+  
+        totalTransactions++;  
+  
+        if(String(data.status || "").toUpperCase()==="SUCCESS"){  
+  
+            completedAmount += Number(data.amount || 0);  
+  
+            const d = data.createdAt?.toDate  
+                ? data.createdAt.toDate()  
+                : new Date(data.createdAt);  
+  
+            if(d && !isNaN(d)){  
+  
+                monthlyRevenue[d.getMonth()] +=  
+                    Number(data.amount || 0);  
+  
+            }  
+  
+        }  
+  
+    });  
+  
+    document.getElementById("transactions").innerHTML =  
+        totalTransactions.toLocaleString();  
+  
+    document.getElementById("completed").innerHTML =  
+        "KES " + completedAmount.toLocaleString();  
+  
+    revenueChart.data.datasets[0].data =  
+        monthlyRevenue;  
+  
+    revenueChart.update();  
+  
+}  
+    
+function loadProcessingActivity(merchantId){
 
-const now=new Date();
+    // =====================================================
+    // LIVE PROCESSING ACTIVITY
+    // =====================================================
 
-document.getElementById("date").innerHTML=
-now.toLocaleDateString(
-"en-US",
-{
-weekday:"short",
-month:"short",
-day:"numeric",
-year:"numeric"
-});
+    let kenyaTransactions = [];
+    let globalTransactions = [];
 
-let h=now.getHours();
+    let activeLinksCount = 0;
+    let accountsCount = 0;
 
-let greet="Good Evening";
 
-if(h<12){
+    // =====================================================
+    // UPDATE PROCESSING ACTIVITY
+    // =====================================================
 
-greet="Good Morning";
+    function updateProcessingActivity(){
 
-}else if(h<18){
+        document.getElementById("activeLinks").innerHTML =
+            activeLinksCount.toLocaleString();
 
-greet="Good Afternoon";
+        document.getElementById("accounts").innerHTML =
+            accountsCount.toLocaleString();
 
-}
 
-// Load cached merchant instantly
-const cached = Cache.get("merchant");
+        const combined = [
+            ...kenyaTransactions,
+            ...globalTransactions
+        ];
 
-if (cached) {
 
-    loadDashboard(cached);
+        // Newest transaction first
+        combined.sort((a,b)=>{
 
-    // Start loading transactions immediately
-    if (cached.merchantId) {
+            const dateA =
+                a.createdAt?.toMillis?.() || 0;
 
-        loadProcessingActivity(cached.merchantId);
+            const dateB =
+                b.createdAt?.toMillis?.() || 0;
+
+            return dateB - dateA;
+
+        });
+
+
+        // =================================================
+        // TRANSACTION COUNT
+        // =================================================
+
+        const totalTransactions =
+            combined.length;
+
+
+        document.getElementById("transactions").innerHTML =
+            totalTransactions.toLocaleString();
+
+
+        // =================================================
+        // COMPLETED AMOUNT
+        // =================================================
+
+        let completedAmount = 0;
+
+
+        combined.forEach(item=>{
+
+            const status =
+                String(item.status || "")
+                    .trim()
+                    .toUpperCase();
+
+
+            if(status === "SUCCESS"){
+
+                completedAmount +=
+                    Number(item.amount || 0);
+
+            }
+
+        });
+
+
+        document.getElementById("completed").innerHTML =
+            "KES " +
+            completedAmount.toLocaleString();
+
+
+        // =================================================
+        // RECENT ACTIVITY STREAM
+        // =================================================
+
+        const latest =
+            combined.slice(0,4);
+
+
+        renderTransactions(latest);
+
+
+        // =================================================
+        // CACHE ONLY FOR FAST INITIAL DISPLAY
+        // =================================================
+
+        Cache.set(
+            "merchantTransactions",
+            latest
+        );
+
+
+        // =================================================
+        // REVENUE HORIZON
+        // =================================================
+
+        const monthlyRevenue =
+            Array(12).fill(0);
+
+
+        combined.forEach(item=>{
+
+            const status =
+                String(item.status || "")
+                    .trim()
+                    .toUpperCase();
+
+
+            if(status !== "SUCCESS"){
+
+                return;
+
+            }
+
+
+            const amount =
+                Number(item.amount || 0);
+
+
+            let date = null;
+
+
+            if(item.createdAt?.toDate){
+
+                date =
+                    item.createdAt.toDate();
+
+            }else if(item.createdAt){
+
+                date =
+                    new Date(item.createdAt);
+
+            }
+
+
+            if(
+                date &&
+                !isNaN(date.getTime())
+            ){
+
+                monthlyRevenue[
+                    date.getMonth()
+                ] += amount;
+
+            }
+
+        });
+
+
+        // Update chart LIVE
+        revenueChart.data.datasets[0].data =
+            monthlyRevenue;
+
+
+        revenueChart.update();
+
+
+        // =================================================
+        // CACHE LIVE DASHBOARD DATA
+        // =================================================
+
+        Cache.set(
+            "dashboardStats",
+            {
+
+                activeLinks:
+                    activeLinksCount,
+
+                accounts:
+                    accountsCount,
+
+                transactions:
+                    totalTransactions,
+
+                completed:
+                    completedAmount,
+
+                monthlyRevenue:
+                    monthlyRevenue
+
+            }
+        );
 
     }
 
-}
 
-const cachedTransactions =
-Cache.get("merchantTransactions");
+    // =====================================================
+    // LIVE PAYMENT LINKS
+    // =====================================================
 
-if(cachedTransactions){
+    const linksQuery = query(
 
-renderTransactions(cachedTransactions.slice(0,4));
+        collection(db,"paymentLinks"),
 
-}
+        where(
+            "merchantId",
+            "==",
+            merchantId
+        ),
 
-const cachedStats = Cache.get("dashboardStats");
-
-if (cachedStats) {
-
-    document.getElementById("activeLinks").innerHTML =
-        cachedStats.activeLinks;
-
-    document.getElementById("accounts").innerHTML =
-        cachedStats.accounts;
-
-    document.getElementById("transactions").innerHTML =
-        cachedStats.transactions;
-
-    document.getElementById("completed").innerHTML =
-        "KES " + Number(cachedStats.completed).toLocaleString();
-
-  }
-  
-onAuthStateChanged(auth, async(user)=>{
-
-if(!user){
-
-window.location.href="login.html";
-
-return;
-
-}
-  
-const userRef = doc(db,"users",user.uid);
-
-let processingLoaded = !!cached?.merchantId;
-
-// Load notifications immediately if already authenticated
-loadNotifications(user.uid);
-
-onSnapshot(userRef,(snap)=>{
-
-if(!snap.exists()){
-
-window.location.href="login.html";
-return;
-
-}
-
-const data = snap.data();
-
-// Save latest merchant locally
-Cache.set("merchant", data);
-localStorage.setItem("merchantUid", user.uid);
-
-// Update dashboard
-loadDashboard(data);
-
-// Load processing activity only once
-if(!processingLoaded){
-
-processingLoaded = true;
-
-loadProcessingActivity(data.merchantId);
-
-}
-
-},(error)=>{
-
-console.error(error);
-
-});
-
-});
-
-// Navigation Function
-function openPage(page){
-    window.location.href = page;
-}
-
-// AUTOPAY Gateway
-document.getElementById("gatewayBtn").onclick = function(){
-    openPage("gateway.html");
-};
-
-// Withdraw
-document.getElementById("withdrawBtn").onclick = function(){
-    openPage("withdraw.html");
-};
-
-// Service Topup
-document.getElementById("serviceTopup").onclick = function(){
-    openPage("service-topup.html");
-};
-
-// Wallet Topup
-document.getElementById("walletTopup").onclick = function(){
-    openPage("wallet-topup.html");
-};
-
-// Profile
-document.querySelector(".avatar").onclick = function(){
-    openPage("profile.html");
-};
-
-// Notifications
-const notificationPanel =
-document.getElementById("notificationPanel");
-
-document.querySelector(".notify").onclick = async function(){
-
-notificationPanel.classList.toggle("show");
-
-if(notificationPanel.classList.contains("show")){
-
-const items =
-document.querySelectorAll(".notification-item");
-
-for(const item of items){
-
-try{
-
-await updateDoc(
-doc(db,"notifications",item.dataset.id),
-{
-read:true
-}
-);
-
-}catch(e){}
-
-}
-
-}
-
-};
-
-// WhatsApp Support
-document.querySelector(".float").onclick = function(){
-    window.open("https://wa.me/254103446265", "_blank");
-};
-
-// Sidebar
-
-const menuBtn = document.querySelector(".menu-btn");
-const sidebar = document.querySelector(".sidebar");
-const overlay = document.querySelector(".overlay");
-
-menuBtn.onclick = function(){
-
-sidebar.classList.add("show");
-overlay.classList.add("show");
-document.body.style.overflow = "hidden";
-
-};
-
-function closeSidebar(){
-
-sidebar.classList.remove("show");
-overlay.classList.remove("show");
-document.body.style.overflow = "auto";
-
-}
-
-overlay.onclick = closeSidebar;
-document.getElementById("closeSidebar").onclick = closeSidebar;
-
-
-document.getElementById("closeNotification").onclick=function(){
-
-notificationPanel.classList.remove("show");
-
-};
-
-document.getElementById("clearNotifications").onclick = async () => {
-
-if(!confirm("Delete all notifications?")) return;
-
-const uid = auth.currentUser.uid;
-
-const q = query(
-collection(db,"notifications"),
-where("uid","==",uid)
-);
-
-const snap = await getDocs(q);
-
-for(const d of snap.docs){
-
-await deleteDoc(d.ref);
-
-}
-
-};
-
-document.addEventListener("click",function(e){
-
-if(
-
-!notificationPanel.contains(e.target)
-
-&&
-
-!document.querySelector(".notify").contains(e.target)
-
-){
-
-notificationPanel.classList.remove("show");
-
-}
-
-});
-
-// Revenue Chart
-
-const ctx = document.getElementById("revenueChart");
-
-const revenueChart = new Chart(ctx,{
-
-type:"bar",
-
-data:{
-
-labels:[
-"Jan",
-"Feb",
-"Mar",
-"Apr",
-"May",
-"Jun",
-"Jul",
-"Aug",
-"Sep",
-"Oct",
-"Nov",
-"Dec"
-],
-
-datasets:[{
-
-data:[0,25000,42000,38000,56000,72000],
-
-backgroundColor:[
-"#94a3b8",
-"#94a3b8",
-"#94a3b8",
-"#ef4444",
-"#22c55e",
-"#111827"
-],
-
-borderRadius:8,
-
-borderSkipped:false,
-
-barThickness:18
-
-}]
-
-},
-
-options:{
-
-responsive:true,
-
-maintainAspectRatio:false,
-
-plugins:{
-
-legend:{
-display:false
-}
-
-},
-
-scales:{
-
-x:{
-
-grid:{
-display:false
-},
-
-border:{
-display:false
-},
-
-ticks:{
-color:"#9aa7bd"
-}
-
-},
-
-y:{
-
-display:false,
-
-grid:{
-display:false
-},
-
-border:{
-display:false
-}
-
-}
-
-}
-
-}
-
-});
-
-// Load cached chart data
-if (cachedStats && cachedStats.monthlyRevenue) {
-
-    revenueChart.data.datasets[0].data =
-        cachedStats.monthlyRevenue;
-
-    revenueChart.update();
-
-  }
-
-function animateCounter(id,end,prefix=""){
-
-let value=0;
-
-let step=Math.max(1,Math.ceil(end/60));
-
-const el=document.getElementById(id);
-
-const timer=setInterval(()=>{
-
-value+=step;
-
-if(value>=end){
-
-value=end;
-
-clearInterval(timer);
-
-}
-
-el.innerHTML=prefix+value.toLocaleString();
-
-},20);
-
-}
-
-function renderTransactions(transactions){
-
-const recentContainer =
-document.getElementById("recentTransactions");
-
-// Keep current transactions to detect changes
-const existing = {};
-
-recentContainer.querySelectorAll(".activity-item").forEach(item=>{
-    existing[item.dataset.id]=true;
-});
-
-recentContainer.innerHTML="";
-
-
-transactions.forEach(item=>{
-
-const date =
-item.createdAt?.toDate
-? item.createdAt.toDate()
-: new Date();
-
-const status =
-String(item.status || "PENDING").toUpperCase();
-
-let css="pending";
-let icon="fa-clock";
-let text="PENDING";
-
-if(status==="SUCCESS"){
-
-css="success";
-icon="fa-circle-check";
-text="SUCCESS";
-
-}else if(status==="FAILED"){
-
-css="failed";
-icon="fa-circle-xmark";
-text="FAILED";
-
-}
-
-const ref =
-item.checkoutRequestId ||
-item.checkout_request_id ||
-item.reference ||
-item.id;
-
-const type =
-item.balanceType==="wallet"
-? "Wallet Top-up"
-: item.balanceType==="service"
-? "Service Top-up"
-: "Transaction";
-
-const isNew = !existing[item.id];
-
-recentContainer.innerHTML += `
-
-<div class="activity-item ${isNew ? "new-transaction":""}" data-id="${item.id}">
-
-<div class="activity-left">
-
-<div class="activity-title">${ref}</div>
-
-<div class="activity-time">
-${type} • ${date.toLocaleString()}
-</div>
-
-</div>
-
-<div class="activity-middle">
-
-<div class="activity-amount">
-KES ${Number(item.amount||0).toLocaleString()}
-</div>
-
-</div>
-
-<div class="activity-right ${css}">
-
-<i class="fas ${icon}"></i>
-
-${text}
-
-</div>
-
-</div>
-
-`;
-
-});
-
-}
-  
-function loadDashboard(data){
-
-document.getElementById("greeting").innerHTML =
-greet + ", " + (data.fullName || "").split(" ")[0];
-
-document.getElementById("walletBalance").innerHTML =
-"KES " + Number(data.walletBalance || 0).toLocaleString();
-
-document.getElementById("serviceBalance").innerHTML =
-"KES " + Number(data.serviceBalance || 0).toLocaleString();
-
-document.getElementById("avatar").innerHTML =
-(data.fullName || "A").charAt(0).toUpperCase();
-
-}
-
-function calculateDashboardStats(transactions){
-
-    const monthlyRevenue = Array(12).fill(0);
-
-    let totalTransactions = 0;
-
-    let completedAmount = 0;
-
-    transactions.forEach(data=>{
-
-        totalTransactions++;
-
-        if(String(data.status || "").toUpperCase()==="SUCCESS"){
-
-            completedAmount += Number(data.amount || 0);
-
-            const d = data.createdAt?.toDate
-                ? data.createdAt.toDate()
-                : new Date(data.createdAt);
-
-            if(d && !isNaN(d)){
-
-                monthlyRevenue[d.getMonth()] +=
-                    Number(data.amount || 0);
-
-            }
-
-        }
-
-    });
-
-    document.getElementById("transactions").innerHTML =
-        totalTransactions.toLocaleString();
-
-    document.getElementById("completed").innerHTML =
-        "KES " + completedAmount.toLocaleString();
-
-    revenueChart.data.datasets[0].data =
-        monthlyRevenue;
-
-    revenueChart.update();
-
-}
-  
-async function loadProcessingActivity(merchantId){
-
-// ACTIVE LINKS
-const linksQuery = query(
-collection(db,"paymentLinks"),
-where("merchantId","==",merchantId),
-where("status","==","Active")
-);
-
-const linksSnap = await getDocs(linksQuery);
-
-document.getElementById("activeLinks").innerHTML =
-linksSnap.size;
-
-
-// PAYMENT ACCOUNTS
-const accountsQuery = query(
-collection(db,"paymentAccounts"),
-where("merchantId","==",merchantId)
-);
-
-const accountsSnap = await getDocs(accountsQuery);
-
-document.getElementById("accounts").innerHTML =
-accountsSnap.size;
-
-
-// TRANSACTIONS
-const transactionsQuery = query(
-    collection(db, "transactions"),
-    where("merchantId", "==", merchantId),
-    orderBy("createdAt", "desc"),
-    limit(4)
-);
-
-onSnapshot(transactionsQuery,(snapshot)=>{
-
-    const transactions = snapshot.docs.map(doc=>({
-        id:doc.id,
-        ...doc.data()
-    }));
-
-    renderTransactions(transactions);
-
-    Cache.set("merchantTransactions",transactions);
-
-},(error)=>{
-
-    console.error(error);
-
-});
-
-// Use cached data immediately if available
-const cachedHistory = Cache.get("merchantTransactions");
-
-if (cachedHistory && cachedHistory.length) {
-
-    calculateDashboardStats(cachedHistory);
-
-}
-
-// Then listen for updates
-const statsQuery = query(
-    collection(db,"transactions"),
-    where("merchantId","==",merchantId)
-);
-
-onSnapshot(statsQuery,(snapshot)=>{
-
-    const monthlyRevenue = Array(12).fill(0);
-
-    let totalTransactions = 0;
-
-    let completedAmount = 0;
-    
-    const allTransactions = [];
-
-    snapshot.forEach(doc=>{
-
-        const data = doc.data();
-
-allTransactions.push({
-    id: doc.id,
-    ...data
-});
-
-totalTransactions++;
-        if((data.status || "").toUpperCase() === "SUCCESS"){
-
-            completedAmount += Number(data.amount || 0);
-
-            const d = data.createdAt?.toDate();
-
-            if(d){
-
-                monthlyRevenue[d.getMonth()] +=
-                    Number(data.amount || 0);
-
-            }
-
-        }
-
-    });
-
-    calculateDashboardStats(allTransactions);
-
-    Cache.set("dashboardStats",{
-
-    activeLinks: linksSnap.size,
-
-    accounts: accountsSnap.size,
-
-    transactions: totalTransactions,
-
-    completed: completedAmount,
-
-    monthlyRevenue
-
-});
-
-// Cache only the latest 4 transactions
-Cache.set(
-    "merchantTransactions",
-    allTransactions
-        .sort((a,b)=>
-            (b.createdAt?.toMillis?.() || 0) -
-            (a.createdAt?.toMillis?.() || 0)
+        where(
+            "status",
+            "==",
+            "Active"
         )
-        .slice(0,4)
-);
 
-},(error)=>{
+    );
 
-    console.error(error);
 
-});
+    onSnapshot(
 
-}
+        linksQuery,
 
-function loadNotifications(uid){
+        (snapshot)=>{
 
-const body=document.getElementById("notificationBody");
+            activeLinksCount =
+                snapshot.size;
 
-const dot = document.getElementById("notificationBadge");
+            updateProcessingActivity();
 
-const q=query(
+        },
 
-collection(db,"notifications"),
+        (error)=>{
 
-where("uid","==",uid),
+            console.error(
+                "LIVE PAYMENT LINKS ERROR:",
+                error
+            );
 
-orderBy("createdAt","desc"),
+        }
 
-limit(20)
+    );
 
-);
 
-onSnapshot(q,(snapshot)=>{
+    // =====================================================
+    // LIVE PAYMENT ACCOUNTS
+    // =====================================================
 
-let html="";
+    const accountsQuery = query(
 
-let unread=0;
+        collection(db,"paymentAccounts"),
 
-if(snapshot.empty){
+        where(
+            "merchantId",
+            "==",
+            merchantId
+        )
 
-body.innerHTML=`
-<div style="
-padding:25px;
-text-align:center;
-color:#94a3b8;
-">
-No notifications yet.
-</div>
-`;
+    );
 
-dot.style.display="none";
 
-return;
+    onSnapshot(
 
-}
+        accountsQuery,
 
-snapshot.forEach(docSnap=>{
+        (snapshot)=>{
 
-const n=docSnap.data();
+            accountsCount =
+                snapshot.size;
 
-if(!n.read) unread++;
+            updateProcessingActivity();
 
-const time=n.createdAt?.toDate()
-? n.createdAt.toDate().toLocaleString()
-: "Just now";
+        },
 
-html += `
+        (error)=>{
 
-<div class="notification-item ${n.read ? "read" : "unread"}"
-data-id="${docSnap.id}">
+            console.error(
+                "LIVE PAYMENT ACCOUNTS ERROR:",
+                error
+            );
 
-<div style="
-display:flex;
-justify-content:space-between;
-align-items:flex-start;
-">
+        }
 
-<div style="flex:1;">
+    );
 
-<div class="notification-title">
-${n.title}
-</div>
 
-<div>
-${n.message}
-</div>
+    // =====================================================
+    // LIVE KENYA TRANSACTIONS
+    // =====================================================
 
-<div class="notification-time">
-${time}
-</div>
+    const kenyaTransactionsQuery = query(
 
-</div>
+        collection(db,"transactions"),
 
-<i
-class="fas fa-trash deleteNotification"
-data-id="${docSnap.id}"
-style="
-cursor:pointer;
-color:#ef4444;
-margin-left:12px;
-"></i>
+        where(
+            "merchantId",
+            "==",
+            merchantId
+        )
 
-</div>
+    );
 
-</div>
 
-`;
+    onSnapshot(
 
-});
+        kenyaTransactionsQuery,
 
-body.innerHTML=html;
+        (snapshot)=>{
 
-if(unread){
+            kenyaTransactions =
+                snapshot.docs.map(docSnap=>({
 
-dot.style.display="flex";
+                    id:
+                        docSnap.id,
 
-dot.innerHTML =
-unread>9 ? "9+" : unread;
+                    ...docSnap.data()
 
-}else{
+                }));
 
-dot.style.display="none";
 
-}
+            updateProcessingActivity();
 
-body.querySelectorAll(".notification-item")
-.forEach(item=>{
+        },
 
-item.onclick = async () => {
+        (error)=>{
 
-try{
+            console.error(
+                "LIVE KENYA TRANSACTIONS ERROR:",
+                error
+            );
 
-await updateDoc(
-doc(db,"notifications",item.dataset.id),
-{
-read:true
-}
-);
+        }
 
-// Remove unread background immediately
-item.classList.remove("unread");
+    );
 
-item.classList.add("read");
 
-}catch(err){
-
-console.error(err);
-
-}
-
-};
-
-});
-
-body.querySelectorAll(".deleteNotification")
-.forEach(btn=>{
-
-btn.onclick = async(e)=>{
-
-e.stopPropagation();
-
-if(!confirm("Delete this notification?")) return;
-
-try{
-
-await deleteDoc(
-doc(db,"notifications",btn.dataset.id)
-);
-
-}catch(err){
-
-alert(err.message);
-
-}
-
-};
-
-});
-
-}, (error) => {
-
-console.error(error);
-
-alert(error.code + "\n\n" + error.message);
-
-body.innerHTML = `
-<div style="
-padding:25px;
-text-align:center;
-color:#ef4444;
-">
-Unable to load notifications.
-</div>
-`;
-
-});
-
-}
-
-const themeToggle = document.getElementById("themeToggle");
-const themeIcon = document.getElementById("themeIcon");
-
-if(localStorage.getItem("theme") === "light"){
-
-document.body.classList.add("light");
-
-themeIcon.className = "fas fa-sun";
-
-}
-
-themeToggle.onclick = ()=>{
-
-document.body.classList.toggle("light");
-
-if(document.body.classList.contains("light")){
-
-themeIcon.className="fas fa-sun";
-
-localStorage.setItem("theme","light");
-
-}else{
-
-themeIcon.className="fas fa-moon";
-
-localStorage.setItem("theme","dark");
-
-}
-
-};
-
-// Logout
-document.getElementById("logoutBtn").onclick = async (e) => {
-
-e.preventDefault();
-
-const logout = confirm("Are you sure you want to logout?");
-
-if(!logout) return;
-
-try{
-
-await signOut(auth);
-
-// Clear all merchant cache
-Cache.clearMerchant();
-
-// Redirect to login
-window.location.href = "login.html";
-}catch(error){
-
-alert("Logout failed: " + error.message);
-
-}
-
-};
+    // =====================================================
+    // LIVE GLOBAL TRANSACTIONS
+    // =====================================================
+
+    const globalTransactionsQuery = query(
+
+        collection(db,"globalTransactions"),
+
+        where(
+            "merchantId",
+            "==",
+            merchantId
+        )
+
+    );
+
+
+    onSnapshot(
+
+        globalTransactionsQuery,
+
+        (snapshot)=>{
+
+            globalTransactions =
+                snapshot.docs.map(docSnap=>({
+
+                    id:
+                        docSnap.id,
+
+                    ...docSnap.data()
+
+                }));
+
+
+            updateProcessingActivity();
+
+        },
+
+        (error)=>{
+
+            console.error(
+                "LIVE GLOBAL TRANSACTIONS ERROR:",
+                error
+            );
+
+        }
+
+    );
+
+  }
+  
+function loadNotifications(uid){  
+  
+const body=document.getElementById("notificationBody");  
+  
+const dot = document.getElementById("notificationBadge");  
+  
+const q=query(  
+  
+collection(db,"notifications"),  
+  
+where("uid","==",uid),  
+  
+orderBy("createdAt","desc"),  
+  
+limit(20)  
+  
+);  
+  
+onSnapshot(q,(snapshot)=>{  
+  
+let html="";  
+  
+let unread=0;  
+  
+if(snapshot.empty){  
+  
+body.innerHTML=`  
+<div style="  
+padding:25px;  
+text-align:center;  
+color:#94a3b8;  
+">  
+No notifications yet.  
+</div>  
+`;  
+  
+dot.style.display="none";  
+  
+return;  
+  
+}  
+  
+snapshot.forEach(docSnap=>{  
+  
+const n=docSnap.data();  
+  
+if(!n.read) unread++;  
+  
+const time=n.createdAt?.toDate()  
+? n.createdAt.toDate().toLocaleString()  
+: "Just now";  
+  
+html += `  
+  
+<div class="notification-item ${n.read ? "read" : "unread"}"  
+data-id="${docSnap.id}">  
+  
+<div style="  
+display:flex;  
+justify-content:space-between;  
+align-items:flex-start;  
+">  
+  
+<div style="flex:1;">  
+  
+<div class="notification-title">  
+${n.title}  
+</div>  
+  
+<div>  
+${n.message}  
+</div>  
+  
+<div class="notification-time">  
+${time}  
+</div>  
+  
+</div>  
+  
+<i  
+class="fas fa-trash deleteNotification"  
+data-id="${docSnap.id}"  
+style="  
+cursor:pointer;  
+color:#ef4444;  
+margin-left:12px;  
+"></i>  
+  
+</div>  
+  
+</div>  
+  
+`;  
+  
+});  
+  
+body.innerHTML=html;  
+  
+if(unread){  
+  
+dot.style.display="flex";  
+  
+dot.innerHTML =  
+unread>9 ? "9+" : unread;  
+  
+}else{  
+  
+dot.style.display="none";  
+  
+}  
+  
+body.querySelectorAll(".notification-item")  
+.forEach(item=>{  
+  
+item.onclick = async () => {  
+  
+try{  
+  
+await updateDoc(  
+doc(db,"notifications",item.dataset.id),  
+{  
+read:true  
+}  
+);  
+  
+// Remove unread background immediately  
+item.classList.remove("unread");  
+  
+item.classList.add("read");  
+  
+}catch(err){  
+  
+console.error(err);  
+  
+}  
+  
+};  
+  
+});  
+  
+body.querySelectorAll(".deleteNotification")  
+.forEach(btn=>{  
+  
+btn.onclick = async(e)=>{  
+  
+e.stopPropagation();  
+  
+if(!confirm("Delete this notification?")) return;  
+  
+try{  
+  
+await deleteDoc(  
+doc(db,"notifications",btn.dataset.id)  
+);  
+  
+}catch(err){  
+  
+alert(err.message);  
+  
+}  
+  
+};  
+  
+});  
+  
+}, (error) => {  
+  
+console.error(error);  
+  
+alert(error.code + "\n\n" + error.message);  
+  
+body.innerHTML = `  
+<div style="  
+padding:25px;  
+text-align:center;  
+color:#ef4444;  
+">  
+Unable to load notifications.  
+</div>  
+`;  
+  
+});  
+  
+}  
+  
+const themeToggle = document.getElementById("themeToggle");  
+const themeIcon = document.getElementById("themeIcon");  
+  
+if(localStorage.getItem("theme") === "light"){  
+  
+document.body.classList.add("light");  
+  
+themeIcon.className = "fas fa-sun";  
+  
+}  
+  
+themeToggle.onclick = ()=>{  
+  
+document.body.classList.toggle("light");  
+  
+if(document.body.classList.contains("light")){  
+  
+themeIcon.className="fas fa-sun";  
+  
+localStorage.setItem("theme","light");  
+  
+}else{  
+  
+themeIcon.className="fas fa-moon";  
+  
+localStorage.setItem("theme","dark");  
+  
+}  
+  
+};  
+  
+// Logout  
+document.getElementById("logoutBtn").onclick = async (e) => {  
+  
+e.preventDefault();  
+  
+const logout = confirm("Are you sure you want to logout?");  
+  
+if(!logout) return;  
+  
+try{  
+  
+await signOut(auth);  
+  
+// Clear all merchant cache  
+Cache.clearMerchant();  
+  
+// Redirect to login  
+window.location.href = "login.html";  
+}catch(error){  
+  
+alert("Logout failed: " + error.message);  
+  
+}  
+  
+};  
 </script>
-</body>
-  </html>
+</body>  
+</html>
