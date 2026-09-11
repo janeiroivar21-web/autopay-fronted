@@ -1,18 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 
 <meta charset="UTF-8">
 
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta
+name="viewport"
+content="width=device-width,initial-scale=1.0">
+
+<meta name="theme-color" content="#2563eb">
 
 <title>Withdraw - AUTOPAY</title>
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<link
+rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
 <style>
 
-/* CSS will be added next */
 *{
 margin:0;
 padding:0;
@@ -27,6 +33,7 @@ transition:.3s;
 }
 
 .container{
+width:100%;
 max-width:430px;
 margin:auto;
 padding:18px;
@@ -143,6 +150,11 @@ font-size:15px;
 border-color:#2563eb;
 }
 
+.form-card input:disabled{
+opacity:.55;
+cursor:not-allowed;
+}
+
 .summary{
 margin-top:18px;
 padding:16px;
@@ -186,6 +198,13 @@ transition:.3s;
 #withdrawBtn:hover{
 background:#1d4ed8;
 transform:translateY(-2px);
+}
+
+#withdrawBtn:disabled{
+background:#4b5563 !important;
+cursor:not-allowed;
+transform:none !important;
+opacity:.8;
 }
 
 .history-item{
@@ -252,8 +271,8 @@ display:none;
 align-items:center;
 justify-content:center;
 flex-direction:column;
-background:rgba(0,0,0,.65);
-z-index:999;
+background:rgba(0,0,0,.72);
+z-index:9999;
 }
 
 .loader{
@@ -281,8 +300,9 @@ height:100%;
 display:none;
 align-items:center;
 justify-content:center;
-background:rgba(0,0,0,.65);
-z-index:1000;
+background:rgba(0,0,0,.72);
+z-index:10000;
+padding:20px;
 }
 
 .popup-card{
@@ -292,6 +312,7 @@ background:#182235;
 border-radius:20px;
 padding:30px;
 text-align:center;
+border:1px solid #253149;
 }
 
 .popup-card i{
@@ -322,7 +343,25 @@ font-weight:bold;
 cursor:pointer;
 }
 
-/* Light Mode */
+#cancelWithdraw{
+background:#6b7280 !important;
+}
+
+#confirmWithdraw{
+background:#2563eb !important;
+}
+
+.security-note{
+display:none;
+margin-top:15px;
+padding:12px;
+border-radius:12px;
+background:#111827;
+border:1px solid #2b3750;
+color:#94a3b8;
+font-size:12px;
+line-height:1.5;
+}
 
 body.light{
 background:#f5f7fb;
@@ -342,7 +381,7 @@ color:#111827;
 
 body.light .divider,
 body.light .history-item{
-border-color:#e5e7eb;
+background:#e5e7eb;
 }
 
 body.light .balance-item span,
@@ -372,14 +411,159 @@ font-size:20px;
 }
 
 }
+
+@media (min-width:768px){
+
+body{
+overflow-x:hidden;
+}
+
+.container{
+max-width:none;
+width:100%;
+padding:32px 40px 70px;
+}
+
+.top{
+margin-bottom:30px;
+}
+
+.title{
+font-size:25px;
+}
+
+.back-btn,
+.avatar{
+width:50px;
+height:50px;
+}
+
+.balance-card{
+padding:26px;
+border-radius:20px;
+margin-bottom:24px;
+}
+
+.balance-item h2{
+font-size:28px;
+}
+
+.balance-item span{
+font-size:14px;
+}
+
+.divider{
+height:70px;
+}
+
+.form-card{
+padding:26px;
+border-radius:20px;
+margin-bottom:24px;
+}
+
+.form-card h3{
+font-size:20px;
+margin-bottom:22px;
+}
+
+.form-card input,
+.form-card select{
+padding:16px;
+}
+
+.summary{
+padding:18px;
+}
+
+#withdrawBtn{
+padding:17px;
+}
+
+.history-card{
+padding:26px;
+border-radius:20px;
+}
+
+.history-title{
+font-size:20px;
+}
+
+.history-item{
+padding:18px 0;
+}
+
+.history-left h4{
+font-size:16px;
+}
+
+.history-left span{
+font-size:13px;
+}
+
+}
+
+@media (min-width:1200px){
+
+.container{
+padding:38px 50px 80px;
+}
+
+.top{
+margin-bottom:35px;
+}
+
+.title{
+font-size:27px;
+}
+
+.balance-card{
+padding:30px;
+border-radius:22px;
+}
+
+.balance-item h2{
+font-size:32px;
+}
+
+.form-card,
+.history-card{
+padding:30px;
+border-radius:22px;
+}
+
+.form-card input,
+.form-card select{
+padding:17px;
+}
+
+#withdrawBtn{
+padding:18px;
+}
+
+}
+
+@media (min-width:1600px){
+
+.container{
+padding:42px 60px 90px;
+}
+
+.balance-card,
+.form-card,
+.history-card{
+padding:32px;
+}
+
+}
+
 </style>
 
 </head>
+
 <body>
 
 <div class="container">
-
-<!-- Header -->
 
 <div class="top">
 
@@ -397,8 +581,6 @@ AP
 </div>
 
 </div>
-
-<!-- Balance Card -->
 
 <div class="balance-card">
 
@@ -426,8 +608,6 @@ KES 0
 
 </div>
 
-<!-- Withdraw Form -->
-
 <div class="form-card">
 
 <h3>Request Withdrawal</h3>
@@ -437,20 +617,24 @@ KES 0
 <input
 type="tel"
 id="phone"
-placeholder="254712345678">
+placeholder="254712345678"
+autocomplete="tel">
 
 <label>Withdrawal Amount (KES)</label>
 
 <input
 type="number"
 id="amount"
-placeholder="Enter amount">
+placeholder="Enter amount"
+min="50"
+step="1"
+inputmode="decimal">
 
 <div class="summary">
 
 <div>
 
-<span>Withdrawal Fee (11%)</span>
+<span>Withdrawal Fee (8%)</span>
 
 <strong id="fee">
 KES 0
@@ -478,37 +662,41 @@ Withdraw
 
 </button>
 
+<div id="securityNote" class="security-note">
+<i class="fas fa-shield-halved"></i>
+Your withdrawal request is protected against repeated submissions.
 </div>
 
-<!-- Recent Withdrawals -->
+</div>
 
 <div class="history-card">
 
 <div class="history-title">
-
 Recent Withdrawals
-
 </div>
 
 <div id="withdrawHistory">
-
 </div>
 
 </div>
 
 </div>
 
-<!-- Loading -->
+
+<!-- LOADING -->
 
 <div class="loading" id="loading">
 
 <div class="loader"></div>
 
-<p>Processing withdrawal...</p>
+<p id="loadingText">
+Processing withdrawal...
+</p>
 
 </div>
 
-<!-- Confirm Withdrawal Popup -->
+
+<!-- CONFIRM -->
 
 <div class="popup" id="confirmPopup">
 
@@ -518,26 +706,40 @@ Recent Withdrawals
 
 <div style="text-align:left;margin:20px 0;line-height:2;">
 
-<p><strong>Phone:</strong> <span id="confirmPhone"></span></p>
+<p>
+<strong>Phone:</strong>
+<span id="confirmPhone"></span>
+</p>
 
-<p><strong>Amount:</strong> KES <span id="confirmAmount"></span></p>
+<p>
+<strong>Amount:</strong>
+KES <span id="confirmAmount"></span>
+</p>
 
-<p><strong>Fee:</strong> KES <span id="confirmFee"></span></p>
+<p>
+<strong>Fee:</strong>
+KES <span id="confirmFee"></span>
+</p>
 
-<p><strong>You Will Receive:</strong> KES <span id="confirmNet"></span></p>
+<p>
+<strong>You Will Receive:</strong>
+KES <span id="confirmNet"></span>
+</p>
 
 </div>
 
 <div style="display:flex;gap:10px;">
 
-<button id="cancelWithdraw"
-style="flex:1;background:#6b7280;">
+<button
+id="cancelWithdraw"
+style="flex:1;">
 
 Cancel
 
 </button>
 
-<button id="confirmWithdraw"
+<button
+id="confirmWithdraw"
 style="flex:1;">
 
 Confirm
@@ -549,8 +751,9 @@ Confirm
 </div>
 
 </div>
-  
-<!-- Success Popup -->
+
+
+<!-- SUCCESS -->
 
 <div class="popup" id="successPopup">
 
@@ -558,222 +761,853 @@ Confirm
 
 <i class="fas fa-circle-check"></i>
 
-<h2>Withdrawal Successful</h2>
+<h2>Withdrawal Submitted</h2>
 
 <p id="successMessage">
-
-Withdrawal completed successfully.
-
+Your withdrawal request has been submitted successfully.
 </p>
 
 <button id="closePopup">
-
 Continue
-
 </button>
 
 </div>
 
 </div>
 
-<!-- Maintenance Popup -->
+
+<!-- MAINTENANCE -->
 
 <div class="popup" id="maintenancePopup">
 
 <div class="popup-card">
 
-<i class="fas fa-screwdriver-wrench" style="color:#f59e0b;"></i>
+<i
+class="fas fa-screwdriver-wrench"
+style="color:#f59e0b;">
+</i>
 
-<h2>Withdrawals Temporarily Unavailable</h2>
+<h2>
+Withdrawals Temporarily Unavailable
+</h2>
 
-<p>
+<p id="maintenancePopupText">
 
-We are currently performing important system upgrades to improve the speed, reliability, and security of our withdrawal service.
-
-<br><br>
-
-During this maintenance period, all withdrawals have been temporarily suspended.
-
-<br><br>
-
-Your funds remain safe and secure. We appreciate your patience and will restore withdrawal services as soon as the upgrade is complete.
+Withdrawals are currently unavailable.
 
 </p>
 
-<button onclick="closeMaintenancePopup()">
-
+<button id="closeMaintenanceBtn">
 OK
-
 </button>
 
 </div>
 
 </div>
 
-<!-- Message Popup -->
+
+<!-- MESSAGE -->
 
 <div class="popup" id="messagePopup">
 
 <div class="popup-card">
 
-<i id="messageIcon" class="fas fa-circle-info" style="color:#2563eb;"></i>
+<i
+id="messageIcon"
+class="fas fa-circle-info"
+style="color:#2563eb;">
+</i>
 
-<h2 id="messageTitle">Message</h2>
+<h2 id="messageTitle">
+Message
+</h2>
 
 <p id="messageText"></p>
 
 <button id="closeMessagePopup">
-
 OK
-
 </button>
 
 </div>
 
 </div>
-  
+
+
 <script type="module">
 
-import { auth, db } from "./firebase.js";
+import {
+    auth,
+    db
+} from "./firebase.js";
+
 
 import {
-onAuthStateChanged
+    onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
 
+
 import {
-doc,
-collection,
-query,
-where,
-orderBy,
-onSnapshot
+    doc,
+    getDoc,
+    collection,
+    query,
+    where,
+    onSnapshot
 } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
 
-let currentUser;
-let walletBalance=0;
-let merchantId="";
 
-// Theme
-if(localStorage.getItem("theme")==="light"){
+/* =========================================================
+   STATE
+========================================================= */
+
+let currentUser = null;
+
+let merchantId = "";
+
+let walletBalance = 0;
+
+let withdrawalListener = null;
+
+let userListener = null;
+
+let settingsListener = null;
+
+let currentUserData = null;
+
+let withdrawalInProgress = false;
+
+let withdrawData = null;
+
+
+/*
+ * Global platform settings.
+ */
+
+let platformSettings = {
+
+    withdrawalsLocked:false,
+
+    maintenanceMode:false,
+
+    maintenanceMessage:
+    "AUTOPAY is currently undergoing maintenance. Please check back shortly."
+
+};
+
+
+/* =========================================================
+   ELEMENTS
+========================================================= */
+
+const withdrawBtn =
+document.getElementById("withdrawBtn");
+
+const phoneInput =
+document.getElementById("phone");
+
+const amountInput =
+document.getElementById("amount");
+
+const walletBalanceElement =
+document.getElementById("walletBalance");
+
+const serviceBalanceElement =
+document.getElementById("serviceBalance");
+
+const feeElement =
+document.getElementById("fee");
+
+const receiveElement =
+document.getElementById("receive");
+
+const loading =
+document.getElementById("loading");
+
+const loadingText =
+document.getElementById("loadingText");
+
+const securityNote =
+document.getElementById("securityNote");
+
+
+/* =========================================================
+   THEME
+========================================================= */
+
+if(
+localStorage.getItem("theme") === "light"
+){
+
 document.body.classList.add("light");
+
 }
 
-// Authentication
-onAuthStateChanged(auth,async(user)=>{
+
+/* =========================================================
+   AUTHENTICATION
+========================================================= */
+
+onAuthStateChanged(
+auth,
+async(user)=>{
 
 if(!user){
-location.href="login.html";
+
+location.href =
+"login.html";
+
 return;
+
 }
 
-currentUser=user;
+currentUser = user;
 
-// Load cached merchant immediately
-const cached = JSON.parse(localStorage.getItem("merchant"));
 
-if(cached){
-    loadMerchant(cached);
+/*
+ * IMPORTANT:
+ * Start listening to the user document.
+ */
+
+startUserListener(user.uid);
+
+
+/*
+ * Listen to global admin settings.
+ */
+
+startPlatformSettingsListener();
+
+
 }
 
-// Listen for changes to the merchant document in real time
-onSnapshot(doc(db,"users",user.uid), (snap)=>{
+);
+
+
+/* =========================================================
+   USER LISTENER
+========================================================= */
+
+function startUserListener(uid){
+
+if(userListener){
+
+userListener();
+
+userListener = null;
+
+}
+
+
+userListener = onSnapshot(
+
+doc(db,"users",uid),
+
+(snap)=>{
 
 if(!snap.exists()){
-location.href="login.html";
+
+location.href =
+"login.html";
+
 return;
+
 }
 
-const data = snap.data();
 
-// Update cache
-localStorage.setItem("merchant", JSON.stringify(data));
-localStorage.setItem("merchantUid", user.uid);
+const data =
+snap.data();
 
-// Refresh UI automatically
-loadMerchant(data);
 
-});
+currentUserData =
+data;
 
-});
 
-function loadMerchant(data){
+/* =========================================
+   ACCOUNT STATUS
+========================================= */
 
-merchantId = data.merchantId || "";
+const accountStatus =
+String(
+data.status ||
+data.accountStatus ||
+"Active"
+)
+.trim()
+.toLowerCase();
 
-// Check if withdrawals are locked
-const withdrawBtn = document.getElementById("withdrawBtn");
 
-if(data.withdrawLocked === true){
+if(
+accountStatus === "suspended" ||
+accountStatus === "blocked" ||
+accountStatus === "disabled"
+){
+
+/*
+ * Do NOT send a suspended user
+ * back to dashboard.
+ */
+
+location.replace(
+"suspend.html"
+);
+
+return;
+
+}
+
+
+/* =========================================
+   MERCHANT DATA
+========================================= */
+
+merchantId =
+data.merchantId || "";
+
+
+localStorage.setItem(
+"merchant",
+JSON.stringify(data)
+);
+
+localStorage.setItem(
+"merchantUid",
+uid
+);
+
+
+/* =========================================
+   PHONE
+========================================= */
+
+phoneInput.value =
+data.phone || "";
+
+
+/* =========================================
+   AUTHORITATIVE BALANCE DISPLAY
+========================================= */
+
+walletBalance =
+Number(
+data.walletBalance || 0
+);
+
+walletBalanceElement.textContent =
+"KES " +
+walletBalance.toLocaleString();
+
+
+serviceBalanceElement.textContent =
+"KES " +
+Number(
+data.serviceBalance || 0
+)
+.toLocaleString();
+
+
+/* =========================================
+   AVATAR
+========================================= */
+
+document.getElementById(
+"avatar"
+).textContent =
+(
+data.fullName ||
+"A"
+)
+.charAt(0)
+.toUpperCase();
+
+
+/*
+ * Load history.
+ */
+
+loadWithdrawals();
+
+
+/*
+ * Apply all platform restrictions.
+ */
+
+applyPlatformState();
+
+
+},
+
+(error)=>{
+
+console.error(
+"USER LISTENER ERROR:",
+error
+);
+
+showMessage(
+"Connection Error",
+"Unable to load your account information. Please try again.",
+"error"
+);
+
+}
+
+);
+
+}
+
+
+/* =========================================================
+   GLOBAL PLATFORM SETTINGS
+========================================================= */
+
+function startPlatformSettingsListener(){
+
+if(settingsListener){
+
+settingsListener();
+
+settingsListener = null;
+
+}
+
+
+settingsListener = onSnapshot(
+
+doc(
+db,
+"config",
+"platform_settings"
+),
+
+(snap)=>{
+
+if(
+snap.exists()
+){
+
+const data =
+snap.data();
+
+
+platformSettings = {
+
+withdrawalsLocked:
+data.withdrawalsLocked === true,
+
+maintenanceMode:
+data.maintenanceMode === true,
+
+maintenanceMessage:
+data.maintenanceMessage ||
+"AUTOPAY is currently undergoing maintenance. Please check back shortly."
+
+};
+
+}
+
+
+/*
+ * If settings document doesn't exist,
+ * use safe defaults.
+ */
+
+else{
+
+platformSettings = {
+
+withdrawalsLocked:false,
+
+maintenanceMode:false,
+
+maintenanceMessage:
+"AUTOPAY is currently undergoing maintenance. Please check back shortly."
+
+};
+
+}
+
+
+applyPlatformState();
+
+},
+
+(error)=>{
+
+console.error(
+"PLATFORM SETTINGS ERROR:",
+error
+);
+
+}
+
+);
+
+}
+
+
+/* =========================================================
+   APPLY ADMIN SETTINGS
+========================================================= */
+
+function applyPlatformState(){
+
+if(!currentUser){
+
+return;
+
+}
+
+
+/*
+ * ACCOUNT SUSPENSION
+ */
+
+if(currentUserData){
+
+const status =
+String(
+currentUserData.status ||
+currentUserData.accountStatus ||
+"Active"
+)
+.trim()
+.toLowerCase();
+
+
+if(
+status === "suspended" ||
+status === "blocked" ||
+status === "disabled"
+){
+
+location.replace(
+"suspend.html"
+);
+
+return;
+
+}
+
+}
+
+
+/*
+ * GLOBAL WITHDRAWAL LOCK
+ */
+
+if(
+platformSettings.withdrawalsLocked
+){
 
 withdrawBtn.disabled = true;
 
-withdrawBtn.style.background = "#6b7280";
-
-withdrawBtn.innerHTML = `
+withdrawBtn.innerHTML =
+`
 <i class="fas fa-lock"></i>
 Withdrawals Locked
 `;
 
-}else{
+withdrawBtn.style.background =
+"#6b7280";
 
-withdrawBtn.disabled = false;
+phoneInput.disabled = true;
 
-withdrawBtn.style.background = "#2563eb";
+amountInput.disabled = true;
 
-withdrawBtn.innerHTML = `
+securityNote.style.display =
+"block";
+
+
+/*
+ * Redirect to dedicated page.
+ *
+ * Small delay allows Firestore
+ * state to settle before redirect.
+ */
+
+setTimeout(()=>{
+
+location.replace(
+"withdraw-locked.html"
+);
+
+},150);
+
+return;
+
+}
+
+
+/*
+ * MAINTENANCE
+ */
+
+if(
+platformSettings.maintenanceMode
+){
+
+withdrawBtn.disabled = true;
+
+withdrawBtn.innerHTML =
+`
+<i class="fas fa-screwdriver-wrench"></i>
+Maintenance
+`;
+
+withdrawBtn.style.background =
+"#6b7280";
+
+phoneInput.disabled = true;
+
+amountInput.disabled = true;
+
+securityNote.style.display =
+"block";
+
+return;
+
+}
+
+
+/*
+ * USER-SPECIFIC LOCK
+ */
+
+if(
+currentUserData &&
+currentUserData.withdrawLocked === true
+){
+
+withdrawBtn.disabled = true;
+
+withdrawBtn.innerHTML =
+`
+<i class="fas fa-lock"></i>
+Withdrawals Locked
+`;
+
+withdrawBtn.style.background =
+"#6b7280";
+
+phoneInput.disabled = true;
+
+amountInput.disabled = true;
+
+return;
+
+}
+
+
+/*
+ * NORMAL
+ */
+
+withdrawBtn.disabled =
+withdrawalInProgress;
+
+phoneInput.disabled =
+withdrawalInProgress;
+
+amountInput.disabled =
+withdrawalInProgress;
+
+if(!withdrawalInProgress){
+
+withdrawBtn.innerHTML =
+`
 <i class="fas fa-paper-plane"></i>
 Withdraw
 `;
 
-}
-
-document.getElementById("phone").value =
-data.phone || "";
-
-walletBalance =
-Number(data.walletBalance || 0);
-
-document.getElementById("walletBalance").innerHTML =
-"KES " + walletBalance.toLocaleString();
-
-document.getElementById("serviceBalance").innerHTML =
-"KES " + Number(data.serviceBalance || 0).toLocaleString();
-
-document.getElementById("avatar").innerHTML =
-(data.fullName || "A").charAt(0).toUpperCase();
-
-loadWithdrawals();
+withdrawBtn.style.background =
+"#2563eb";
 
 }
 
-// Back
-document.getElementById("backBtn").onclick=()=>history.back();
+}
 
 
-// Calculate Fee
-document.getElementById("amount").addEventListener("input",()=>{
+/* =========================================================
+   MAINTENANCE POPUP
+========================================================= */
 
-const amount=Number(document.getElementById("amount").value||0);
+function showMaintenance(){
 
-const fee = Number((amount * 0.11).toFixed(2));
+document.getElementById(
+"maintenancePopupText"
+).textContent =
+platformSettings.maintenanceMessage;
 
-const receive = Number((amount - fee).toFixed(2));
 
-document.getElementById("fee").innerHTML=
-"KES "+fee.toLocaleString();
+document.getElementById(
+"maintenancePopup"
+).style.display =
+"flex";
 
-document.getElementById("receive").innerHTML=
-"KES "+receive.toLocaleString();
+}
+
+
+document.getElementById(
+"closeMaintenanceBtn"
+).onclick = ()=>{
+
+document.getElementById(
+"maintenancePopup"
+).style.display =
+"none";
+
+};
+
+
+/* =========================================================
+   BACK
+========================================================= */
+
+document.getElementById(
+"backBtn"
+).onclick = ()=>{
+
+history.back();
+
+};
+
+
+/* =========================================================
+   AMOUNT CALCULATION
+========================================================= */
+
+amountInput.addEventListener(
+"input",
+()=>{
+
+const amount =
+Number(
+amountInput.value || 0
+);
+
+
+const fee =
+Number(
+(amount * 0.08).toFixed(2)
+);
+
+
+const receive =
+Number(
+(amount - fee).toFixed(2)
+);
+
+
+feeElement.textContent =
+"KES " +
+fee.toLocaleString();
+
+
+receiveElement.textContent =
+"KES " +
+(
+receive > 0
+? receive
+: 0
+)
+.toLocaleString();
 
 });
-let withdrawData={};
 
-document.getElementById("withdrawBtn").onclick = () => {
 
-const merchant =
-JSON.parse(localStorage.getItem("merchant")) || {};
+/* =========================================================
+   CREATE IDEMPOTENCY KEY
+========================================================= */
 
-if(merchant.withdrawLocked === true){
+function createIdempotencyKey(){
+
+if(
+window.crypto &&
+typeof crypto.randomUUID === "function"
+){
+
+return crypto.randomUUID();
+
+}
+
+
+/*
+ * Fallback for older browsers.
+ */
+
+return (
+"wd_" +
+Date.now() +
+"_" +
+Math.random()
+.toString(36)
+.substring(2) +
+"_" +
+Math.random()
+.toString(36)
+.substring(2)
+);
+
+}
+
+
+/* =========================================================
+   WITHDRAW BUTTON
+========================================================= */
+
+withdrawBtn.onclick = ()=>{
+
+/*
+ * HARD FRONTEND LOCK
+ */
+
+if(withdrawalInProgress){
+
+return;
+
+}
+
+
+/*
+ * Global lock.
+ */
+
+if(
+platformSettings.withdrawalsLocked
+){
+
+location.replace(
+"withdraw-locked.html"
+);
+
+return;
+
+}
+
+
+/*
+ * Maintenance.
+ */
+
+if(
+platformSettings.maintenanceMode
+){
+
+showMaintenance();
+
+return;
+
+}
+
+
+/*
+ * User-specific lock.
+ */
+
+if(
+currentUserData &&
+currentUserData.withdrawLocked === true
+){
 
 showMessage(
 "Withdrawals Locked",
@@ -785,87 +1619,721 @@ return;
 
 }
 
-const phone = document.getElementById("phone").value.trim();
-const amount = Number(document.getElementById("amount").value);
+
+/*
+ * Account status.
+ */
+
+const status =
+String(
+currentUserData?.status ||
+currentUserData?.accountStatus ||
+"Active"
+)
+.trim()
+.toLowerCase();
+
+
+if(
+status === "suspended" ||
+status === "blocked" ||
+status === "disabled"
+){
+
+location.replace(
+"suspend.html"
+);
+
+return;
+
+}
+
+
+/* =========================================
+   INPUT VALIDATION
+========================================= */
+
+const phone =
+phoneInput.value.trim();
+
+const amount =
+Number(
+amountInput.value
+);
+
 
 if(phone === ""){
+
 showMessage(
 "Missing Phone Number",
 "Please enter your M-Pesa phone number.",
 "error"
 );
+
 return;
+
 }
 
-if(!/^254(7|1)\d{8}$/.test(phone)){
+
+if(
+!/^254(7|1)\d{8}$/.test(phone)
+){
+
 showMessage(
 "Invalid Phone Number",
 "Please enter a valid M-Pesa phone number.",
 "error"
 );
+
 return;
+
 }
 
+
+if(
+!Number.isFinite(amount)
+){
+
+showMessage(
+"Invalid Amount",
+"Please enter a valid withdrawal amount.",
+"error"
+);
+
+return;
+
+}
+
+
 if(amount < 50){
+
 showMessage(
 "Minimum Amount",
 "Minimum withdrawal amount is KES 50.",
 "error"
 );
+
 return;
+
 }
 
-const fee = Number((amount * 0.11).toFixed(2));
 
-const receive = Number((amount - fee).toFixed(2));
+if(
+amount > walletBalance
+){
 
-if(amount > walletBalance){
 showMessage(
 "Insufficient Balance",
 "Your wallet balance is not enough for this withdrawal.",
 "error"
 );
+
 return;
+
 }
 
-withdrawData = {
-phone,
-amount,
-fee,
-netAmount: receive
-};
 
-document.getElementById("confirmPhone").innerHTML = phone;
-document.getElementById("confirmAmount").innerHTML = amount.toLocaleString();
-document.getElementById("confirmFee").innerHTML = fee.toLocaleString();
-document.getElementById("confirmNet").innerHTML = receive.toLocaleString();
+/* =========================================
+   CALCULATE
+========================================= */
 
-document.getElementById("confirmPopup").style.display = "flex";
-
-};
-
-// Load Withdrawal History
-function loadWithdrawals(){
-
-if(!merchantId) return;
-
-const q=query(
-collection(db,"withdrawals"),
-where("merchantId","==",merchantId),
-orderBy("createdAt","desc")
+const fee =
+Number(
+(amount * 0.08).toFixed(2)
 );
 
-onSnapshot(q,(snapshot)=>{
 
-const history=document.getElementById("withdrawHistory");
+const receive =
+Number(
+(amount - fee).toFixed(2)
+);
 
-history.innerHTML="";
 
-if(snapshot.empty){
+/*
+ * Create a unique request ID.
+ *
+ * This MUST also be enforced
+ * by the backend.
+ */
 
-history.innerHTML=`
-<p style="text-align:center;color:#94a3b8;">
-No withdrawals found.
+const idempotencyKey =
+createIdempotencyKey();
+
+
+withdrawData = {
+
+phone:phone,
+
+amount:amount,
+
+fee:fee,
+
+netAmount:receive,
+
+idempotencyKey:idempotencyKey
+
+};
+
+
+/* =========================================
+   CONFIRMATION
+========================================= */
+
+document.getElementById(
+"confirmPhone"
+).textContent =
+phone;
+
+
+document.getElementById(
+"confirmAmount"
+).textContent =
+amount.toLocaleString();
+
+
+document.getElementById(
+"confirmFee"
+).textContent =
+fee.toLocaleString();
+
+
+document.getElementById(
+"confirmNet"
+).textContent =
+receive.toLocaleString();
+
+
+document.getElementById(
+"confirmPopup"
+).style.display =
+"flex";
+
+};
+
+
+/* =========================================================
+   CANCEL
+========================================================= */
+
+document.getElementById(
+"cancelWithdraw"
+).onclick = ()=>{
+
+document.getElementById(
+"confirmPopup"
+).style.display =
+"none";
+
+withdrawData =
+null;
+
+};
+
+
+/* =========================================================
+   CONFIRM WITHDRAWAL
+========================================================= */
+
+document.getElementById(
+"confirmWithdraw"
+).onclick = async()=>{
+
+/*
+ * Prevent double click.
+ */
+
+if(withdrawalInProgress){
+
+return;
+
+}
+
+
+if(!withdrawData){
+
+return;
+
+}
+
+
+/*
+ * Re-check all critical restrictions
+ * immediately before sending.
+ */
+
+if(
+platformSettings.withdrawalsLocked
+){
+
+document.getElementById(
+"confirmPopup"
+).style.display =
+"none";
+
+location.replace(
+"withdraw-locked.html"
+);
+
+return;
+
+}
+
+
+if(
+platformSettings.maintenanceMode
+){
+
+document.getElementById(
+"confirmPopup"
+).style.display =
+"none";
+
+showMaintenance();
+
+return;
+
+}
+
+
+const status =
+String(
+currentUserData?.status ||
+currentUserData?.accountStatus ||
+"Active"
+)
+.trim()
+.toLowerCase();
+
+
+if(
+status === "suspended" ||
+status === "blocked" ||
+status === "disabled"
+){
+
+location.replace(
+"suspend.html"
+);
+
+return;
+
+}
+
+
+/*
+ * Lock immediately.
+ */
+
+withdrawalInProgress =
+true;
+
+
+/*
+ * Disable confirmation controls.
+ */
+
+const confirmButton =
+document.getElementById(
+"confirmWithdraw"
+);
+
+const cancelButton =
+document.getElementById(
+"cancelWithdraw"
+);
+
+
+confirmButton.disabled =
+true;
+
+cancelButton.disabled =
+true;
+
+
+confirmButton.innerHTML =
+`
+<i class="fas fa-spinner fa-spin"></i>
+Processing...
+`;
+
+
+document.getElementById(
+"confirmPopup"
+).style.display =
+"none";
+
+
+loadingText.textContent =
+"Processing withdrawal...";
+
+
+loading.style.display =
+"flex";
+
+
+try{
+
+
+/*
+ * Send ONE request.
+ *
+ * The idempotencyKey is extremely important.
+ */
+
+const response =
+await fetch(
+"https://autopaydigital.co.ke/api/withdraw",
+{
+method:"POST",
+
+headers:{
+"Content-Type":"application/json",
+
+/*
+ * Backend should use this
+ * value for idempotency.
+ */
+
+"Idempotency-Key":
+withdrawData.idempotencyKey
+
+},
+
+body:JSON.stringify({
+
+uid:currentUser.uid,
+
+phone:withdrawData.phone,
+
+amount:withdrawData.amount,
+
+idempotencyKey:
+withdrawData.idempotencyKey
+
+})
+
+}
+);
+
+
+/* =========================================
+   SAFE RESPONSE PARSING
+========================================= */
+
+const contentType =
+response.headers.get(
+"content-type"
+) || "";
+
+
+let result;
+
+
+if(
+contentType.includes(
+"application/json"
+)
+){
+
+result =
+await response.json();
+
+}
+
+else{
+
+const text =
+await response.text();
+
+result = {
+
+success:false,
+
+message:
+text ||
+"Server returned an invalid response."
+
+};
+
+}
+
+
+/* =========================================
+   SERVER FAILURE
+========================================= */
+
+if(
+!response.ok ||
+result.success === false
+){
+
+throw new Error(
+result.message ||
+"Withdrawal request failed."
+);
+
+}
+
+
+/*
+ * IMPORTANT:
+ *
+ * DO NOT do:
+ *
+ * walletBalance -= ...
+ *
+ * The backend/Firestore is the
+ * financial authority.
+ *
+ * The onSnapshot listener will
+ * update the balance.
+ */
+
+
+/* =========================================
+   SUCCESS
+========================================= */
+
+loading.style.display =
+"none";
+
+
+document.getElementById(
+"successMessage"
+).textContent =
+result.message ||
+"Your withdrawal request has been submitted successfully.";
+
+
+document.getElementById(
+"successPopup"
+).style.display =
+"flex";
+
+
+/*
+ * Reset form.
+ */
+
+amountInput.value = "";
+
+feeElement.textContent =
+"KES 0";
+
+receiveElement.textContent =
+"KES 0";
+
+
+withdrawData =
+null;
+
+
+/*
+ * Show security indicator.
+ */
+
+securityNote.style.display =
+"block";
+
+
+}
+
+catch(error){
+
+console.error(
+"WITHDRAWAL ERROR:",
+error
+);
+
+
+loading.style.display =
+"none";
+
+
+showMessage(
+"Withdrawal Failed",
+error.message ||
+"Unable to process withdrawal.",
+"error"
+);
+
+}
+
+
+/*
+ * Unlock only after the request has
+ * received a definitive response.
+ *
+ * The backend idempotency key prevents
+ * the same transaction being processed
+ * twice if the user retries.
+ */
+
+withdrawalInProgress =
+false;
+
+
+confirmButton.disabled =
+false;
+
+cancelButton.disabled =
+false;
+
+confirmButton.innerHTML =
+"Confirm";
+
+
+applyPlatformState();
+
+};
+
+
+/* =========================================================
+   SUCCESS POPUP
+========================================================= */
+
+document.getElementById(
+"closePopup"
+).onclick = ()=>{
+
+document.getElementById(
+"successPopup"
+).style.display =
+"none";
+
+};
+
+
+/* =========================================================
+   LOAD WITHDRAWALS
+========================================================= */
+
+function loadWithdrawals(){
+
+if(!merchantId){
+
+return;
+
+}
+
+
+if(withdrawalListener){
+
+withdrawalListener();
+
+withdrawalListener =
+null;
+
+}
+
+
+const q =
+query(
+collection(
+db,
+"transactions"
+),
+where(
+"merchantId",
+"==",
+merchantId
+)
+);
+
+
+withdrawalListener =
+onSnapshot(
+q,
+
+(snapshot)=>{
+
+const history =
+document.getElementById(
+"withdrawHistory"
+);
+
+
+history.innerHTML = "";
+
+
+let withdrawals = [];
+
+
+snapshot.forEach(
+(docSnap)=>{
+
+const data =
+docSnap.data();
+
+
+if(
+String(
+data.type || ""
+)
+.trim()
+.toUpperCase()
+===
+"WITHDRAWAL"
+){
+
+withdrawals.push({
+
+id:docSnap.id,
+
+...data
+
+});
+
+}
+
+}
+);
+
+
+/*
+ * Newest first.
+ */
+
+withdrawals.sort(
+(a,b)=>{
+
+const aTime =
+a.createdAt?.toDate
+? a.createdAt
+.toDate()
+.getTime()
+:0;
+
+
+const bTime =
+b.createdAt?.toDate
+? b.createdAt
+.toDate()
+.getTime()
+:0;
+
+
+return bTime-aTime;
+
+}
+);
+
+
+withdrawals =
+withdrawals.slice(0,8);
+
+
+if(
+withdrawals.length === 0
+){
+
+history.innerHTML = `
+<p style="
+text-align:center;
+color:#94a3b8;
+padding:20px 0;
+">
+No recent withdrawals found.
 </p>
 `;
 
@@ -873,192 +2341,311 @@ return;
 
 }
 
-snapshot.forEach(docSnap=>{
 
-const data=docSnap.data();
+/*
+ * Render.
+ */
 
-const status = String(data.status || "").toUpperCase();
+withdrawals.forEach(
+(data)=>{
 
-let badge = "pending";
+const status =
+String(
+data.status ||
+"PENDING"
+)
+.trim()
+.toUpperCase();
 
-if(status === "SUCCESS" || status === "COMPLETED"){
-    badge = "success";
-}else if(status === "FAILED"){
-    badge = "failed";
+
+let badge =
+"pending";
+
+
+if(
+status === "SUCCESS" ||
+status === "COMPLETED"
+){
+
+badge =
+"success";
+
 }
 
-const date=data.createdAt?.toDate()?.toLocaleString()||"";
+else if(
+status === "FAILED" ||
+status === "CANCELLED"
+){
 
-history.innerHTML+=`
+badge =
+"failed";
 
-<div class="history-item">
+}
 
-<div class="history-left">
-<h4>${data.phone}</h4>
-<span>${date}</span>
-</div>
 
-<div class="history-right">
-<strong>KES ${Number(data.amount).toLocaleString()}</strong>
-<span class="badge ${badge}">
-${data.status}
-</span>
-</div>
+const date =
+data.createdAt?.toDate
+?
+data.createdAt
+.toDate()
+.toLocaleString()
+:
+"--";
 
-</div>
+
+const amount =
+Number(
+data.amount || 0
+);
+
+
+/*
+ * Use DOM-safe text insertion
+ * rather than injecting backend
+ * data with innerHTML.
+ */
+
+const item =
+document.createElement(
+"div"
+);
+
+item.className =
+"history-item";
+
+
+const left =
+document.createElement(
+"div"
+);
+
+left.className =
+"history-left";
+
+
+const phone =
+document.createElement(
+"h4"
+);
+
+phone.textContent =
+data.phone || "--";
+
+
+const dateElement =
+document.createElement(
+"span"
+);
+
+dateElement.textContent =
+date;
+
+
+left.appendChild(phone);
+
+left.appendChild(
+dateElement
+);
+
+
+const right =
+document.createElement(
+"div"
+);
+
+right.className =
+"history-right";
+
+
+const amountElement =
+document.createElement(
+"strong"
+);
+
+amountElement.textContent =
+"KES " +
+amount.toLocaleString();
+
+
+const badgeElement =
+document.createElement(
+"span"
+);
+
+badgeElement.className =
+"badge " +
+badge;
+
+badgeElement.textContent =
+status;
+
+
+right.appendChild(
+amountElement
+);
+
+right.appendChild(
+badgeElement
+);
+
+
+item.appendChild(left);
+
+item.appendChild(right);
+
+history.appendChild(item);
+
+});
+
+},
+
+(error)=>{
+
+console.error(
+"WITHDRAWAL HISTORY ERROR:",
+error
+);
+
+
+document.getElementById(
+"withdrawHistory"
+).innerHTML = `
+
+<p style="
+text-align:center;
+color:#f87171;
+padding:20px 0;
+">
+Unable to load recent withdrawals.
+</p>
 
 `;
 
-});
-
-});
-
 }
 
-document.getElementById("cancelWithdraw").onclick=()=>{
-
-document.getElementById("confirmPopup").style.display="none";
-
-};
-
-document.getElementById("confirmWithdraw").onclick = async () => {
-
-document.getElementById("confirmPopup").style.display = "none";
-
-document.getElementById("loading").style.display = "flex";
-
-try {
-
-const response = await fetch(
-"https://autopay.co.ke/api/withdraw",
-{
-method: "POST",
-headers: {
-"Content-Type": "application/json"
-},
-body: JSON.stringify({
-uid: currentUser.uid,
-phone: withdrawData.phone,
-amount: withdrawData.amount
-})
-}
-);
-
-const result = await response.json();
-
-console.log(result);
-
-if (!response.ok || result.success === false) {
-
-document.getElementById("loading").style.display = "none";
-
-console.log("Backend response:", result);
-
-showMessage(
-"Withdrawal Failed",
-JSON.stringify(result),
-"error"
-);
-
-return;
-
-}
-
-walletBalance -= Number(result.totalDeduction);
-
-document.getElementById("walletBalance").innerHTML =
-"KES " + walletBalance.toLocaleString();
-
-const merchant =
-JSON.parse(localStorage.getItem("merchant")) || {};
-
-merchant.walletBalance = walletBalance;
-
-localStorage.setItem(
-"merchant",
-JSON.stringify(merchant)
-);
-
-document.getElementById("loading").style.display = "none";
-
-document.getElementById("successMessage").innerHTML =
-result.message || "Withdrawal completed successfully.";
-
-document.getElementById("successPopup").style.display = "flex";
-
-document.getElementById("amount").value = "";
-
-document.getElementById("fee").innerHTML = "KES 0";
-
-document.getElementById("receive").innerHTML = "KES 0";
-
-loadWithdrawals();
-
-} catch (err) {
-
-document.getElementById("loading").style.display = "none";
-
-showMessage(
-"Error",
-err.message,
-"error"
 );
 
 }
 
-};
 
-// Close Popup
-document.getElementById("closePopup").onclick=()=>{
+/* =========================================================
+   MESSAGE POPUP
+========================================================= */
 
-document.getElementById("successPopup").style.display="none";
+function showMessage(
+title,
+message,
+type="info"
+){
 
-};
+const popup =
+document.getElementById(
+"messagePopup"
+);
 
-function showMessage(title, message, type = "info") {
 
-const popup = document.getElementById("messagePopup");
+const icon =
+document.getElementById(
+"messageIcon"
+);
 
-const icon = document.getElementById("messageIcon");
 
-document.getElementById("messageTitle").innerHTML = title;
+document.getElementById(
+"messageTitle"
+).textContent =
+title;
 
-document.getElementById("messageText").innerHTML = message;
 
-if(type==="success"){
+document.getElementById(
+"messageText"
+).textContent =
+message;
 
-icon.className="fas fa-circle-check";
 
-icon.style.color="#22c55e";
+if(
+type === "success"
+){
+
+icon.className =
+"fas fa-circle-check";
+
+icon.style.color =
+"#22c55e";
 
 }
 
-else if(type==="error"){
+else if(
+type === "error"
+){
 
-icon.className="fas fa-circle-xmark";
+icon.className =
+"fas fa-circle-xmark";
 
-icon.style.color="#ef4444";
+icon.style.color =
+"#ef4444";
 
 }
 
 else{
 
-icon.className="fas fa-circle-info";
+icon.className =
+"fas fa-circle-info";
 
-icon.style.color="#2563eb";
-
-}
-
-popup.style.display="flex";
+icon.style.color =
+"#2563eb";
 
 }
 
-document.getElementById("closeMessagePopup").onclick=()=>{
 
-document.getElementById("messagePopup").style.display="none";
+popup.style.display =
+"flex";
+
+}
+
+
+document.getElementById(
+"closeMessagePopup"
+).onclick = ()=>{
+
+document.getElementById(
+"messagePopup"
+).style.display =
+"none";
 
 };
 
+
+/* =========================================================
+   CLEANUP
+========================================================= */
+
+window.addEventListener(
+"beforeunload",
+()=>{
+
+if(userListener){
+
+userListener();
+
+}
+
+if(settingsListener){
+
+settingsListener();
+
+}
+
+if(withdrawalListener){
+
+withdrawalListener();
+
+}
+
+}
+);
+
 </script>
+
 </body>
+
   </html>
