@@ -1,0 +1,3242 @@
+<!DOCTYPE html>  <html lang="en">  <head>  <meta charset="UTF-8">  <meta name="viewport"  
+content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+
+<title>AUTOPAY Global â€¢ Uganda</title>  <link rel="stylesheet"  
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">  <style>  
+  
+*{  
+    margin:0;  
+    padding:0;  
+    box-sizing:border-box;  
+    -webkit-tap-highlight-color:transparent;  
+}  
+  
+:root{  
+  
+    --bg:#081120;  
+    --card:#182235;  
+    --card2:#111b2d;  
+    --hover:#1d2a40;  
+  
+    --primary:#2563eb;  
+    --primary-hover:#3b82f6;  
+  
+    --text:#ffffff;  
+    --muted:#94a3b8;  
+  
+    --border:rgba(255,255,255,.07);  
+  
+    --success:#22c55e;  
+    --success-bg:rgba(34,197,94,.12);  
+  
+    --warning:#f59e0b;  
+    --warning-bg:rgba(245,158,11,.12);  
+  
+    --danger:#ef4444;  
+    --danger-bg:rgba(239,68,68,.12);  
+  
+    --shadow:0 12px 35px rgba(0,0,0,.22);  
+}  
+  
+body.light{  
+  
+    --bg:#f4f7fb;  
+    --card:#ffffff;  
+    --card2:#f8fafc;  
+    --hover:#f1f5f9;  
+  
+    --primary:#2563eb;  
+    --primary-hover:#1d4ed8;  
+  
+    --text:#0f172a;  
+    --muted:#64748b;  
+  
+    --border:rgba(15,23,42,.08);  
+  
+    --success:#16a34a;  
+    --success-bg:rgba(22,163,74,.10);  
+  
+    --warning:#d97706;  
+    --warning-bg:rgba(217,119,6,.10);  
+  
+    --danger:#dc2626;  
+    --danger-bg:rgba(220,38,38,.10);  
+  
+    --shadow:0 10px 30px rgba(15,23,42,.08);  
+}  
+  
+body{  
+  
+    font-family:Arial,Helvetica,sans-serif;  
+  
+    background:var(--bg);  
+    color:var(--text);  
+  
+    min-height:100vh;  
+  
+    transition:  
+        background .25s ease,  
+        color .25s ease;  
+}  
+  
+button,  
+input{  
+  
+    font:inherit;  
+  
+}  
+  
+button{  
+  
+    border:0;  
+  
+}  
+  
+.app{  
+  
+    width:100%;  
+    max-width:1000px;  
+  
+    margin:auto;  
+  
+    min-height:100vh;  
+  
+    padding-bottom:40px;  
+  
+}  
+  
+/* =========================================  
+   TOP BAR  
+========================================= */  
+  
+.topbar{  
+  
+    height:78px;  
+  
+    display:flex;  
+  
+    align-items:center;  
+  
+    gap:12px;  
+  
+    padding:12px 18px;  
+  
+}  
+  
+.icon-btn{  
+  
+    width:48px;  
+    height:48px;  
+  
+    border-radius:15px;  
+  
+    background:var(--card);  
+  
+    color:var(--text);  
+  
+    display:flex;  
+  
+    align-items:center;  
+    justify-content:center;  
+  
+    font-size:19px;  
+  
+    cursor:pointer;  
+  
+    box-shadow:var(--shadow);  
+  
+    transition:.2s;  
+  
+    border:1px solid var(--border);  
+  
+}  
+  
+.icon-btn:hover{  
+  
+    background:var(--hover);  
+  
+    transform:translateY(-1px);  
+  
+}  
+  
+.logo{  
+  
+    flex:1;  
+  
+    display:flex;  
+  
+    align-items:center;  
+  
+    justify-content:center;  
+  
+    gap:6px;  
+  
+    font-size:18px;  
+  
+    font-weight:800;  
+  
+    letter-spacing:-.4px;  
+  
+}  
+  
+.logo i{  
+  
+    color:var(--primary);  
+  
+    font-size:19px;  
+  
+}  
+  
+.logo span{  
+  
+    color:var(--primary-hover);  
+  
+}  
+  
+.avatar{  
+  
+    width:48px;  
+    height:48px;  
+  
+    border-radius:15px;  
+  
+    background:var(--card);  
+  
+    border:1px solid var(--border);  
+  
+    display:flex;  
+  
+    align-items:center;  
+    justify-content:center;  
+  
+    font-weight:700;  
+  
+    cursor:pointer;  
+  
+}  
+  
+/* =========================================  
+   MAIN  
+========================================= */  
+  
+main{  
+  
+    padding:10px 18px 30px;  
+  
+}  
+  
+/* =========================================  
+   HERO  
+========================================= */  
+  
+.hero{  
+  
+    background:  
+        linear-gradient(  
+            135deg,  
+            rgba(37,99,235,.20),  
+            var(--card)  
+        );  
+  
+    border:1px solid rgba(59,130,246,.16);  
+  
+    border-radius:25px;  
+  
+    padding:23px;  
+  
+    box-shadow:var(--shadow);  
+  
+    margin-bottom:18px;  
+  
+}  
+  
+.hero-top{  
+  
+    display:flex;  
+  
+    align-items:center;  
+  
+    gap:14px;  
+  
+}  
+  
+.flag{  
+  
+    width:55px;  
+    height:55px;  
+  
+    border-radius:17px;  
+  
+    display:flex;  
+  
+    align-items:center;  
+    justify-content:center;  
+  
+    font-size:30px;  
+  
+    background:var(--card2);  
+  
+}  
+  
+.hero h1{  
+  
+    font-size:23px;  
+  
+    margin-bottom:4px;  
+  
+}  
+  
+.hero p{  
+  
+    color:var(--muted);  
+  
+    font-size:13px;  
+  
+}  
+  
+/* =========================================  
+   MERCHANT  
+========================================= */  
+  
+.merchant-card{  
+  
+    background:var(--card);  
+  
+    border:1px solid var(--border);  
+  
+    border-radius:21px;  
+  
+    padding:18px;  
+  
+    box-shadow:var(--shadow);  
+  
+    margin-bottom:18px;  
+  
+}  
+  
+.merchant-row{  
+  
+    display:flex;  
+  
+    justify-content:space-between;  
+  
+    align-items:center;  
+  
+    gap:15px;  
+  
+}  
+  
+.merchant-label{  
+  
+    color:var(--muted);  
+  
+    font-size:11px;  
+  
+    text-transform:uppercase;  
+  
+    letter-spacing:.6px;  
+  
+    margin-bottom:5px;  
+  
+}  
+  
+.merchant-name{  
+  
+    font-size:17px;  
+  
+    font-weight:700;  
+  
+}  
+  
+.merchant-id{  
+  
+    font-size:12px;  
+  
+    color:var(--muted);  
+  
+}  
+  
+.online{  
+  
+    display:flex;  
+  
+    align-items:center;  
+  
+    gap:7px;  
+  
+    font-size:11px;  
+  
+    color:var(--success);  
+  
+    background:var(--success-bg);  
+  
+    padding:7px 10px;  
+  
+    border-radius:10px;  
+  
+    font-weight:700;  
+  
+}  
+  
+.online-dot{  
+  
+    width:7px;  
+    height:7px;  
+  
+    border-radius:50%;  
+  
+    background:var(--success);  
+  
+}  
+  
+/* =========================================  
+   BALANCE  
+========================================= */  
+  
+.balance-card{  
+  
+    background:  
+        linear-gradient(  
+            135deg,  
+            #1e40af,  
+            #2563eb  
+        );  
+  
+    color:#fff;  
+  
+    border-radius:24px;  
+  
+    padding:24px;  
+  
+    margin-bottom:18px;  
+  
+    box-shadow:  
+        0 16px 35px rgba(37,99,235,.25);  
+  
+}  
+  
+.balance-label{  
+  
+    font-size:12px;  
+  
+    opacity:.78;  
+  
+    text-transform:uppercase;  
+  
+    letter-spacing:.8px;  
+  
+}  
+  
+.balance{  
+  
+    font-size:31px;  
+  
+    font-weight:800;  
+  
+    margin:9px 0 18px;  
+  
+}  
+  
+.balance-bottom{  
+  
+    display:flex;  
+  
+    align-items:center;  
+  
+    justify-content:space-between;  
+  
+    gap:10px;  
+  
+}  
+  
+.currency-badge{  
+  
+    padding:7px 11px;  
+  
+    border-radius:10px;  
+  
+    background:rgba(255,255,255,.14);  
+  
+    font-size:11px;  
+  
+    font-weight:700;  
+  
+}  
+  
+.refresh-btn{  
+  
+    background:rgba(255,255,255,.14);  
+  
+    color:#fff;  
+  
+    padding:8px 11px;  
+  
+    border-radius:10px;  
+  
+    cursor:pointer;  
+  
+}  
+  
+/* =========================================  
+   ACTION GRID  
+========================================= */  
+  
+.actions{  
+  
+    display:grid;  
+  
+    grid-template-columns:  
+        repeat(2,minmax(0,1fr));  
+  
+    gap:12px;  
+  
+    margin-bottom:18px;  
+  
+}  
+  
+.action{  
+  
+    background:var(--card);  
+  
+    border:1px solid var(--border);  
+  
+    border-radius:19px;  
+  
+    padding:18px;  
+  
+    cursor:pointer;  
+  
+    box-shadow:var(--shadow);  
+  
+    transition:.2s;  
+  
+}  
+  
+.action:hover{  
+  
+    transform:translateY(-2px);  
+  
+    background:var(--hover);  
+  
+}  
+  
+.action-icon{  
+  
+    width:42px;  
+    height:42px;  
+  
+    border-radius:13px;  
+  
+    display:flex;  
+  
+    align-items:center;  
+    justify-content:center;  
+  
+    margin-bottom:12px;  
+  
+    background:rgba(37,99,235,.13);  
+  
+    color:var(--primary-hover);  
+  
+}  
+  
+.action h3{  
+  
+    font-size:14px;  
+  
+    margin-bottom:5px;  
+  
+}  
+  
+.action p{  
+  
+    font-size:11px;  
+  
+    color:var(--muted);  
+  
+    line-height:1.4;  
+  
+}  
+  
+/* =========================================  
+   SECTION  
+========================================= */  
+  
+.section-title{  
+  
+    display:flex;  
+  
+    align-items:center;  
+  
+    justify-content:space-between;  
+  
+    margin:22px 2px 11px;  
+  
+}  
+  
+.section-title h2{  
+  
+    font-size:15px;  
+  
+}  
+  
+.section-title button{  
+  
+    background:none;  
+  
+    color:var(--primary-hover);  
+  
+    cursor:pointer;  
+  
+    font-size:12px;  
+  
+}  
+  
+/* =========================================  
+   FORM CARD  
+========================================= */  
+  
+.card{  
+  
+    background:var(--card);  
+  
+    border:1px solid var(--border);  
+  
+    border-radius:21px;  
+  
+    padding:20px;  
+  
+    box-shadow:var(--shadow);  
+  
+}  
+  
+.form-group{  
+  
+    margin-bottom:14px;  
+  
+}  
+  
+.form-group label{  
+  
+    display:block;  
+  
+    color:var(--muted);  
+  
+    font-size:12px;  
+  
+    margin-bottom:7px;  
+  
+}  
+  
+.input{  
+  
+    width:100%;  
+  
+    height:50px;  
+  
+    border-radius:13px;  
+  
+    border:1px solid var(--border);  
+  
+    background:var(--card2);  
+  
+    color:var(--text);  
+  
+    outline:none;  
+  
+    padding:0 14px;  
+  
+}  
+  
+.input:focus{  
+  
+    border-color:var(--primary);  
+  
+}  
+  
+.primary-btn{  
+  
+    width:100%;  
+  
+    height:50px;  
+  
+    border-radius:13px;  
+  
+    background:var(--primary);  
+  
+    color:#fff;  
+  
+    font-weight:700;  
+  
+    cursor:pointer;  
+  
+    transition:.2s;  
+  
+}  
+  
+.primary-btn:hover{  
+  
+    background:var(--primary-hover);  
+  
+}  
+  
+.primary-btn:disabled{  
+  
+    opacity:.6;  
+  
+    cursor:not-allowed;  
+  
+}  
+  
+/* =========================================  
+   SWAP  
+========================================= */  
+  
+.swap-card{  
+  
+    background:var(--card);  
+  
+    border:1px solid var(--border);  
+  
+    border-radius:21px;  
+  
+    padding:20px;  
+  
+    box-shadow:var(--shadow);  
+  
+}  
+  
+.swap-preview{  
+  
+    background:var(--card2);  
+  
+    border-radius:15px;  
+  
+    padding:15px;  
+  
+    margin:12px 0;  
+  
+}  
+  
+.swap-line{  
+  
+    display:flex;  
+  
+    justify-content:space-between;  
+  
+    padding:5px 0;  
+  
+    font-size:13px;  
+  
+}  
+  
+.swap-line span:first-child{  
+  
+    color:var(--muted);  
+  
+}  
+  
+.swap-result{  
+  
+    font-size:18px;  
+  
+    font-weight:800;  
+  
+}  
+  
+/* =========================================  
+   TRANSACTIONS  
+========================================= */  
+  
+.transactions{  
+  
+    display:flex;  
+  
+    flex-direction:column;  
+  
+}  
+  
+.transaction{  
+  
+    display:flex;  
+  
+    align-items:center;  
+  
+    gap:12px;  
+  
+    padding:14px 0;  
+  
+    border-bottom:1px solid var(--border);  
+  
+}  
+  
+.transaction:last-child{  
+  
+    border-bottom:none;  
+  
+}  
+  
+.tx-icon{  
+  
+    width:42px;  
+    height:42px;  
+  
+    border-radius:13px;  
+  
+    display:flex;  
+  
+    align-items:center;  
+    justify-content:center;  
+  
+    background:var(--card2);  
+  
+    flex-shrink:0;  
+  
+}  
+  
+.tx-info{  
+  
+    flex:1;  
+  
+    min-width:0;  
+  
+}  
+  
+.tx-title{  
+  
+    font-size:13px;  
+  
+    font-weight:700;  
+  
+    white-space:nowrap;  
+  
+    overflow:hidden;  
+  
+    text-overflow:ellipsis;  
+  
+}  
+  
+.tx-meta{  
+  
+    color:var(--muted);  
+  
+    font-size:10px;  
+  
+    margin-top:4px;  
+  
+}  
+  
+.tx-right{  
+  
+    text-align:right;  
+  
+}  
+  
+.tx-amount{  
+  
+    font-size:13px;  
+  
+    font-weight:700;  
+  
+}  
+  
+.tx-status{  
+  
+    display:inline-block;  
+  
+    margin-top:4px;  
+  
+    padding:4px 7px;  
+  
+    border-radius:7px;  
+  
+    font-size:9px;  
+  
+    font-weight:800;  
+  
+}  
+  
+.status-success{  
+  
+    color:var(--success);  
+  
+    background:var(--success-bg);  
+  
+}  
+  
+.status-pending{  
+  
+    color:var(--warning);  
+  
+    background:var(--warning-bg);  
+  
+}  
+  
+.status-failed{  
+  
+    color:var(--danger);  
+  
+    background:var(--danger-bg);  
+  
+}  
+  
+/* =========================================  
+   EMPTY  
+========================================= */  
+  
+.empty{  
+  
+    padding:30px 15px;  
+  
+    text-align:center;  
+  
+    color:var(--muted);  
+  
+    font-size:13px;  
+  
+}  
+  
+.empty i{  
+  
+    font-size:28px;  
+  
+    margin-bottom:10px;  
+  
+    opacity:.5;  
+  
+}  
+  
+/* =========================================  
+   LOADING  
+========================================= */  
+  
+.loading{  
+  
+    position:fixed;  
+  
+    inset:0;  
+  
+    background:rgba(0,0,0,.48);  
+  
+    backdrop-filter:blur(3px);  
+  
+    display:none;  
+  
+    align-items:center;  
+  
+    justify-content:center;  
+  
+    z-index:100;  
+  
+}  
+  
+.loading.show{  
+  
+    display:flex;  
+  
+}  
+  
+.loading-box{  
+  
+    background:var(--card);  
+  
+    border-radius:18px;  
+  
+    padding:25px;  
+  
+    text-align:center;  
+  
+    width:220px;  
+  
+    box-shadow:var(--shadow);  
+  
+}  
+  
+.spinner{  
+  
+    width:35px;  
+    height:35px;  
+  
+    border:3px solid var(--border);  
+  
+    border-top-color:var(--primary);  
+  
+    border-radius:50%;  
+  
+    animation:spin .8s linear infinite;  
+  
+    margin:0 auto 13px;  
+  
+}  
+  
+@keyframes spin{  
+  
+    to{  
+        transform:rotate(360deg);  
+    }  
+  
+}  
+  
+.loading-text{  
+  
+    font-size:13px;  
+  
+    color:var(--muted);  
+  
+}  
+  
+/* =========================================  
+   TOAST  
+========================================= */  
+  
+.toast{  
+  
+    position:fixed;  
+  
+    left:50%;  
+  
+    bottom:25px;  
+  
+    transform:  
+        translate(-50%,20px);  
+  
+    opacity:0;  
+  
+    pointer-events:none;  
+  
+    background:var(--card);  
+  
+    border:1px solid var(--border);  
+  
+    box-shadow:var(--shadow);  
+  
+    padding:13px 17px;  
+  
+    border-radius:13px;  
+  
+    font-size:12px;  
+  
+    z-index:200;  
+  
+    transition:.25s;  
+  
+    max-width:90%;  
+  
+    text-align:center;  
+  
+}  
+  
+.toast.show{  
+  
+    opacity:1;  
+  
+    transform:  
+        translate(-50%,0);  
+  
+}  
+  
+/* =========================================  
+   DESKTOP  
+========================================= */  
+  
+@media(min-width:768px){  
+  
+    main{  
+  
+        padding:  
+            10px 30px 40px;  
+  
+    }  
+  
+    .topbar{  
+  
+        padding:  
+            12px 30px;  
+  
+    }  
+  
+    .logo{  
+  
+        justify-content:flex-start;  
+  
+        font-size:20px;  
+  
+    }  
+  
+    .hero{  
+  
+        padding:28px;  
+  
+    }  
+  
+    .hero h1{  
+  
+        font-size:27px;  
+  
+    }  
+  
+    .actions{  
+  
+        grid-template-columns:  
+            repeat(4,1fr);  
+  
+    }  
+  
+    .dashboard-grid{  
+  
+        display:grid;  
+  
+        grid-template-columns:  
+            1fr 1fr;  
+  
+        gap:18px;  
+  
+        align-items:start;  
+  
+    }  
+  
+}  
+  
+/* =========================================  
+   SMALL PHONES  
+========================================= */  
+  
+@media(max-width:360px){  
+  
+    main{  
+  
+        padding-left:13px;  
+        padding-right:13px;  
+  
+    }  
+  
+    .topbar{  
+  
+        padding-left:12px;  
+        padding-right:12px;  
+  
+    }  
+  
+    .icon-btn,  
+    .avatar{  
+  
+        width:44px;  
+        height:44px;  
+  
+    }  
+  
+    .logo{  
+  
+        font-size:16px;  
+  
+    }  
+  
+    .balance{  
+  
+        font-size:26px;  
+  
+    }  
+  
+}  
+  
+</style>  </head>  <body>  <div class="app">  <!-- ======================================  
+     TOP BAR  
+====================================== -->  <header class="topbar">  <button  
+    class="icon-btn"  
+    onclick="goBack()">  
+
+    <i class="fa-solid fa-arrow-left"></i>  
+
+</button>  
+
+<div class="logo">  
+
+    <i class="fa-solid fa-bolt"></i>  
+
+    AUTO<span>PAY</span>  
+
+    Global  
+
+</div>  
+
+<button  
+    class="icon-btn"  
+    id="themeBtn"  
+    onclick="toggleTheme()">  
+
+    <i class="fa-solid fa-moon"></i>  
+
+</button>  
+
+<button  
+    class="icon-btn"  
+    onclick="goTo('notifications.html')">  
+
+    <i class="fa-solid fa-bell"></i>  
+
+</button>  
+
+<div  
+    class="avatar"  
+    id="avatar"  
+    onclick="goTo('profile.html')">  
+
+    A  
+
+</div>
+
+</header>  <main>  <!-- ======================================  
+     HERO  
+====================================== -->  <section class="hero">  <div class="hero-top">  
+
+    <div class="flag">  
+        ðŸ‡ºðŸ‡¬  
+    </div>  
+
+    <div>  
+
+        <h1>  
+            AUTOPAY Global â€” Uganda  
+        </h1>  
+
+        <p>  
+            Accept MTN & Airtel Mobile Money  
+            payments in Uganda.  
+        </p>  
+
+    </div>  
+
+</div>
+
+</section>  <!-- ======================================  
+     MERCHANT  
+====================================== -->  <section class="merchant-card">  <div class="merchant-row">  
+
+    <div>  
+
+        <div class="merchant-label">  
+            AUTOPAY Merchant  
+        </div>  
+
+        <div  
+            class="merchant-name"  
+            id="merchantName">  
+
+            Loading...  
+
+        </div>  
+
+        <div  
+            class="merchant-id"  
+            id="merchantId">  
+
+            Merchant ID: â€”  
+
+        </div>  
+
+    </div>  
+
+    <div class="online">  
+
+        <span class="online-dot"></span>  
+
+        Uganda Online  
+
+    </div>  
+
+</div>
+
+</section>  <!-- ======================================  
+     UGX BALANCE  
+====================================== -->  <section class="balance-card">  <div class="balance-label">  
+    Uganda Balance  
+</div>  
+
+<div  
+    class="balance"  
+    id="ugandaBalance">  
+
+    UGX 0  
+
+</div>  
+
+<div class="balance-bottom">  
+
+    <span class="currency-badge">  
+        UGX â€¢ UGANDA  
+    </span>  
+
+    <button  
+        class="refresh-btn"  
+        onclick="loadAccount()">  
+
+        <i class="fa-solid fa-rotate"></i>  
+
+    </button>  
+
+</div>
+
+</section>  <!-- ======================================  
+     ACTIONS  
+====================================== -->  <div class="actions">  <div  
+    class="action"  
+    onclick="scrollToSection('collectSection')">  
+
+    <div class="action-icon">  
+
+        <i class="fa-solid fa-mobile-screen-button"></i>  
+
+    </div>  
+
+    <h3>  
+        STK Push  
+    </h3>  
+
+    <p>  
+        Send a payment prompt  
+        to MTN or Airtel Uganda.  
+    </p>  
+
+</div>  
+
+
+<div  
+    class="action"  
+    onclick="scrollToSection('swapSection')">  
+
+    <div class="action-icon">  
+
+        <i class="fa-solid fa-arrow-right-arrow-left"></i>  
+
+    </div>  
+
+    <h3>  
+        UGX â†’ KES  
+    </h3>  
+
+    <p>  
+        Convert Uganda balance  
+        into your KES wallet.  
+    </p>  
+
+</div>  
+
+
+<div  
+    class="action"  
+    onclick="goTo('withdraw.html')">  
+
+    <div class="action-icon">  
+
+        <i class="fa-solid fa-money-bill-transfer"></i>  
+
+    </div>  
+
+    <h3>  
+        Withdraw  
+    </h3>  
+
+    <p>  
+        Withdraw using your  
+        existing KES wallet.  
+    </p>  
+
+</div>  
+
+
+<div  
+    class="action"  
+    onclick="loadTransactions()">  
+
+    <div class="action-icon">  
+
+        <i class="fa-solid fa-receipt"></i>  
+
+    </div>  
+
+    <h3>  
+        Transactions  
+    </h3>  
+
+    <p>  
+        View your Uganda  
+        payment activity.  
+    </p>  
+
+</div>
+
+</div>  <div class="dashboard-grid">  <div>  <!-- ======================================  
+     STK PUSH  
+====================================== -->  <div  
+    class="section-title"  
+    id="collectSection">  <h2>  
+    Collect Payment  
+</h2>
+
+</div>  <section class="card">  <div class="form-group">  
+
+    <label>  
+        Uganda Mobile Number  
+    </label>  
+
+    <input  
+        id="phone"  
+        class="input"  
+        type="tel"  
+        inputmode="numeric"  
+        placeholder="0772 000 000">  
+
+</div>  
+
+
+<div class="form-group">  
+
+    <label>  
+        Amount (UGX)  
+    </label>  
+
+    <input  
+        id="amount"  
+        class="input"  
+        type="number"  
+        min="500"  
+        placeholder="5000">  
+
+</div>  
+
+
+<button  
+    class="primary-btn"  
+    id="collectBtn"  
+    onclick="sendStkPush()">  
+
+    <i class="fa-solid fa-mobile-screen-button"></i>  
+
+    Send STK Push  
+
+</button>  
+
+
+<div  
+    style="  
+    margin-top:12px;  
+    color:var(--muted);  
+    font-size:10px;  
+    line-height:1.5;  
+    ">  
+
+    The payment description is automatically  
+    generated as your AUTOPAY merchant name.  
+
+</div>
+
+</section>  <!-- ======================================  
+     SWAP  
+====================================== -->  <div  
+    class="section-title"  
+    id="swapSection">  <h2>  
+    Convert UGX â†’ KES  
+</h2>
+
+</div>  <section class="swap-card">  <div class="form-group">  
+
+    <label>  
+        UGX Amount  
+    </label>  
+
+    <input  
+        id="swapAmount"  
+        class="input"  
+        type="number"  
+        min="1"  
+        placeholder="10000"  
+        oninput="calculateSwap()">  
+
+</div>  
+
+
+<div class="swap-preview">  
+
+    <div class="swap-line">  
+
+        <span>  
+            Exchange Rate  
+        </span>  
+
+        <strong id="exchangeRate">  
+            Loading...  
+        </strong>  
+
+    </div>  
+
+
+    <div class="swap-line">  
+
+        <span>  
+            You receive  
+        </span>  
+
+        <strong  
+            class="swap-result"  
+            id="kesPreview">  
+
+            KES 0.00  
+
+        </strong>  
+
+    </div>  
+
+</div>  
+
+
+<button  
+    class="primary-btn"  
+    id="swapBtn"  
+    onclick="swapToKes()">  
+
+    <i class="fa-solid fa-arrow-right-arrow-left"></i>  
+
+    Convert to KES Wallet  
+
+</button>
+
+</section>  </div>  <div>  <!-- ======================================  
+     TRANSACTIONS  
+====================================== -->  <div class="section-title">  <h2>  
+    Recent Transactions  
+</h2>  
+
+<button  
+    onclick="loadTransactions()">  
+
+    Refresh  
+
+</button>
+
+</div>  <section class="card">  <div  
+    class="transactions"  
+    id="transactionsList">  
+
+    <div class="empty">  
+
+        <i class="fa-solid fa-receipt"></i>  
+
+        <div>  
+            Loading transactions...  
+        </div>  
+
+    </div>  
+
+</div>
+
+</section>  </div>  </div>  </main>  </div>  <!-- ======================================  
+     LOADING  
+====================================== -->  <div  
+    class="loading"  
+    id="loading">  <div class="loading-box">  
+
+    <div class="spinner"></div>  
+
+    <div  
+        class="loading-text"  
+        id="loadingText">  
+
+        Processing...  
+
+    </div>  
+
+</div>
+
+</div>  <!-- ======================================  
+     TOAST  
+====================================== -->  <div  
+    class="toast"  
+    id="toast">  Message
+
+</div>  <script type="module">  
+  
+import { auth, db } from "./firebase.js";  
+  
+import {  
+    onAuthStateChanged  
+} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";  
+  
+import {  
+    doc,  
+    collection,  
+    query,  
+    where,  
+    onSnapshot  
+} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";  
+  
+  
+/* =========================================  
+   GLOBAL STATE  
+========================================= */  
+  
+let currentUser = null;  
+  
+let firebaseToken = null;  
+  
+let merchant = null;  
+  
+let exchangeRate = 0;  
+  
+let statusTimer = null;  
+  
+  
+/* =========================================  
+   NAVIGATION  
+========================================= */  
+  
+window.goTo = function(page){  
+  
+    window.location.href = page;  
+  
+};  
+  
+  
+window.goBack = function(){  
+  
+    if(  
+        document.referrer &&  
+        document.referrer.includes(  
+            window.location.hostname  
+        )  
+    ){  
+  
+        history.back();  
+  
+    }else{  
+  
+        window.location.href =  
+            "global.html";  
+  
+    }  
+  
+};  
+  
+  
+window.scrollToSection = function(id){  
+  
+    const element =  
+        document.getElementById(id);  
+  
+    if(element){  
+  
+        element.scrollIntoView({  
+            behavior:"smooth",  
+            block:"start"  
+        });  
+  
+    }  
+  
+};  
+  
+  
+/* =========================================  
+   THEME  
+========================================= */  
+  
+function applyTheme(theme){  
+  
+    const button =  
+        document.getElementById("themeBtn");  
+  
+    if(theme === "light"){  
+  
+        document.body.classList.add("light");  
+  
+        button.innerHTML =  
+            '<i class="fa-solid fa-sun"></i>';  
+  
+    }else{  
+  
+        document.body.classList.remove("light");  
+  
+        button.innerHTML =  
+            '<i class="fa-solid fa-moon"></i>';  
+  
+    }  
+  
+    localStorage.setItem(  
+        "autopayTheme",  
+        theme  
+    );  
+  
+}  
+  
+  
+window.toggleTheme = function(){  
+  
+    const current =  
+        document.body.classList.contains("light")  
+        ? "light"  
+        : "dark";  
+  
+    applyTheme(  
+        current === "light"  
+        ? "dark"  
+        : "light"  
+    );  
+  
+};  
+  
+  
+(function(){  
+  
+    const saved =  
+        localStorage.getItem(  
+            "autopayTheme"  
+        );  
+  
+    applyTheme(  
+        saved || "dark"  
+    );  
+  
+})();  
+  
+  
+/* =========================================  
+   AUTHENTICATION  
+========================================= */  
+  
+onAuthStateChanged(  
+    auth,  
+    async (user) => {  
+  
+        if(!user){  
+  
+            window.location.href =  
+                "login.html";  
+  
+            return;  
+  
+        }  
+  
+        currentUser = user;  
+  
+        try{  
+  
+            firebaseToken =  
+                await user.getIdToken();  
+  
+            listenToMerchant(user.uid);  
+  
+            await loadAccount();  
+  
+            await loadRate();  
+  
+            await loadTransactions();  
+  
+        }catch(error){  
+  
+            console.error(error);  
+  
+            showToast(  
+                "Unable to load merchant account."  
+            );  
+  
+        }  
+  
+    }  
+);  
+  
+  
+/* =========================================  
+   FIRESTORE MERCHANT LISTENER  
+========================================= */  
+  
+function listenToMerchant(uid){  
+  
+    const userRef =  
+        doc(  
+            db,  
+            "users",  
+            uid  
+        );  
+  
+  
+    onSnapshot(  
+        userRef,  
+        async (snap) => {  
+  
+            if(!snap.exists()){  
+  
+                showToast(  
+                    "Merchant account not found."  
+                );  
+  
+                return;  
+  
+            }  
+  
+  
+            merchant =  
+                snap.data();  
+  
+  
+            document.getElementById(  
+                "merchantName"  
+            ).textContent =  
+                merchant.fullName ||  
+                "AUTOPAY Merchant";  
+  
+  
+            document.getElementById(  
+                "merchantId"  
+            ).textContent =  
+                "Merchant ID: " +  
+                (  
+                    merchant.merchantId ||  
+                    "â€”"  
+                );  
+  
+  
+            document.getElementById(  
+                "avatar"  
+            ).textContent =  
+                (  
+                    merchant.fullName ||  
+                    "A"  
+                )  
+                .trim()  
+                .charAt(0)  
+                .toUpperCase();  
+  
+  
+            document.getElementById(  
+    "ugandaBalance"  
+).textContent =  
+    "UGX " +  
+    Number(  
+        merchant.ugandaWalletBalance ||  
+        0  
+    ).toLocaleString();  
+  
+        }  
+    );  
+  
+}  
+  
+  
+/* =========================================  
+   REFRESH FIREBASE TOKEN  
+========================================= */  
+  
+async function getToken(){  
+  
+    if(!auth.currentUser){  
+  
+        throw new Error(  
+            "You are not logged in."  
+        );  
+  
+    }  
+  
+    return await auth.currentUser  
+        .getIdToken();  
+  
+}  
+  
+  
+/* =========================================  
+   API REQUEST  
+========================================= */  
+  
+async function apiRequest(  
+    url,  
+    options = {}  
+){  
+  
+    const token =  
+        await getToken();  
+  
+  
+    const headers = {  
+  
+        ...(options.headers || {}),  
+  
+        "Authorization":  
+            `Bearer ${token}`,  
+  
+        "Content-Type":  
+            "application/json"  
+  
+    };  
+  
+  
+    const response =  
+        await fetch(  
+            url,  
+            {  
+                ...options,  
+                headers  
+            }  
+        );  
+  
+  
+    let data;  
+  
+    try{  
+  
+        data =  
+            await response.json();  
+  
+    }catch{  
+  
+        throw new Error(  
+            "Invalid server response."  
+        );  
+  
+    }  
+  
+  
+    if(!response.ok || data.success === false){  
+  
+        throw new Error(  
+            data.message ||  
+            "Request failed."  
+        );  
+  
+    }  
+  
+  
+    return data;  
+  
+}  
+  
+  
+/* =========================================  
+   LOAD ACCOUNT  
+========================================= */  
+  
+window.loadAccount = async function(){  
+  
+    try{  
+  
+        const result =  
+            await apiRequest(  
+                "/api/global/uganda/account"  
+            );  
+  
+  
+        const data =  
+            result.data || {};  
+  
+  
+        document.getElementById(  
+    "ugandaBalance"  
+).textContent =  
+    "UGX " +  
+    Number(  
+        data.ugandaWalletBalance || 0  
+    ).toLocaleString();  
+  
+  
+        if(data.fullName){  
+  
+            document.getElementById(  
+                "merchantName"  
+            ).textContent =  
+                data.fullName;  
+  
+        }  
+  
+  
+        if(data.merchantId){  
+  
+            document.getElementById(  
+                "merchantId"  
+            ).textContent =  
+                "Merchant ID: " +  
+                data.merchantId;  
+  
+        }  
+  
+  
+    }catch(error){  
+  
+        console.error(error);  
+  
+        showToast(  
+            error.message  
+        );  
+  
+    }  
+  
+};  
+  
+  
+/* =========================================  
+   LOAD EXCHANGE RATE  
+========================================= */  
+  
+async function loadRate(){  
+  
+    try{  
+  
+        const result =  
+            await apiRequest(  
+                "/api/global/uganda/rate"  
+            );  
+  
+  
+        exchangeRate =  
+            Number(  
+                result.rate || 0  
+            );  
+  
+  
+        document.getElementById(  
+"exchangeRate"  
+).textContent =  
+"30 UGX = 1 KES";  
+  
+  
+        calculateSwap();  
+  
+    }catch(error){  
+  
+        console.error(error);  
+  
+        document.getElementById(  
+            "exchangeRate"  
+        ).textContent =  
+            "Unavailable";  
+  
+    }  
+  
+}  
+  
+  
+/* =========================================  
+   SWAP CALCULATOR  
+========================================= */  
+  
+window.calculateSwap = function(){  
+  
+    const amount =  
+        Number(  
+            document.getElementById(  
+                "swapAmount"  
+            ).value || 0  
+        );  
+  
+  
+    const kes =  
+        amount *  
+        exchangeRate;  
+  
+  
+    document.getElementById(  
+        "kesPreview"  
+    ).textContent =  
+        "KES " +  
+        kes.toLocaleString(  
+            undefined,  
+            {  
+                minimumFractionDigits:2,  
+                maximumFractionDigits:2  
+            }  
+        );  
+  
+};  
+  
+  
+/* =========================================  
+   SEND STK PUSH  
+========================================= */  
+  
+window.sendStkPush = async function(){  
+  
+    const phone =  
+        document.getElementById(  
+            "phone"  
+        ).value.trim();  
+  
+  
+    const amount =  
+        Number(  
+            document.getElementById(  
+                "amount"  
+            ).value  
+        );  
+  
+  
+    if(!phone){  
+  
+        showToast(  
+            "Enter the Uganda mobile number."  
+        );  
+  
+        return;  
+  
+    }  
+  
+  
+    if(  
+        !Number.isFinite(amount) ||  
+        amount < 500  
+    ){  
+  
+        showToast(  
+            "Minimum amount is UGX 500."  
+        );  
+  
+        return;  
+  
+    }  
+  
+  
+    const button =  
+        document.getElementById(  
+            "collectBtn"  
+        );  
+  
+  
+    button.disabled = true;  
+  
+    showLoading(  
+        "Sending STK Push..."  
+    );  
+  
+  
+    try{  
+  
+        /*  
+        Description is NOT sent.  
+  
+        The backend automatically creates:  
+  
+        AUTOPAY Merchant | Merchant Name | Uganda  
+        */  
+  
+  
+        const result =  
+            await apiRequest(  
+                "/api/global/uganda/stk-push",  
+                {  
+  
+                    method:"POST",  
+  
+                    body:JSON.stringify({  
+  
+                        phone,  
+  
+                        amount  
+  
+                    })  
+  
+                }  
+            );  
+  
+  
+        hideLoading();  
+  
+  
+        showToast(  
+            result.message ||  
+            "STK Push sent. Ask the customer to enter their PIN."  
+        );  
+  
+  
+        document.getElementById(  
+            "phone"  
+        ).value = "";  
+  
+  
+        document.getElementById(  
+            "amount"  
+        ).value = "";  
+  
+  
+        await loadTransactions();  
+  
+  
+        /*  
+        Start frontend status checking.  
+  
+        Backend remains authoritative and  
+        also has the 4-minute watcher.  
+        */  
+  
+        if(result.data?.reference){  
+  
+            monitorTransaction(  
+                result.data.reference  
+            );  
+  
+        }else if(  
+            result.data?.client_reference  
+        ){  
+  
+            monitorTransaction(  
+                result.data.client_reference  
+            );  
+  
+        }  
+  
+    }catch(error){  
+  
+        hideLoading();  
+  
+        showToast(  
+            error.message  
+        );  
+  
+    }finally{  
+  
+        button.disabled = false;  
+  
+    }  
+  
+};  
+  
+  
+/* =========================================  
+   MONITOR TRANSACTION  
+   AUTO-FAIL AFTER 3 MINUTES  
+========================================= */  
+  
+function monitorTransaction(identifier){  
+  
+    if(statusTimer){  
+  
+        clearInterval(statusTimer);  
+  
+    }  
+  
+    const startTime = Date.now();  
+  
+    statusTimer = setInterval(async () => {  
+  
+        const elapsed =  
+            Date.now() - startTime;  
+  
+  
+        /*  
+        =================================  
+        CHECK STATUS FIRST  
+        =================================  
+        */  
+  
+        try{  
+  
+            const result =  
+                await apiRequest(  
+                    "/api/global/uganda/status/" +  
+                    encodeURIComponent(identifier)  
+                );  
+  
+  
+            const status =  
+                String(  
+                    result.data?.status || ""  
+                )  
+                .trim()  
+                .toUpperCase();  
+  
+  
+            /*  
+            SUCCESS  
+            */  
+  
+            if(  
+                status === "SUCCESSFUL" ||  
+                status === "SUCCESS" ||  
+                status === "COMPLETED"  
+            ){  
+  
+                clearInterval(statusTimer);  
+  
+                statusTimer = null;  
+  
+                showToast(  
+                    "Payment successful. UGX balance updated."  
+                );  
+  
+                await loadAccount();  
+  
+                await loadTransactions();  
+  
+                return;  
+  
+            }  
+  
+  
+            /*  
+            FAILED / CANCELLED  
+            */  
+  
+            if(  
+                status === "FAILED" ||  
+                status === "CANCELLED"  
+            ){  
+  
+                clearInterval(statusTimer);  
+  
+                statusTimer = null;  
+  
+                showToast(  
+                    "Payment was not completed."  
+                );  
+  
+                await loadTransactions();  
+  
+                return;  
+  
+            }  
+  
+  
+            /*  
+            =================================  
+            3 MINUTE TIMEOUT  
+            =================================  
+  
+            If the transaction is STILL  
+            pending after 3 minutes, ask the  
+            backend to mark it as failed.  
+            */  
+  
+            if(  
+                elapsed >=  
+                3 * 60 * 1000  
+            ){  
+  
+                clearInterval(statusTimer);  
+  
+                statusTimer = null;  
+  
+  
+                /*  
+                Tell backend to finalize  
+                the pending transaction.  
+                */  
+  
+                try{  
+  
+                    await apiRequest(  
+                        "/api/global/uganda/status/" +  
+                        encodeURIComponent(identifier) +  
+                        "?timeout=true"  
+                    );  
+  
+                }catch(error){  
+  
+                    console.error(  
+                        "3-minute timeout:",  
+                        error  
+                    );  
+  
+                }  
+  
+  
+                await loadTransactions();  
+  
+                showToast(  
+                    "Payment expired after 3 minutes."  
+                );  
+  
+                return;  
+  
+            }  
+  
+        }catch(error){  
+  
+            console.error(  
+                "Status check:",  
+                error  
+            );  
+  
+        }  
+  
+    },15000);  
+  
+}  
+  
+  
+/* =========================================  
+   SWAP UGX â†’ KES  
+========================================= */  
+  
+window.swapToKes = async function(){  
+  
+    const amount =  
+        Number(  
+            document.getElementById(  
+                "swapAmount"  
+            ).value  
+        );  
+  
+  
+    if(  
+        !Number.isFinite(amount) ||  
+        amount <= 0  
+    ){  
+  
+        showToast(  
+            "Enter a valid UGX amount."  
+        );  
+  
+        return;  
+  
+    }  
+  
+  
+    const currentBalance =  
+    Number(  
+        merchant?.ugandaWalletBalance ||  
+        0  
+    );  
+  
+  
+    if(  
+        currentBalance <  
+        amount  
+    ){  
+  
+        showToast(  
+            "Insufficient Uganda balance."  
+        );  
+  
+        return;  
+  
+    }  
+  
+  
+    const confirmed =  
+        confirm(  
+            "Convert UGX " +  
+            amount.toLocaleString() +  
+            " to your KES wallet?"  
+        );  
+  
+  
+    if(!confirmed){  
+  
+        return;  
+  
+    }  
+  
+  
+    const button =  
+        document.getElementById(  
+            "swapBtn"  
+        );  
+  
+  
+    button.disabled = true;  
+  
+    showLoading(  
+        "Converting UGX to KES..."  
+    );  
+  
+  
+    try{  
+  
+        const result =  
+            await apiRequest(  
+                "/api/global/uganda/swap",  
+                {  
+  
+                    method:"POST",  
+  
+                    body:JSON.stringify({  
+  
+                        amount  
+  
+                    })  
+  
+                }  
+            );  
+  
+  
+        hideLoading();  
+  
+  
+        const kes =  
+            result.data?.kesAmount || 0;  
+  
+  
+        showToast(  
+            "KES " +  
+            Number(kes)  
+                .toLocaleString() +  
+            " added to your KES wallet."  
+        );  
+  
+  
+        document.getElementById(  
+            "swapAmount"  
+        ).value = "";  
+  
+  
+        document.getElementById(  
+            "kesPreview"  
+        ).textContent =  
+            "KES 0.00";  
+  
+  
+        await loadAccount();  
+  
+  
+    }catch(error){  
+  
+        hideLoading();  
+  
+        showToast(  
+            error.message  
+        );  
+  
+    }finally{  
+  
+        button.disabled = false;  
+  
+    }  
+  
+};  
+  
+  
+/* =========================================  
+   TRANSACTIONS  
+   READ DIRECTLY FROM FIRESTORE  
+   SHOW UGANDA / UGX ONLY  
+========================================= */  
+  
+let transactionsUnsubscribe = null;  
+  
+window.loadTransactions = async function(){  
+  
+    const container =  
+        document.getElementById(  
+            "transactionsList"  
+        );  
+  
+    if(!currentUser || !merchant){  
+  
+        container.innerHTML = `  
+  
+            <div class="empty">  
+  
+                <i class="fa-solid fa-receipt"></i>  
+  
+                <div>  
+                    Loading merchant account...  
+                </div>  
+  
+            </div>  
+  
+        `;  
+  
+        return;  
+  
+    }  
+  
+    const merchantId =  
+        merchant.merchantId;  
+  
+    if(!merchantId){  
+  
+        container.innerHTML = `  
+  
+            <div class="empty">  
+  
+                <i class="fa-solid fa-circle-exclamation"></i>  
+  
+                <div>  
+                    Merchant ID not found.  
+                </div>  
+  
+            </div>  
+  
+        `;  
+  
+        return;  
+  
+    }  
+  
+  
+    /* Prevent duplicate listeners */  
+  
+    if(transactionsUnsubscribe){  
+  
+        transactionsUnsubscribe();  
+  
+        transactionsUnsubscribe = null;  
+  
+    }  
+  
+  
+    try{  
+  
+        /*  
+        Read ONLY from:  
+  
+        Firestore  
+        collection: transactions  
+  
+        Match:  
+  
+        merchantId == current merchant  
+        */  
+  
+        const transactionsRef =  
+            collection(  
+                db,  
+                "transactions"  
+            );  
+  
+  
+        const transactionsQuery =  
+            query(  
+                transactionsRef,  
+                where(  
+                    "merchantId",  
+                    "==",  
+                    merchantId  
+                )  
+            );  
+  
+  
+        transactionsUnsubscribe =  
+            onSnapshot(  
+  
+                transactionsQuery,  
+  
+                (snapshot)=>{  
+  
+                    console.log(  
+                        "Uganda transactions found:",  
+                        snapshot.size  
+                    );  
+  
+  
+                    let transactions = [];  
+  
+  
+                    snapshot.forEach(  
+                        (docSnap)=>{  
+  
+                            const tx =  
+                                docSnap.data();  
+  
+  
+                            tx.id =  
+                                docSnap.id;  
+  
+  
+                            /*  
+                            =================================  
+                            UGANDA FILTER  
+                            =================================  
+  
+                            Only allow transactions  
+                            belonging to Uganda.  
+  
+                            Primary check:  
+                            currency = UGX  
+  
+                            Also accept:  
+                            country = Uganda / UG  
+                            */  
+  
+                            const currency =  
+                                String(  
+                                    tx.currency || ""  
+                                )  
+                                .trim()  
+                                .toUpperCase();  
+  
+  
+                            const country =  
+                                String(  
+                                    tx.country ||  
+                                    tx.countryCode ||  
+                                    tx.region ||  
+                                    ""  
+                                )  
+                                .trim()  
+                                .toUpperCase();  
+  
+  
+                            const phone =  
+                                String(  
+                                    tx.phone || ""  
+                                )  
+                                .replace(  
+                                    /\s+/g,  
+                                    ""  
+                                );  
+  
+  
+                            const gateway =  
+                                String(  
+                                    tx.gateway || ""  
+                                )  
+                                .trim()  
+                                .toUpperCase();  
+  
+  
+                            const isUganda =  
+                                currency === "UGX"  
+                                ||  
+                                country === "UGANDA"  
+                                ||  
+                                country === "UG"  
+                                ||  
+                                phone.startsWith("+256")  
+                                ||  
+                                phone.startsWith("256")  
+                                ||  
+                                gateway.includes("UGANDA")  
+                                ||  
+                                gateway.includes("UGX");  
+  
+  
+                            /*  
+                            IMPORTANT:  
+  
+                            If the transaction does not  
+                            contain any Uganda identifier,  
+                            DO NOT display it.  
+  
+                            This prevents Kenya KES  
+                            transactions from appearing.  
+                            */  
+  
+                            if(!isUganda){  
+  
+                                return;  
+  
+                            }  
+  
+  
+                            transactions.push(tx);  
+  
+                        }  
+                    );  
+  
+  
+                    /*  
+                    Sort newest first  
+                    */  
+  
+                    transactions.sort(  
+                        (a,b)=>{  
+  
+                            const aDate =  
+                                getTransactionDate(  
+                                    a.createdAt  
+                                );  
+  
+  
+                            const bDate =  
+                                getTransactionDate(  
+                                    b.createdAt  
+                                );  
+  
+  
+                            return bDate - aDate;  
+  
+                        }  
+                    );  
+  
+  
+                    /*  
+                    Show only latest 20  
+                    */  
+  
+                    transactions =  
+                        transactions.slice(  
+                            0,  
+                            20  
+                        );  
+  
+  
+                    if(!transactions.length){  
+  
+                        container.innerHTML = `  
+  
+                            <div class="empty">  
+  
+                                <i class="fa-solid fa-receipt"></i>  
+  
+                                <div>  
+                                    No Uganda transactions yet.  
+                                </div>  
+  
+                            </div>  
+  
+                        `;  
+  
+                        return;  
+  
+                    }  
+  
+  
+                    container.innerHTML =  
+                        transactions  
+                            .map(  
+                                renderTransaction  
+                            )  
+                            .join("");  
+  
+                },  
+  
+  
+                (error)=>{  
+  
+                    console.error(  
+                        "Firestore Uganda Transactions Error:",  
+                        error  
+                    );  
+  
+  
+                    container.innerHTML = `  
+  
+                        <div class="empty">  
+  
+                            <i  
+                                class="fa-solid fa-circle-exclamation">  
+                            </i>  
+  
+                            <div>  
+                                Unable to load transactions  
+                            </div>  
+  
+                        </div>  
+  
+                    `;  
+  
+                }  
+  
+            );  
+  
+  
+    }catch(error){  
+  
+        console.error(  
+            "Uganda transaction setup error:",  
+            error  
+        );  
+  
+  
+        container.innerHTML = `  
+  
+            <div class="empty">  
+  
+                <i  
+                    class="fa-solid fa-circle-exclamation">  
+                </i>  
+  
+                <div>  
+                    Unable to load transactions  
+                </div>  
+  
+            </div>  
+  
+        `;  
+  
+    }  
+  
+};  
+  
+  
+/* =========================================  
+   TRANSACTION DATE  
+========================================= */  
+  
+function getTransactionDate(value){  
+  
+    if(!value){  
+  
+        return 0;  
+  
+    }  
+  
+  
+    /*  
+    Firestore Timestamp  
+    */  
+  
+    if(  
+        typeof value.toDate === "function"  
+    ){  
+  
+        return value  
+            .toDate()  
+            .getTime();  
+  
+    }  
+  
+  
+    /*  
+    Firestore timestamp object  
+    */  
+  
+    if(value.seconds){  
+  
+        return Number(  
+            value.seconds  
+        ) * 1000;  
+  
+    }  
+  
+  
+    /*  
+    Normal JavaScript date  
+    */  
+  
+    const date =  
+        new Date(value);  
+  
+  
+    if(  
+        !isNaN(  
+            date.getTime()  
+        )  
+    ){  
+  
+        return date.getTime();  
+  
+    }  
+  
+  
+    return 0;  
+  
+}  
+  
+  
+/* =========================================  
+   RENDER UGANDA TRANSACTION  
+========================================= */  
+  
+function renderTransaction(tx){  
+  
+    const status =  
+        String(  
+            tx.status ||  
+            "PENDING"  
+        )  
+        .trim()  
+        .toUpperCase();  
+  
+  
+    let statusClass =  
+        "status-pending";  
+  
+    let icon =  
+        "fa-clock";  
+  
+    let displayStatus =  
+        "PENDING";  
+  
+  
+    if(  
+        status === "SUCCESS"  
+        ||  
+        status === "SUCCESSFUL"  
+        ||  
+        status === "COMPLETED"  
+    ){  
+  
+        statusClass =  
+            "status-success";  
+  
+        icon =  
+            "fa-circle-check";  
+  
+        displayStatus =  
+            "SUCCESS";  
+  
+    }  
+  
+  
+    if(  
+        status === "FAILED"  
+        ||  
+        status === "CANCELLED"  
+    ){  
+  
+        statusClass =  
+            "status-failed";  
+  
+        icon =  
+            "fa-circle-xmark";  
+  
+        displayStatus =  
+            "FAILED";  
+  
+    }  
+  
+  
+    const amount =  
+        Number(  
+            tx.amount || 0  
+        );  
+  
+  
+    const date =  
+        formatDate(  
+            tx.createdAt  
+        );  
+  
+  
+    const reference =  
+        tx.checkoutRequestId ||  
+        tx.reference ||  
+        tx.clientReference ||  
+        tx.merchantRequestId ||  
+        tx.id ||  
+        "Transaction";  
+  
+  
+    const type =  
+        tx.type ||  
+        "Payment";  
+  
+  
+    const phone =  
+        tx.phone ||  
+        "Uganda";  
+  
+  
+    return `  
+  
+        <div class="transaction">  
+  
+            <div class="tx-icon">  
+  
+                <i  
+                    class="fa-solid ${icon}">  
+                </i>  
+  
+            </div>  
+  
+  
+            <div class="tx-info">  
+  
+                <div class="tx-title">  
+  
+                    ${escapeHtml(  
+                        reference  
+                    )}  
+  
+                </div>  
+  
+  
+                <div class="tx-meta">  
+  
+                    ${escapeHtml(  
+                        type  
+                    )}  
+  
+                    • Uganda  
+  
+                    •  
+  
+                    ${escapeHtml(  
+                        phone  
+                    )}  
+  
+                    •  
+  
+                    ${date}  
+  
+                </div>  
+  
+            </div>  
+  
+  
+            <div class="tx-right">  
+  
+                <div class="tx-amount">  
+  
+                    UGX  
+                    ${amount.toLocaleString()}  
+  
+                </div>  
+  
+  
+                <span  
+                    class="tx-status ${statusClass}">  
+  
+                    ${displayStatus}  
+  
+                </span>  
+  
+            </div>  
+  
+        </div>  
+  
+    `;  
+  
+}  
+  
+  
+/* =========================================  
+   DATE FORMAT  
+========================================= */  
+  
+function formatDate(value){  
+  
+    if(!value){  
+  
+        return "Just now";  
+  
+    }  
+  
+  
+    let date;  
+  
+  
+    if(  
+        value.seconds  
+    ){  
+  
+        date =  
+            new Date(  
+                value.seconds * 1000  
+            );  
+  
+    }else{  
+  
+        date =  
+            new Date(value);  
+  
+    }  
+  
+  
+    if(isNaN(date.getTime())){  
+  
+        return "Just now";  
+  
+    }  
+  
+  
+    return date.toLocaleString(  
+        "en-GB",  
+        {  
+            day:"2-digit",  
+            month:"short",  
+            hour:"2-digit",  
+            minute:"2-digit"  
+        }  
+    );  
+  
+}  
+  
+  
+/* =========================================  
+   HTML ESCAPE  
+========================================= */  
+  
+function escapeHtml(value){  
+  
+    return String(value ?? "")  
+        .replace(/&/g,"&amp;")  
+        .replace(/</g,"&lt;")  
+        .replace(/>/g,"&gt;")  
+        .replace(/"/g,"&quot;")  
+        .replace(/'/g,"&#039;");  
+  
+}  
+  
+  
+/* =========================================  
+   LOADING  
+========================================= */  
+  
+function showLoading(text){  
+  
+    document.getElementById(  
+        "loadingText"  
+    ).textContent = text;  
+  
+  
+    document.getElementById(  
+        "loading"  
+    ).classList.add("show");  
+  
+}  
+  
+  
+function hideLoading(){  
+  
+    document.getElementById(  
+        "loading"  
+    ).classList.remove("show");  
+  
+}  
+  
+  
+/* =========================================  
+   TOAST  
+========================================= */  
+  
+let toastTimer;  
+  
+  
+function showToast(message){  
+  
+    const toast =  
+        document.getElementById(  
+            "toast"  
+        );  
+  
+  
+    toast.textContent =  
+        message;  
+  
+  
+    toast.classList.add(  
+        "show"  
+    );  
+  
+  
+    clearTimeout(  
+        toastTimer  
+    );  
+  
+  
+    toastTimer =  
+        setTimeout(  
+            () => {  
+  
+                toast.classList.remove(  
+                    "show"  
+                );  
+  
+            },  
+            3500  
+        );  
+  
+}  
+  
+  
+/* =========================================  
+   PAGE VISIBILITY  
+========================================= */  
+  
+document.addEventListener(  
+    "visibilitychange",  
+    async () => {  
+  
+        if(  
+            !document.hidden &&  
+            currentUser  
+        ){  
+  
+            await loadAccount();  
+  
+            await loadTransactions();  
+  
+        }  
+  
+    }  
+);  
+  
+</script>
+</body>  
+</html>
