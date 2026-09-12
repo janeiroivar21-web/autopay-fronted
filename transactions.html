@@ -1,542 +1,576 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-
-<meta charset="UTF-8">
-
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-
-<title>Transactions - AUTOPAY</title>
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-
-<style>
-
-/* CSS will be added next */
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Arial,sans-serif;
-}
-
-body{
-background:#0c1424;
-color:#fff;
-transition:.3s;
-}
-
-.container{
-max-width:430px;
-margin:auto;
-padding:18px;
-padding-bottom:90px;
-}
-
-.top{
-display:flex;
-justify-content:space-between;
-align-items:center;
-margin-bottom:22px;
-}
-
-.back-btn,
-.avatar{
-width:48px;
-height:48px;
-background:#182235;
-border:1px solid #253149;
-border-radius:14px;
-display:flex;
-align-items:center;
-justify-content:center;
-cursor:pointer;
-transition:.3s;
-}
-
-.back-btn:hover,
-.avatar:hover{
-transform:translateY(-2px);
-}
-
-.title{
-display:flex;
-align-items:center;
-gap:10px;
-font-size:22px;
-font-weight:bold;
-}
-
-.title i{
-color:#2563eb;
-}
-
-.summary-grid{
-display:grid;
-grid-template-columns:repeat(2,1fr);
-gap:14px;
-margin-bottom:20px;
-}
-
-.summary-card{
-background:#182235;
-border:1px solid #253149;
-border-radius:18px;
-padding:18px;
-}
-
-.summary-card .label{
-font-size:12px;
-color:#94a3b8;
-margin-bottom:8px;
-}
-
-.summary-card h2{
-font-size:24px;
-}
-
-.summary-card.success{
-border-left:4px solid #22c55e;
-}
-
-.summary-card.pending{
-border-left:4px solid #f59e0b;
-}
-
-.summary-card.failed{
-border-left:4px solid #ef4444;
-}
-
-.search-card{
-position:relative;
-margin-bottom:18px;
-}
-
-.search-card input{
-width:100%;
-padding:15px 48px 15px 15px;
-background:#182235;
-border:1px solid #253149;
-border-radius:14px;
-color:#fff;
-font-size:15px;
-outline:none;
-}
-
-.search-card input:focus{
-border-color:#2563eb;
-}
-
-.search-card i{
-position:absolute;
-right:18px;
-top:16px;
-color:#94a3b8;
-}
-
-.filter-row{
-display:flex;
-gap:10px;
-overflow-x:auto;
-margin-bottom:18px;
-padding-bottom:5px;
-}
-
-.filter-row::-webkit-scrollbar{
-display:none;
-}
-
-.filter-btn{
-padding:10px 18px;
-border:none;
-border-radius:30px;
-background:#182235;
-border:1px solid #253149;
-color:#fff;
-cursor:pointer;
-white-space:nowrap;
-transition:.3s;
-}
-
-.filter-btn.active{
-background:#2563eb;
-border-color:#2563eb;
-}
-
-.transaction-card{
-background:#182235;
-border:1px solid #253149;
-border-radius:18px;
-padding:16px;
-margin-bottom:14px;
-cursor:pointer;
-transition:.3s;
-}
-
-.transaction-card:hover{
-transform:translateY(-3px);
-}
-
-.transaction-top{
-display:flex;
-justify-content:space-between;
-align-items:flex-start;
-gap:15px;
-margin-bottom:12px;
-}
-
-.reference{
-font-weight:bold;
-font-size:15px;
-word-break:break-all;
-margin-bottom:6px;
-}
-
-.amount{
-font-size:20px;
-font-weight:bold;
-text-align:right;
-min-width:80px;
-flex-shrink:0;
-}
-
-.transaction-info{
-display:flex;
-justify-content:space-between;
-margin-top:8px;
-font-size:13px;
-color:#94a3b8;
-}
-
-.status{
-display:inline-flex;
-align-items:center;
-gap:6px;
-padding:6px 12px;
-border-radius:20px;
-font-size:12px;
-font-weight:bold;
-}
-
-.status.success{
-background:#14532d;
-color:#4ade80;
-}
-
-.status.pending{
-background:#78350f;
-color:#fbbf24;
-}
-
-.status.failed{
-background:#7f1d1d;
-color:#f87171;
-}
-
-.empty-state{
-text-align:center;
-padding:60px 25px;
-color:#94a3b8;
-}
-
-.empty-state i{
-font-size:70px;
-margin-bottom:18px;
-color:#2563eb;
-}
-
-.modal{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-display:none;
-justify-content:center;
-align-items:center;
-background:rgba(0,0,0,.65);
-z-index:1000;
-}
-
-.modal-card{
-width:92%;
-max-width:380px;
-background:#182235;
-border-radius:20px;
-overflow:hidden;
-}
-
-.modal-header{
-display:flex;
-justify-content:space-between;
-align-items:center;
-padding:18px;
-border-bottom:1px solid #253149;
-}
-
-.modal-header i{
-cursor:pointer;
-font-size:20px;
-}
-
-.modal-body{
-padding:20px;
-}
-
-.detail-row{
-display:flex;
-justify-content:space-between;
-padding:12px 0;
-border-bottom:1px solid #253149;
-}
-
-.detail-row:last-child{
-border-bottom:none;
-}
-
-.copy-btn{
-width:100%;
-padding:14px;
-margin-top:20px;
-background:#2563eb;
-border:none;
-border-radius:12px;
-color:#fff;
-font-size:15px;
-font-weight:bold;
-cursor:pointer;
-}
-
-body.light{
-background:#f5f7fb;
-color:#111827;
-}
-
-body.light .summary-card,
-body.light .search-card input,
-body.light .transaction-card,
-body.light .modal-card,
-body.light .back-btn,
-body.light .avatar{
-background:#fff;
-border-color:#dbe2ea;
-color:#111827;
-}
-
-body.light .summary-card .label,
-body.light .transaction-info{
-color:#64748b;
-}
-
-body.light .detail-row{
-border-color:#e5e7eb;
-}
-
-body.light .filter-btn{
-background:#fff;
-border-color:#dbe2ea;
-color:#111827;
-}
-
-body.light .filter-btn.active{
-background:#2563eb;
-color:#fff;
-border-color:#2563eb;
-}
-
-@media(max-width:500px){
-
-.summary-grid{
-grid-template-columns:1fr 1fr;
-}
-
-.title{
-font-size:20px;
-}
-
-.amount{
-font-size:18px;
-}
-
-}
-</style>
-
-</head>
-<body>
-
-<div class="container">
-
-<!-- Header -->
-
-<div class="top">
-
-<div class="back-btn" id="backBtn">
-<i class="fas fa-arrow-left"></i>
-</div>
-
-<div class="title">
-<i class="fas fa-money-check-dollar"></i>
-<span>Transactions</span>
-</div>
-
-<div class="avatar" id="avatar">
-AP
-</div>
-
-</div>
-
-<!-- Summary -->
-
-<div class="summary-grid">
-
-<div class="summary-card">
-
-<div class="label">TOTAL</div>
-
-<h2 id="totalTransactions">0</h2>
-
-</div>
-
-<div class="summary-card success">
-
-<div class="label">SUCCESS</div>
-
-<h2 id="successTransactions">0</h2>
-
-</div>
-
-<div class="summary-card pending">
-
-<div class="label">PENDING</div>
-
-<h2 id="pendingTransactions">0</h2>
-
-</div>
-
-<div class="summary-card failed">
-
-<div class="label">FAILED</div>
-
-<h2 id="failedTransactions">0</h2>
-
-</div>
-
-</div>
-
-<!-- Search -->
-
-<div class="search-card">
-
-<input
-type="text"
-id="searchInput"
+<!DOCTYPE html>  <html lang="en">  
+<head>  <meta charset="UTF-8">  <meta name="viewport" content="width=device-width,initial-scale=1.0">  <title>Transactions - AUTOPAY</title>  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">  <style>  
+  
+/* CSS will be added next */  
+*{  
+margin:0;  
+padding:0;  
+box-sizing:border-box;  
+font-family:Arial,sans-serif;  
+}  
+  
+body{  
+background:#0c1424;  
+color:#fff;  
+transition:.3s;  
+}  
+  
+.container{  
+max-width:430px;  
+margin:auto;  
+padding:18px;  
+padding-bottom:90px;  
+}  
+  
+.top{  
+display:flex;  
+justify-content:space-between;  
+align-items:center;  
+margin-bottom:22px;  
+}  
+  
+.back-btn,  
+.avatar{  
+width:48px;  
+height:48px;  
+background:#182235;  
+border:1px solid #253149;  
+border-radius:14px;  
+display:flex;  
+align-items:center;  
+justify-content:center;  
+cursor:pointer;  
+transition:.3s;  
+}  
+  
+.back-btn:hover,  
+.avatar:hover{  
+transform:translateY(-2px);  
+}  
+  
+.title{  
+display:flex;  
+align-items:center;  
+gap:10px;  
+font-size:22px;  
+font-weight:bold;  
+}  
+  
+.title i{  
+color:#2563eb;  
+}  
+  
+.summary-grid{  
+display:grid;  
+grid-template-columns:repeat(2,1fr);  
+gap:14px;  
+margin-bottom:20px;  
+}  
+  
+.summary-card{  
+background:#182235;  
+border:1px solid #253149;  
+border-radius:18px;  
+padding:18px;  
+}  
+  
+.summary-card .label{  
+font-size:12px;  
+color:#94a3b8;  
+margin-bottom:8px;  
+}  
+  
+.summary-card h2{  
+font-size:24px;  
+}  
+  
+.summary-card.success{  
+border-left:4px solid #22c55e;  
+}  
+  
+.summary-card.pending{  
+border-left:4px solid #f59e0b;  
+}  
+  
+.summary-card.failed{  
+border-left:4px solid #ef4444;  
+}  
+  
+.search-card{  
+position:relative;  
+margin-bottom:18px;  
+}  
+  
+.search-card input{  
+width:100%;  
+padding:15px 48px 15px 15px;  
+background:#182235;  
+border:1px solid #253149;  
+border-radius:14px;  
+color:#fff;  
+font-size:15px;  
+outline:none;  
+}  
+  
+.search-card input:focus{  
+border-color:#2563eb;  
+}  
+  
+.search-card i{  
+position:absolute;  
+right:18px;  
+top:16px;  
+color:#94a3b8;  
+}  
+  
+.filter-row{  
+display:flex;  
+gap:10px;  
+overflow-x:auto;  
+margin-bottom:18px;  
+padding-bottom:5px;  
+}  
+  
+.filter-row::-webkit-scrollbar{  
+display:none;  
+}  
+  
+.filter-btn{  
+padding:10px 18px;  
+border:none;  
+border-radius:30px;  
+background:#182235;  
+border:1px solid #253149;  
+color:#fff;  
+cursor:pointer;  
+white-space:nowrap;  
+transition:.3s;  
+}  
+  
+.filter-btn.active{  
+background:#2563eb;  
+border-color:#2563eb;  
+}  
+  
+.transaction-card{  
+background:#182235;  
+border:1px solid #253149;  
+border-radius:18px;  
+padding:16px;  
+margin-bottom:14px;  
+cursor:pointer;  
+transition:.3s;  
+}  
+  
+.transaction-card:hover{  
+transform:translateY(-3px);  
+}  
+  
+.transaction-top{  
+display:flex;  
+justify-content:space-between;  
+align-items:flex-start;  
+gap:15px;  
+margin-bottom:12px;  
+}  
+  
+.reference{  
+font-weight:bold;  
+font-size:15px;  
+word-break:break-all;  
+margin-bottom:6px;  
+}  
+  
+.amount{  
+font-size:20px;  
+font-weight:bold;  
+text-align:right;  
+min-width:80px;  
+flex-shrink:0;  
+}  
+  
+.transaction-info{  
+display:flex;  
+justify-content:space-between;  
+margin-top:8px;  
+font-size:13px;  
+color:#94a3b8;  
+}  
+  
+.status{  
+display:inline-flex;  
+align-items:center;  
+gap:6px;  
+padding:6px 12px;  
+border-radius:20px;  
+font-size:12px;  
+font-weight:bold;  
+}  
+  
+.status.success{  
+background:#14532d;  
+color:#4ade80;  
+}  
+  
+.status.pending{  
+background:#78350f;  
+color:#fbbf24;  
+}  
+  
+.status.failed{  
+background:#7f1d1d;  
+color:#f87171;  
+}  
+  
+.empty-state{  
+text-align:center;  
+padding:60px 25px;  
+color:#94a3b8;  
+}  
+  
+.empty-state i{  
+font-size:70px;  
+margin-bottom:18px;  
+color:#2563eb;  
+}  
+  
+.modal{  
+position:fixed;  
+top:0;  
+left:0;  
+width:100%;  
+height:100%;  
+display:none;  
+justify-content:center;  
+align-items:center;  
+background:rgba(0,0,0,.65);  
+z-index:1000;  
+}  
+  
+.modal-card{  
+width:92%;  
+max-width:380px;  
+background:#182235;  
+border-radius:20px;  
+overflow:hidden;  
+}  
+  
+.modal-header{  
+display:flex;  
+justify-content:space-between;  
+align-items:center;  
+padding:18px;  
+border-bottom:1px solid #253149;  
+}  
+  
+.modal-header i{  
+cursor:pointer;  
+font-size:20px;  
+}  
+  
+.modal-body{  
+padding:20px;  
+}  
+  
+.detail-row{  
+display:flex;  
+justify-content:space-between;  
+padding:12px 0;  
+border-bottom:1px solid #253149;  
+}  
+  
+.detail-row:last-child{  
+border-bottom:none;  
+}  
+  
+.copy-btn{  
+width:100%;  
+padding:14px;  
+margin-top:20px;  
+background:#2563eb;  
+border:none;  
+border-radius:12px;  
+color:#fff;  
+font-size:15px;  
+font-weight:bold;  
+cursor:pointer;  
+}  
+  
+body.light{  
+background:#f5f7fb;  
+color:#111827;  
+}  
+  
+body.light .summary-card,  
+body.light .search-card input,  
+body.light .transaction-card,  
+body.light .modal-card,  
+body.light .back-btn,  
+body.light .avatar{  
+background:#fff;  
+border-color:#dbe2ea;  
+color:#111827;  
+}  
+  
+body.light .summary-card .label,  
+body.light .transaction-info{  
+color:#64748b;  
+}  
+  
+body.light .detail-row{  
+border-color:#e5e7eb;  
+}  
+  
+body.light .filter-btn{  
+background:#fff;  
+border-color:#dbe2ea;  
+color:#111827;  
+}  
+  
+body.light .filter-btn.active{  
+background:#2563eb;  
+color:#fff;  
+border-color:#2563eb;  
+}  
+  
+@media(max-width:500px){  
+  
+.summary-grid{  
+grid-template-columns:1fr 1fr;  
+}  
+  
+.title{  
+font-size:20px;  
+}  
+  
+.amount{  
+font-size:18px;  
+}  
+  
+}  
+  
+/* =========================================================  
+   DESKTOP RESPONSIVE DESIGN  
+   ========================================================= */  
+  
+@media (min-width: 768px){  
+  
+    body{  
+        min-height:100vh;  
+    }  
+  
+    .container{  
+        max-width:1100px;  
+        padding:30px 35px 100px;  
+    }  
+  
+    /* Header */  
+  
+    .top{  
+        margin-bottom:30px;  
+    }  
+  
+    .back-btn,  
+    .avatar{  
+        width:52px;  
+        height:52px;  
+        border-radius:15px;  
+    }  
+  
+    .title{  
+        font-size:26px;  
+    }  
+  
+    /* Summary */  
+  
+    .summary-grid{  
+        grid-template-columns:repeat(4,1fr);  
+        gap:18px;  
+        margin-bottom:25px;  
+    }  
+  
+    .summary-card{  
+        padding:22px;  
+        border-radius:20px;  
+    }  
+  
+    .summary-card .label{  
+        font-size:13px;  
+    }  
+  
+    .summary-card h2{  
+        font-size:28px;  
+    }  
+  
+    /* Search */  
+  
+    .search-card{  
+        margin-bottom:20px;  
+    }  
+  
+    .search-card input{  
+        padding:17px 50px 17px 18px;  
+        font-size:15px;  
+    }  
+  
+    .search-card i{  
+        top:18px;  
+    }  
+  
+    /* Filters */  
+  
+    .filter-row{  
+        margin-bottom:22px;  
+    }  
+  
+    .filter-btn{  
+        padding:11px 20px;  
+    }  
+  
+    /* Transactions */  
+  
+    .transaction-card{  
+        padding:20px;  
+        border-radius:18px;  
+        margin-bottom:15px;  
+    }  
+  
+    .reference{  
+        font-size:16px;  
+    }  
+  
+    .amount{  
+        font-size:21px;  
+    }  
+  
+    .transaction-info{  
+        font-size:14px;  
+    }  
+  
+    /* Pagination */  
+  
+    #pagination{  
+        margin-top:25px !important;  
+    }  
+  
+    /* Empty State */  
+  
+    .empty-state{  
+        padding:80px 30px;  
+    }  
+  
+    /* Modal */  
+  
+    .modal-card{  
+        max-width:500px;  
+    }  
+  
+    .modal-header{  
+        padding:22px;  
+    }  
+  
+    .modal-body{  
+        padding:25px;  
+    }  
+  
+}  
+  
+  
+/* =========================================================  
+   LARGE DESKTOP  
+   ========================================================= */  
+  
+@media (min-width: 1200px){  
+  
+    .container{  
+        max-width:1200px;  
+        padding:35px 40px 100px;  
+    }  
+  
+    .title{  
+        font-size:28px;  
+    }  
+  
+    .summary-card{  
+        padding:25px;  
+    }  
+  
+    .summary-card h2{  
+        font-size:30px;  
+    }  
+  
+    .transaction-card{  
+        padding:22px;  
+    }  
+  
+}  
+  
+  
+/* =========================================================  
+   VERY LARGE SCREENS  
+   ========================================================= */  
+  
+@media (min-width: 1600px){  
+  
+    .container{  
+        max-width:1300px;  
+    }  
+  
+}  
+</style>  </head>  
+<body>  <div class="container">  <!-- Header -->  <div class="top">  <div class="back-btn" id="backBtn">  
+<i class="fas fa-arrow-left"></i>  
+</div>  <div class="title">  
+<i class="fas fa-money-check-dollar"></i>  
+<span>Transactions</span>  
+</div>  <div class="avatar" id="avatar">  
+AP  
+</div>  </div>  <!-- Summary -->  <div class="summary-grid">  <div class="summary-card">  <div class="label">TOTAL</div>  <h2 id="totalTransactions">0</h2>  </div>  <div class="summary-card success">  <div class="label">SUCCESS</div>  <h2 id="successTransactions">0</h2>  </div>  <div class="summary-card pending">  <div class="label">PENDING</div>  <h2 id="pendingTransactions">0</h2>  </div>  <div class="summary-card failed">  <div class="label">FAILED</div>  <h2 id="failedTransactions">0</h2>  </div>  </div>  <!-- Search -->  <div class="search-card">  <input  
+type="text"  
+id="searchInput"  
 placeholder="Search by reference or phone...">
 
 <i class="fas fa-search"></i>
 
-</div>
-
-<!-- Filter -->
-
-<div class="filter-row">
-
-<button class="filter-btn active" data-filter="ALL">
-All
-</button>
-
-<button class="filter-btn" data-filter="SUCCESS">
-Success
-</button>
-
-<button class="filter-btn" data-filter="PENDING">
-Pending
-</button>
-
-<button class="filter-btn" data-filter="FAILED">
-Failed
-</button>
-
-</div>
-
-<!-- Transactions -->
-
-<div id="transactionList">
-
-</div>
-
-<div id="pagination" style="
-display:flex;
-justify-content:space-between;
-align-items:center;
-margin-top:20px;
-gap:12px;
-">
-
-<button id="prevPage" class="filter-btn">
-<i class="fas fa-chevron-left"></i>
- Previous
-</button>
-
-<span id="pageInfo" style="
-flex:1;
-text-align:center;
-font-size:14px;
-color:#94a3b8;
+</div>  <!-- Filter -->  <div class="filter-row">  <button class="filter-btn active" data-filter="ALL">  
+All  
+</button>  <button class="filter-btn" data-filter="SUCCESS">  
+Success  
+</button>  <button class="filter-btn" data-filter="PENDING">  
+Pending  
+</button>  <button class="filter-btn" data-filter="FAILED">  
+Failed  
+</button>  </div>  <!-- Transactions -->  <div id="transactionList">  </div>  <div id="pagination" style="  
+display:flex;  
+justify-content:space-between;  
+align-items:center;  
+margin-top:20px;  
+gap:12px;  
+">  <button id="prevPage" class="filter-btn">  
+<i class="fas fa-chevron-left"></i>  
+ Previous  
+</button>  <span id="pageInfo" style="  
+flex:1;  
+text-align:center;  
+font-size:14px;  
+color:#94a3b8;  
 ">
 Page 1 of 1
 </span>
 
-<button id="nextPage" class="filter-btn">
-Next
-<i class="fas fa-chevron-right"></i>
-</button>
+<button id="nextPage" class="filter-btn">  
+Next  
+<i class="fas fa-chevron-right"></i>  
+</button>  </div>  </div>  <!-- Empty State -->  <div class="empty-state" id="emptyState" style="display:none;">  <i class="fas fa-receipt"></i>
 
-</div>
+<h2>No Transactions</h2>  <p>  Your payment transactions will appear here.
 
-</div>
+</p>  </div>  <!-- Transaction Details -->  <div class="modal" id="detailsModal">  <div class="modal-card">  <div class="modal-header">  <h3>Transaction Details</h3>  <i class="fas fa-times" id="closeModal"></i>
 
-<!-- Empty State -->
-
-<div class="empty-state" id="emptyState" style="display:none;">
-
-<i class="fas fa-receipt"></i>
-
-<h2>No Transactions</h2>
-
-<p>
-
-Your payment transactions will appear here.
-
-</p>
-
-</div>
-
-<!-- Transaction Details -->
-
-<div class="modal" id="detailsModal">
-
-<div class="modal-card">
-
-<div class="modal-header">
-
-<h3>Transaction Details</h3>
-
-<i class="fas fa-times" id="closeModal"></i>
-
-</div>
-
-<div class="modal-body" id="detailsContent">
-
-</div>
-
-</div>
-
-</div>
-<script type="module">
-import { auth, db } from "./firebase.js";
-import Cache from "./cache.js";
-
-import {
+</div>  <div class="modal-body" id="detailsContent">  </div>  </div>  </div>  
+<script type="module">  
+import { auth, db } from "./firebase.js";  
+import Cache from "./cache.js";  import {
 onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
 
@@ -577,55 +611,55 @@ const cached = Cache.get("merchant");
 
 if(cached){
 
-    merchantId = cached.merchantId || "";
+merchantId = cached.merchantId || "";  
 
-    document.getElementById("avatar").innerHTML =
-        (cached.fullName || "A").charAt(0).toUpperCase();
+document.getElementById("avatar").innerHTML =  
+    (cached.fullName || "A").charAt(0).toUpperCase();  
 
-    // Show cached transactions instantly
-    const cachedTransactions = Cache.get("merchantTransactions");
+// Show cached transactions instantly  
+const cachedTransactions = Cache.get("merchantTransactions");  
 
-    if(cachedTransactions){
+if(cachedTransactions){  
 
-        allTransactions = cachedTransactions;
+    allTransactions = cachedTransactions;  
 
-        document.getElementById("totalTransactions").textContent =
-            allTransactions.length;
+    document.getElementById("totalTransactions").textContent =  
+        allTransactions.length;  
 
-        let success = 0;
-        let pending = 0;
-        let failed = 0;
+    let success = 0;  
+    let pending = 0;  
+    let failed = 0;  
 
-        allTransactions.forEach(tx=>{
+    allTransactions.forEach(tx=>{  
 
-            switch((tx.status || "").toUpperCase()){
+        switch((tx.status || "").toUpperCase()){  
 
-                case "SUCCESS":
-                    success++;
-                    break;
+            case "SUCCESS":  
+                success++;  
+                break;  
 
-                case "FAILED":
-                    failed++;
-                    break;
+            case "FAILED":  
+                failed++;  
+                break;  
 
-                default:
-                    pending++;
+            default:  
+                pending++;  
 
-            }
+        }  
 
-        });
+    });  
 
-        document.getElementById("successTransactions").textContent = success;
-        document.getElementById("pendingTransactions").textContent = pending;
-        document.getElementById("failedTransactions").textContent = failed;
+    document.getElementById("successTransactions").textContent = success;  
+    document.getElementById("pendingTransactions").textContent = pending;  
+    document.getElementById("failedTransactions").textContent = failed;  
 
-        renderTransactions();
+    renderTransactions();  
 
-    }
+}  
 
-    if(merchantId){
-        loadTransactions();
-    }
+if(merchantId){  
+    loadTransactions();  
+}
 
 }
 
@@ -633,18 +667,18 @@ const snap = await getDoc(doc(db,"users",user.uid));
 
 if(snap.exists()){
 
-    const userData = snap.data();
+const userData = snap.data();  
 
-    Cache.set("merchant", userData);
+Cache.set("merchant", userData);  
 
-    localStorage.setItem("merchantUid", user.uid);
+localStorage.setItem("merchantUid", user.uid);  
 
-    merchantId = userData.merchantId;
+merchantId = userData.merchantId;  
 
-    document.getElementById("avatar").innerHTML =
-        (userData.fullName || "A").charAt(0).toUpperCase();
+document.getElementById("avatar").innerHTML =  
+    (userData.fullName || "A").charAt(0).toUpperCase();  
 
-    loadTransactions();
+loadTransactions();
 
 }
 });
@@ -655,76 +689,128 @@ document.getElementById("backBtn").onclick=()=>history.back();
 // Load Transactions
 function loadTransactions(){
 
-if(transactionsLoaded || !merchantId) return;
+if(transactionsLoaded || !merchantId) return;  
 
-transactionsLoaded = true;
+transactionsLoaded = true;  
 
-const q = query(
-    collection(db,"transactions"),
-    where("merchantId","==",merchantId)
+const q = query(  
+    collection(db,"transactions"),  
+    where("merchantId","==",merchantId)  
+);  
+
+onSnapshot(  
+    q,  
+
+    (snapshot)=>{  
+
+        console.log("Merchant ID:", merchantId);  
+        console.log("Transactions found:", snapshot.size);  
+
+        allTransactions = [];  
+
+        let success = 0;  
+        let pending = 0;  
+        let failed = 0;  
+
+        snapshot.forEach(docSnap=>{  
+
+            const data = docSnap.data();  
+
+            data.id = docSnap.id;  
+
+            allTransactions.push(data);  
+
+            const status = String(  
+                data.status || "PENDING"  
+            ).toUpperCase();  
+
+            if(  
+                status === "SUCCESS" ||  
+                status === "COMPLETED"  
+            ){  
+
+                success++;  
+
+            }else if(  
+                status === "FAILED" ||  
+                status === "CANCELLED"  
+            ){  
+
+                failed++;  
+
+            }else{  
+
+                pending++;  
+
+            }  
+
+        });  
+
+        // Save transactions to cache  
+        Cache.set(  
+            "merchantTransactions",  
+            allTransactions  
+        );  
+
+        // Update summary  
+        document.getElementById(  
+            "totalTransactions"  
+        ).textContent = allTransactions.length;  
+
+        document.getElementById(  
+            "successTransactions"  
+        ).textContent = success;  
+
+        document.getElementById(  
+            "pendingTransactions"  
+        ).textContent = pending;  
+
+        document.getElementById(  
+            "failedTransactions"  
+        ).textContent = failed;  
+
+        // Render transactions  
+        renderTransactions();  
+
+    },  
+
+    (error)=>{  
+
+        console.error(  
+            "Firestore Error:",  
+            error  
+        );  
+
+        const list =  
+            document.getElementById(  
+                "transactionList"  
+            );  
+
+        list.innerHTML = `  
+            <div class="empty-state"  
+                 style="display:block;">  
+
+                <i class="fas fa-triangle-exclamation"  
+                   style="color:#ef4444;"></i>  
+
+                <h2>  
+                    Unable to Load Transactions  
+                </h2>  
+
+                <p>  
+                    ${escapeHTML(error.message)}  
+                </p>  
+
+            </div>  
+        `;  
+
+        document.getElementById(  
+            "pagination"  
+        ).style.display = "none";  
+
+    }  
+
 );
-
-onSnapshot(q,
-
-(snapshot)=>{
-
-console.log("Merchant ID:", merchantId);
-console.log("Transactions found:", snapshot.size);
-
-allTransactions=[];
-
-let success=0;
-let pending=0;
-let failed=0;
-
-snapshot.forEach(docSnap=>{
-
-const data=docSnap.data();
-
-data.id=docSnap.id;
-
-allTransactions.push(data);
-
-switch((data.status||"").toUpperCase()){
-
-case "SUCCESS":
-success++;
-break;
-
-case "FAILED":
-failed++;
-break;
-
-default:
-pending++;
-
-}
-
-});
-
-document.getElementById("totalTransactions").textContent =
-allTransactions.length;
-
-document.getElementById("successTransactions").textContent =
-success;
-
-document.getElementById("pendingTransactions").textContent =
-pending;
-
-document.getElementById("failedTransactions").textContent =
-failed;
-
-renderTransactions();
-
-},
-
-(error)=>{
-
-console.error("Firestore Error:",error);
-
-alert(error.message);
-
-});
 
 }
 
@@ -759,6 +845,17 @@ renderTransactions();
 
 });
 
+function escapeHTML(value){
+
+return String(value ?? "")  
+    .replace(/&/g,"&amp;")  
+    .replace(/</g,"&lt;")  
+    .replace(/>/g,"&gt;")  
+    .replace(/"/g,"&quot;")  
+    .replace(/'/g,"&#039;");
+
+}
+
 // Render
 function renderTransactions(){
 
@@ -774,8 +871,12 @@ const filtered = allTransactions.filter(tx=>{
 
 const status = (tx.status || "").toUpperCase();
 
-const ref = String(tx.checkoutRequestId || "")
-.toLowerCase();
+const ref = String(
+tx.checkoutRequestId ||
+tx.reference ||
+tx.id ||
+""
+).toLowerCase();
 
 const phone = String(tx.phone || "")
 .toLowerCase();
@@ -845,7 +946,7 @@ start+pageSize
 );
 
 document.getElementById("pageInfo").innerHTML=
-`Page ${currentPage} of ${totalPages}`;
+Page ${currentPage} of ${totalPages};
 
 const prevBtn = document.getElementById("prevPage");
 const nextBtn = document.getElementById("nextPage");
@@ -880,89 +981,58 @@ let title = tx.type || "Transaction";
 switch ((tx.type || "").toUpperCase()) {
 
 case "DEPOSIT":
-    icon = "fa-arrow-down";
-    title = "Wallet Deposit";
-    break;
+icon = "fa-arrow-down";
+title = "Wallet Deposit";
+break;
 
 case "WITHDRAWAL":
-    icon = "fa-arrow-up";
-    title = "Withdrawal";
-    break;
-    
+icon = "fa-arrow-up";
+title = "Withdrawal";
+break;
+
 case "REVERSAL":
-    icon = "fa-rotate-left";
-    title = "Transaction Reversal";
-    break;
+icon = "fa-rotate-left";
+title = "Transaction Reversal";
+break;
 
 case "AUTO SERVICE TOP-UP":
-    icon = "fa-rotate";
-    title = "Auto Service Top-up";
-    break;
+icon = "fa-rotate";
+title = "Auto Service Top-up";
+break;
 
 default:
 
-    if (tx.balanceType === "wallet") {
-        icon = "fa-wallet";
-        title = "Wallet Top-up";
-    }
+if (tx.balanceType === "wallet") {  
+    icon = "fa-wallet";  
+    title = "Wallet Top-up";  
+}  
 
-    else if (tx.balanceType === "service") {
-        icon = "fa-server";
-        title = "Service Balance Top-up";
-    }
+else if (tx.balanceType === "service") {  
+    icon = "fa-server";  
+    title = "Service Balance Top-up";  
+}
 
 }
 
 html += `
-<div class="transaction-card" data-id="${tx.id}">
 
-<div class="transaction-top">
-
-<div>
-
-<div class="reference">
-
-<i class="fas ${icon}" style="color:#2563eb;margin-right:8px;"></i>
+<div class="transaction-card" data-id="${tx.id}">  <div class="transaction-top">  <div>  <div class="reference">  <i class="fas ${icon}" style="color:#2563eb;margin-right:8px;"></i>
 
 ${title}
 
-</div>
+</div>  <div class="transaction-info">  ${tx.phone || "--"}
 
-<div class="transaction-info">
+</div>  <div class="transaction-info">  ${tx.checkoutRequestId || tx.reference || tx.id}
 
-${tx.phone || "--"}
+</div>  </div>  <div class="amount">  
+${Number(tx.amount) < 0 ? "-" : ""}  
+${tx.currency || "KES"} ${Math.abs(Number(tx.amount || 0)).toLocaleString()}  
+</div>  </div>  <div class="transaction-info">  <span>${date}</span>
 
-</div>
-
-<div class="transaction-info">
-
-${tx.checkoutRequestId || tx.reference || tx.id}
-
-</div>
-
-</div>
-
-<div class="amount">
-${Number(tx.amount) < 0 ? "-" : ""}
-KES ${Math.abs(Number(tx.amount || 0)).toLocaleString()}
-</div>
-
-</div>
-
-<div class="transaction-info">
-
-<span>${date}</span>
-
-<span class="status ${css}">
-${status}
-</span>
-
-</div>
-
-</div>
-`;
-
-});
+<span class="status ${css}">  
+${status}  
+</span>  </div>  </div>  
+`;  });
 
 list.innerHTML = html;
 
@@ -991,92 +1061,84 @@ let transactionName = "Transaction";
 switch ((tx.type || "").toUpperCase()) {
 
 case "DEPOSIT":
-    transactionName = "Wallet Deposit";
-    break;
+transactionName = "Wallet Deposit";
+break;
 
 case "WITHDRAWAL":
-    transactionName = "Withdrawal";
-    break;
-    
+transactionName = "Withdrawal";
+break;
+
 case "REVERSAL":
-    transactionName = "Transaction Reversal";
-    break;
+transactionName = "Transaction Reversal";
+break;
 
 case "AUTO SERVICE TOP-UP":
-    transactionName = "Auto Service Top-up";
-    break;
+transactionName = "Auto Service Top-up";
+break;
 
 default:
 
-    if(tx.balanceType === "wallet"){
-        transactionName = "Wallet Top-up";
-    }
-    else if(tx.balanceType === "service"){
-        transactionName = "Service Balance Top-up";
-    }
+if(tx.balanceType === "wallet"){  
+    transactionName = "Wallet Top-up";  
+}  
+else if(tx.balanceType === "service"){  
+    transactionName = "Service Balance Top-up";  
+}
 
 }
 
 document.getElementById("detailsContent").innerHTML = `
 
-<div class="detail-row">
-<span>Transaction Type</span>
-<strong>${transactionName}</strong>
-</div>
-
-<div class="detail-row">
-<span>Reference</span>
-<strong>${tx.checkoutRequestId || tx.reference || tx.id}</strong>
-</div>
-
-<div class="detail-row">
-<span>Phone</span>
-<strong>${tx.phone || "--"}</strong>
-</div>
-
-<div class="detail-row">
-<span>Amount</span>
-<strong>KES ${Number(tx.amount || 0).toLocaleString()}</strong>
-</div>
-
-<div class="detail-row">
-<span>Status</span>
-<strong>${tx.status || "--"}</strong>
-</div>
-
-<div class="detail-row">
+<div class="detail-row">  
+<span>Transaction Type</span>  
+<strong>${transactionName}</strong>  
+</div>  <div class="detail-row">  
+<span>Reference</span>  
+<strong>${tx.checkoutRequestId || tx.reference || tx.id}</strong>  
+</div>  <div class="detail-row">  
+<span>Phone</span>  
+<strong>${tx.phone || "--"}</strong>  
+</div>  <div class="detail-row">  
+<span>Amount</span>  
+<strong>  
+${tx.currency || "KES"}  
+${Number(tx.amount || 0).toLocaleString()}  
+</strong>  
+</div>  <div class="detail-row">  
+<span>Status</span>  
+<strong>${tx.status || "--"}</strong>  
+</div>  <div class="detail-row">
 <span>Gateway</span>
-<strong>${tx.gateway || "AUTOPAY"}</strong>
-</div>
+<strong>AUTOPAY</strong>
+</div>  ${tx.fee ? `
 
-${tx.fee ? `
-<div class="detail-row">
-<span>Fee</span>
-<strong>KES ${Number(tx.fee).toLocaleString()}</strong>
-</div>
-` : ""}
+<div class="detail-row">  
+<span>Fee</span>  
+<strong>  
+${tx.currency || "KES"}  
+${Number(tx.fee).toLocaleString()}  
+</strong>  
+</div>  
+` : ""}  ${tx.payoutAmount ? `
 
-${tx.payoutAmount ? `
-<div class="detail-row">
-<span>Net Amount</span>
-<strong>KES ${Number(tx.payoutAmount).toLocaleString()}</strong>
-</div>
-` : ""}
+<div class="detail-row">  
+<span>Net Amount</span>  
+<strong>  
+${tx.currency || "KES"}  
+${Number(tx.payoutAmount).toLocaleString()}  
+</strong>  
+</div>  
+` : ""}  ${tx.description ? `
 
-${tx.description ? `
-<div class="detail-row">
-<span>Description</span>
-<strong>${tx.description}</strong>
-</div>
-` : ""}
-
-<div class="detail-row">
-<span>Merchant Request</span>
-<strong>${tx.merchantRequestId || "--"}</strong>
-</div>
-
-<button
-class="copy-btn"
+<div class="detail-row">  
+<span>Description</span>  
+<strong>${tx.description}</strong>  
+</div>  
+` : ""}  <div class="detail-row">  
+<span>Merchant Request</span>  
+<strong>${tx.merchantRequestId || "--"}</strong>  
+</div>  <button  
+class="copy-btn"  
 onclick="copyReference('${tx.checkoutRequestId || tx.reference || tx.id}')">
 Copy Reference
 </button>
@@ -1176,6 +1238,6 @@ alert("Reference copied.");
 
 };
 
-</script>
-</body>
-  </html>
+</script>  
+</body>  
+ </html>
