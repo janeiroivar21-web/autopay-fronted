@@ -1,0 +1,1730 @@
+<!DOCTYPE html> 
+<html lang="en">  
+<head>  <meta charset="UTF-8">  <meta name="viewport"  
+content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+
+<title>AUTOPAY Global</title>  <link rel="stylesheet"  
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">  <style>  
+  
+*{  
+    margin:0;  
+    padding:0;  
+    box-sizing:border-box;  
+    font-family:'Roboto',Arial,sans-serif;  
+    -webkit-tap-highlight-color:transparent;  
+}  
+  
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap');  
+  
+:root{  
+  
+    --bg:#0c1424;  
+    --card:#182235;  
+    --card2:#111b2d;  
+    --border:#253149;  
+  
+    --text:#ffffff;  
+    --muted:#9aa7bd;  
+  
+    --blue:#2563eb;  
+    --blue2:#3b82f6;  
+  
+    --green:#22c55e;  
+    --green-bg:rgba(34,197,94,.12);  
+  
+    --orange:#f59e0b;  
+    --orange-bg:rgba(245,158,11,.12);  
+  
+    --shadow:0 12px 30px rgba(0,0,0,.20);  
+}  
+  
+body.light{  
+  
+    --bg:#f5f7fb;  
+    --card:#ffffff;  
+    --card2:#f8fafc;  
+    --border:#dbe2ea;  
+  
+    --text:#111827;  
+    --muted:#64748b;  
+  
+    --blue:#2563eb;  
+    --blue2:#1d4ed8;  
+  
+    --green:#16a34a;  
+    --green-bg:rgba(22,163,74,.10);  
+  
+    --orange:#d97706;  
+    --orange-bg:rgba(217,119,6,.10);  
+  
+    --shadow:0 10px 25px rgba(15,23,42,.07);  
+}  
+  
+body{  
+  
+    background:var(--bg);  
+    color:var(--text);  
+  
+    min-height:100vh;  
+  
+    transition:  
+        background .25s ease,  
+        color .25s ease;  
+  
+}  
+  
+button{  
+  
+    border:0;  
+    outline:0;  
+  
+}  
+  
+.container{  
+  
+    width:100%;  
+  
+    max-width:none;  
+  
+    margin:0;  
+  
+    padding:14px;  
+  
+}  
+  
+/* =========================  
+   TOP BAR  
+========================= */  
+  
+.top{  
+  
+    display:flex;  
+  
+    justify-content:space-between;  
+  
+    align-items:center;  
+  
+    margin:8px 0 22px;  
+  
+}  
+  
+.left{  
+  
+    display:flex;  
+  
+    align-items:center;  
+  
+    gap:12px;  
+  
+}  
+  
+.right{  
+  
+    display:flex;  
+  
+    align-items:center;  
+  
+    gap:10px;  
+  
+}  
+  
+.icon,  
+.avatar{  
+  
+    width:46px;  
+    height:46px;  
+  
+    min-width:46px;  
+    min-height:46px;  
+  
+    border-radius:14px;  
+  
+    background:var(--card);  
+  
+    border:1px solid var(--border);  
+  
+    display:flex;  
+  
+    align-items:center;  
+  
+    justify-content:center;  
+  
+    color:var(--text);  
+  
+}  
+  
+.icon{  
+  
+    cursor:pointer;  
+  
+    transition:.25s;  
+  
+}  
+  
+.icon:hover{  
+  
+    transform:translateY(-2px);  
+  
+}  
+  
+.back-btn{  
+  
+    font-size:18px;  
+  
+}  
+  
+.logo{  
+  
+    font-size:24px;  
+  
+    font-weight:700;  
+  
+    letter-spacing:-.5px;  
+  
+    white-space:nowrap;  
+  
+}  
+  
+.logo i{  
+  
+    margin-right:7px;  
+  
+    color:var(--blue2);  
+  
+}  
+  
+.logo span{  
+  
+    color:var(--blue2);  
+  
+}  
+  
+.avatar{  
+  
+    font-weight:700;  
+  
+    cursor:pointer;  
+  
+}  
+  
+/* =========================  
+   PAGE INTRO  
+========================= */  
+  
+.hero{  
+  
+    background:var(--card);  
+  
+    border:1px solid var(--border);  
+  
+    border-radius:20px;  
+  
+    padding:23px 20px;  
+  
+    margin-bottom:18px;  
+  
+    box-shadow:var(--shadow);  
+  
+}  
+  
+.hero-label{  
+  
+    display:flex;  
+  
+    align-items:center;  
+  
+    gap:8px;  
+  
+    color:var(--blue2);  
+  
+    font-size:12px;  
+  
+    font-weight:700;  
+  
+    letter-spacing:1.2px;  
+  
+    margin-bottom:10px;  
+  
+}  
+  
+.hero-label i{  
+  
+    font-size:12px;  
+  
+}  
+  
+.hero h1{  
+  
+    font-size:27px;  
+  
+    font-weight:700;  
+  
+    line-height:1.15;  
+  
+    margin-bottom:10px;  
+  
+}  
+  
+.hero p{  
+  
+    color:var(--muted);  
+  
+    font-size:14px;  
+  
+    line-height:1.55;  
+  
+}  
+  
+/* =========================  
+   NETWORK STATUS  
+========================= */  
+  
+.network{  
+  
+    display:flex;  
+  
+    align-items:center;  
+  
+    gap:10px;  
+  
+    margin:0 2px 14px;  
+  
+    color:var(--muted);  
+  
+    font-size:13px;  
+  
+}  
+  
+.network-dot{  
+  
+    width:9px;  
+  
+    height:9px;  
+  
+    border-radius:50%;  
+  
+    background:var(--green);  
+  
+    box-shadow:  
+        0 0 0 5px var(--green-bg);  
+  
+}  
+  
+/* =========================  
+   SECTION TITLE  
+========================= */  
+  
+.section-title{  
+  
+    display:flex;  
+  
+    align-items:center;  
+  
+    justify-content:space-between;  
+  
+    margin:0 2px 12px;  
+  
+}  
+  
+.section-title h2{  
+  
+    font-size:15px;  
+  
+    font-weight:600;  
+  
+}  
+  
+.section-title span{  
+  
+    color:var(--muted);  
+  
+    font-size:12px;  
+  
+}  
+  
+/* =========================  
+   COUNTRY LIST  
+========================= */  
+  
+.countries{  
+  
+    display:flex;  
+  
+    flex-direction:column;  
+  
+    gap:12px;  
+  
+}  
+  
+.country{  
+  
+    width:100%;  
+  
+    min-height:86px;  
+  
+    background:var(--card);  
+  
+    border:1px solid var(--border);  
+  
+    border-radius:18px;  
+  
+    padding:14px;  
+  
+    display:flex;  
+  
+    align-items:center;  
+  
+    gap:13px;  
+  
+    color:var(--text);  
+  
+    text-decoration:none;  
+  
+    box-shadow:var(--shadow);  
+  
+    transition:  
+        transform .2s ease,  
+        border-color .2s ease,  
+        background .2s ease;  
+  
+}  
+  
+.country:not(.disabled):hover{  
+  
+    transform:translateY(-2px);  
+  
+    border-color:rgba(59,130,246,.45);  
+  
+}  
+  
+.country:not(.disabled):active{  
+  
+    transform:scale(.985);  
+  
+}  
+  
+.flag{  
+  
+    width:57px;  
+  
+    height:57px;  
+  
+    min-width:57px;  
+  
+    border-radius:16px;  
+  
+    background:var(--card2);  
+  
+    display:flex;  
+  
+    align-items:center;  
+  
+    justify-content:center;  
+  
+    font-size:30px;  
+  
+}  
+  
+.country-info{  
+  
+    flex:1;  
+  
+    min-width:0;  
+  
+}  
+  
+.country-info h3{  
+  
+    font-size:16px;  
+  
+    font-weight:600;  
+  
+    margin-bottom:6px;  
+  
+}  
+  
+.country-meta{  
+  
+    color:var(--muted);  
+  
+    font-size:12px;  
+  
+}  
+  
+.country-side{  
+  
+    display:flex;  
+  
+    align-items:flex-end;  
+  
+    flex-direction:column;  
+  
+    gap:9px;  
+  
+}  
+  
+.badge{  
+  
+    padding:6px 9px;  
+  
+    border-radius:8px;  
+  
+    font-size:9px;  
+  
+    font-weight:700;  
+  
+    letter-spacing:.4px;  
+  
+    white-space:nowrap;  
+  
+}  
+  
+.badge.available{  
+  
+    color:var(--green);  
+  
+    background:var(--green-bg);  
+  
+}  
+  
+.badge.coming{  
+  
+    color:var(--orange);  
+  
+    background:var(--orange-bg);  
+  
+}  
+  
+.country-arrow{  
+  
+    color:var(--muted);  
+  
+    font-size:13px;  
+  
+}  
+  
+/* =========================  
+   DISABLED  
+========================= */  
+  
+.country.disabled{  
+  
+    cursor:default;  
+  
+    opacity:.68;  
+  
+}  
+  
+.country.disabled:active{  
+  
+    transform:none;  
+  
+}  
+  
+/* =========================  
+   INFORMATION CARD  
+========================= */  
+  
+.info{  
+  
+    margin-top:18px;  
+  
+    padding:18px;  
+  
+    border-radius:18px;  
+  
+    background:  
+        linear-gradient(  
+            135deg,  
+            rgba(37,99,235,.13),  
+            var(--card)  
+        );  
+  
+    border:1px solid rgba(59,130,246,.16);  
+  
+}  
+  
+.info-row{  
+  
+    display:flex;  
+  
+    gap:12px;  
+  
+    align-items:flex-start;  
+  
+}  
+  
+.info-icon{  
+  
+    width:40px;  
+  
+    height:40px;  
+  
+    min-width:40px;  
+  
+    border-radius:12px;  
+  
+    background:rgba(37,99,235,.13);  
+  
+    color:var(--blue2);  
+  
+    display:flex;  
+  
+    align-items:center;  
+  
+    justify-content:center;  
+  
+}  
+  
+.info h3{  
+  
+    font-size:14px;  
+  
+    margin-bottom:6px;  
+  
+}  
+  
+.info p{  
+  
+    color:var(--muted);  
+  
+    font-size:12px;  
+  
+    line-height:1.55;  
+  
+}  
+  
+/* =========================  
+   SIDEBAR  
+========================= */  
+  
+.sidebar{  
+  
+    position:fixed;  
+  
+    top:0;  
+    left:-280px;  
+  
+    width:260px;  
+  
+    height:100vh;  
+  
+    background:var(--card);  
+  
+    border-right:1px solid var(--border);  
+  
+    z-index:1000;  
+  
+    transition:.35s;  
+  
+    overflow-y:auto;  
+  
+    box-shadow:5px 0 20px rgba(0,0,0,.35);  
+  
+}  
+  
+.sidebar.show{  
+  
+    left:0;  
+  
+}  
+  
+.overlay{  
+  
+    position:fixed;  
+  
+    inset:0;  
+  
+    background:rgba(0,0,0,.55);  
+  
+    backdrop-filter:blur(2px);  
+  
+    display:none;  
+  
+    z-index:999;  
+  
+}  
+  
+.overlay.show{  
+  
+    display:block;  
+  
+}  
+  
+.side-header{  
+  
+    padding:25px 20px;  
+  
+    font-size:25px;  
+  
+    font-weight:700;  
+  
+    border-bottom:1px solid var(--border);  
+  
+    display:flex;  
+  
+    justify-content:space-between;  
+  
+    align-items:center;  
+  
+}  
+  
+.side-header i{  
+  
+    color:var(--blue2);  
+  
+    margin-right:7px;  
+  
+}  
+  
+.side-header span{  
+  
+    color:var(--blue2);  
+  
+}  
+  
+.close-sidebar{  
+  
+    cursor:pointer;  
+  
+    color:var(--muted);  
+  
+}  
+  
+.side-menu{  
+  
+    padding:15px;  
+  
+}  
+  
+.side-menu a{  
+  
+    display:flex;  
+  
+    align-items:center;  
+  
+    gap:15px;  
+  
+    padding:14px;  
+  
+    margin-bottom:7px;  
+  
+    border-radius:12px;  
+  
+    color:var(--text);  
+  
+    text-decoration:none;  
+  
+    font-size:14px;  
+  
+    transition:.25s;  
+  
+}  
+  
+.side-menu a:hover{  
+  
+    background:var(--blue);  
+  
+    color:#fff;  
+  
+}  
+  
+.side-menu a.active{  
+  
+    background:var(--blue);  
+  
+    color:#fff;  
+  
+}  
+  
+.side-menu i{  
+  
+    width:22px;  
+  
+    text-align:center;  
+  
+}  
+  
+/* =========================  
+   TOAST  
+========================= */  
+  
+.toast{  
+  
+    position:fixed;  
+  
+    left:50%;  
+  
+    bottom:25px;  
+  
+    transform:  
+        translate(-50%,120px);  
+  
+    width:calc(100% - 30px);  
+  
+    max-width:400px;  
+  
+    background:var(--card);  
+  
+    border:1px solid var(--border);  
+  
+    border-radius:14px;  
+  
+    padding:14px 16px;  
+  
+    box-shadow:0 15px 35px rgba(0,0,0,.35);  
+  
+    display:flex;  
+  
+    align-items:center;  
+  
+    gap:10px;  
+  
+    z-index:2000;  
+  
+    opacity:0;  
+  
+    transition:.3s;  
+  
+}  
+  
+.toast.show{  
+  
+    transform:translate(-50%,0);  
+  
+    opacity:1;  
+  
+}  
+  
+.toast i{  
+  
+    color:var(--orange);  
+  
+}  
+  
+/* =========================  
+   DESKTOP  
+========================= */  
+  
+@media(min-width:768px){  
+  
+    .sidebar{  
+  
+        left:0;  
+  
+        width:260px;  
+  
+    }  
+  
+    .overlay{  
+  
+        display:none !important;  
+  
+    }  
+  
+    .container{  
+  
+        width:calc(100% - 260px);  
+  
+        margin-left:260px;  
+  
+        padding:24px 30px 50px;  
+  
+    }  
+  
+    .back-btn{  
+  
+        display:none;  
+  
+    }  
+  
+    .hero{  
+  
+        padding:28px;  
+  
+    }  
+  
+    .hero h1{  
+  
+        font-size:31px;  
+  
+    }  
+  
+    .countries{  
+  
+        display:grid;  
+  
+        grid-template-columns:  
+            repeat(2,minmax(0,1fr));  
+  
+    }  
+  
+}  
+  
+/* =========================  
+   SMALL DEVICES  
+========================= */  
+  
+@media(max-width:360px){  
+  
+    .container{  
+  
+        padding:10px;  
+  
+    }  
+  
+    .logo{  
+  
+        font-size:21px;  
+  
+    }  
+  
+    .icon,  
+    .avatar{  
+  
+        width:42px;  
+        height:42px;  
+  
+        min-width:42px;  
+        min-height:42px;  
+  
+    }  
+  
+    .hero h1{  
+  
+        font-size:24px;  
+  
+    }  
+  
+    .hero{  
+  
+        padding:20px 17px;  
+  
+    }  
+  
+    .country{  
+  
+        padding:12px;  
+  
+    }  
+  
+    .flag{  
+  
+        width:51px;  
+        height:51px;  
+        min-width:51px;  
+  
+        font-size:27px;  
+  
+    }  
+  
+}  
+  
+</style>  </head>  <body>  <div class="overlay" id="overlay"></div>  <!-- =========================  
+     SIDEBAR  
+========================= -->  <div class="sidebar" id="sidebar">  <div class="side-header">  
+
+    <div>  
+        <i class="fas fa-bolt"></i>  
+        AUTO<span>PAY</span>  
+    </div>  
+
+    <div class="close-sidebar"  
+         id="closeSidebar">  
+
+        <i class="fas fa-times"></i>  
+
+    </div>  
+
+</div>  
+
+
+<div class="side-menu">  
+
+    <a href="dashboard.html">  
+
+        <i class="fas fa-home"></i>  
+
+        Dashboard  
+
+    </a>  
+
+
+    <a href="global.html"  
+       class="active">  
+
+        <i class="fas fa-globe"></i>  
+
+        AUTOPAY Global  
+
+    </a>  
+
+
+    <a href="transactions.html">  
+
+        <i class="fas fa-money-check-dollar"></i>  
+
+        Transactions  
+
+    </a>  
+
+
+    <a href="verification.html">  
+
+        <i class="fas fa-wallet"></i>  
+
+        KYC Verification  
+
+    </a>  
+
+
+    <a href="accounts.html">  
+
+        <i class="fas fa-building-columns"></i>  
+
+        Payment Accounts  
+
+    </a>  
+
+
+    <a href="links.html">  
+
+        <i class="fas fa-link"></i>  
+
+        Payment Links  
+
+    </a>  
+
+
+    <a href="apikeys.html">  
+
+        <i class="fas fa-key"></i>  
+
+        API Keys  
+
+    </a>  
+
+
+    <a href="whatsapp-billing.html">  
+
+        <i class="fab fa-whatsapp"></i>  
+
+        WhatsApp Billing  
+
+    </a>  
+
+
+    <a href="callback.html">  
+
+        <i class="fas fa-link"></i>  
+
+        Callback Link  
+
+    </a>  
+
+
+    <a href="apilogs.html">  
+
+        <i class="fas fa-file-lines"></i>  
+
+        API Logs  
+
+    </a>  
+
+
+    <a href="docs.html">  
+
+        <i class="fas fa-book"></i>  
+
+        Documentation  
+
+    </a>  
+
+
+    <a href="profile.html">  
+
+        <i class="fas fa-user"></i>  
+
+        Profile  
+
+    </a>  
+
+
+    <a href="settings.html">  
+
+        <i class="fas fa-gear"></i>  
+
+        Settings  
+
+    </a>  
+
+
+    <a href="#"  
+       id="logoutBtn">  
+
+        <i class="fas fa-right-from-bracket"></i>  
+
+        Logout  
+
+    </a>  
+
+</div>
+
+</div>  <!-- =========================  
+     MAIN  
+========================= -->  <div class="container">  <!-- TOP -->  
+
+<div class="top">  
+
+    <div class="left">  
+
+        <div class="icon back-btn"  
+             id="backBtn">  
+
+            <i class="fas fa-arrow-left"></i>  
+
+        </div>  
+
+
+        <div class="logo">  
+
+            <i class="fas fa-bolt"></i>  
+
+            AUTO<span>PAY</span>  
+
+        </div>  
+
+    </div>  
+
+
+    <div class="right">  
+
+        <div class="icon"  
+             id="themeToggle">  
+
+            <i class="fas fa-moon"  
+               id="themeIcon"></i>  
+
+        </div>  
+
+
+        <div class="icon"  
+             onclick="openNotifications()">  
+
+            <i class="fas fa-bell"></i>  
+
+        </div>  
+
+
+        <div class="avatar"  
+             id="avatar">  
+
+            A  
+
+        </div>  
+
+    </div>  
+
+</div>  
+
+
+<!-- HERO -->  
+
+<section class="hero">  
+
+    <div class="hero-label">  
+
+        <i class="fas fa-globe-africa"></i>  
+
+        AUTOPAY GLOBAL  
+
+    </div>  
+
+
+    <h1>  
+
+        Global Payments  
+
+    </h1>  
+
+
+    <p>  
+
+        Connect your business to mobile money  
+        networks across Africa from one  
+        secure payment platform.  
+
+    </p>  
+
+</section>  
+
+
+<!-- NETWORK STATUS -->  
+
+<div class="network">  
+
+    <span class="network-dot"></span>  
+
+    Global payment network  
+
+</div>  
+
+
+<!-- COUNTRY TITLE -->  
+
+<div class="section-title">  
+
+    <h2>  
+        Available Markets  
+    </h2>  
+
+    <span>  
+        1 active  
+    </span>  
+
+</div>  
+
+
+<!-- COUNTRIES -->  
+
+<div class="countries">  
+
+
+    <!-- =====================  
+         UGANDA  
+    ====================== -->  
+
+    <a href="uganda.html"  
+       class="country">  
+
+        <div class="flag">  
+
+            ðŸ‡ºðŸ‡¬  
+
+        </div>  
+
+
+        <div class="country-info">  
+
+            <h3>  
+                Uganda  
+            </h3>  
+
+            <div class="country-meta">  
+
+                UGX  
+                â€¢  
+                MTN  
+                â€¢  
+                Airtel  
+
+            </div>  
+
+        </div>  
+
+
+        <div class="country-side">  
+
+            <span class="badge available">  
+
+                AVAILABLE  
+
+            </span>  
+
+            <i class="fas fa-chevron-right country-arrow"></i>  
+
+        </div>  
+
+    </a>  
+
+
+    <!-- =====================  
+         TANZANIA  
+    ====================== -->  
+
+    <div class="country disabled"  
+         onclick="comingSoon('Tanzania')">  
+
+        <div class="flag">  
+
+            ðŸ‡¹ðŸ‡¿  
+
+        </div>  
+
+
+        <div class="country-info">  
+
+            <h3>  
+                Tanzania  
+            </h3>  
+
+            <div class="country-meta">  
+
+                TZS  
+                â€¢  
+                Mobile Money  
+
+            </div>  
+
+        </div>  
+
+
+        <div class="country-side">  
+
+            <span class="badge coming">  
+
+                COMING SOON  
+
+            </span>  
+
+            <i class="fas fa-lock country-arrow"></i>  
+
+        </div>  
+
+    </div>  
+
+
+    <!-- =====================  
+         ZAMBIA  
+    ====================== -->  
+
+    <div class="country disabled"  
+         onclick="comingSoon('Zambia')">  
+
+        <div class="flag">  
+
+            ðŸ‡¿ðŸ‡²  
+
+        </div>  
+
+
+        <div class="country-info">  
+
+            <h3>  
+                Zambia  
+            </h3>  
+
+            <div class="country-meta">  
+
+                ZMW  
+                â€¢  
+                Mobile Money  
+
+            </div>  
+
+        </div>  
+
+
+        <div class="country-side">  
+
+            <span class="badge coming">  
+
+                COMING SOON  
+
+            </span>  
+
+            <i class="fas fa-lock country-arrow"></i>  
+
+        </div>  
+
+    </div>  
+
+
+    <!-- =====================  
+         MALAWI  
+    ====================== -->  
+
+    <div class="country disabled"  
+         onclick="comingSoon('Malawi')">  
+
+        <div class="flag">  
+
+            ðŸ‡²ðŸ‡¼  
+
+        </div>  
+
+
+        <div class="country-info">  
+
+            <h3>  
+                Malawi  
+            </h3>  
+
+            <div class="country-meta">  
+
+                MWK  
+                â€¢  
+                Mobile Money  
+
+            </div>  
+
+        </div>  
+
+
+        <div class="country-side">  
+
+            <span class="badge coming">  
+
+                COMING SOON  
+
+            </span>  
+
+            <i class="fas fa-lock country-arrow"></i>  
+
+        </div>  
+
+    </div>  
+
+
+    <!-- =====================  
+         CONGO  
+    ====================== -->  
+
+    <div class="country disabled"  
+         onclick="comingSoon('Congo')">  
+
+        <div class="flag">  
+
+            ðŸ‡¨ðŸ‡©  
+
+        </div>  
+
+
+        <div class="country-info">  
+
+            <h3>  
+                Congo  
+            </h3>  
+
+            <div class="country-meta">  
+
+                CDF  
+                â€¢  
+                Mobile Money  
+
+            </div>  
+
+        </div>  
+
+
+        <div class="country-side">  
+
+            <span class="badge coming">  
+
+                COMING SOON  
+
+            </span>  
+
+            <i class="fas fa-lock country-arrow"></i>  
+
+        </div>  
+
+    </div>  
+
+
+    <!-- =====================  
+         SOMALIA  
+    ====================== -->  
+
+    <div class="country disabled"  
+         onclick="comingSoon('Somalia')">  
+
+        <div class="flag">  
+
+            ðŸ‡¸ðŸ‡´  
+
+        </div>  
+
+
+        <div class="country-info">  
+
+            <h3>  
+                Somalia  
+            </h3>  
+
+            <div class="country-meta">  
+
+                SOS  
+                â€¢  
+                Mobile Money  
+
+            </div>  
+
+        </div>  
+
+
+        <div class="country-side">  
+
+            <span class="badge coming">  
+
+                COMING SOON  
+
+            </span>  
+
+            <i class="fas fa-lock country-arrow"></i>  
+
+        </div>  
+
+    </div>  
+
+
+</div>  
+
+
+<!-- INFORMATION -->  
+
+<section class="info">  
+
+    <div class="info-row">  
+
+        <div class="info-icon">  
+
+            <i class="fas fa-shield-halved"></i>  
+
+        </div>  
+
+
+        <div>  
+
+            <h3>  
+                Built for African payments  
+            </h3>  
+
+            <p>  
+
+                Start with Uganda today.  
+                Additional countries will be  
+                activated as their payment  
+                integrations become available.  
+
+            </p>  
+
+        </div>  
+
+    </div>  
+
+</section>
+
+</div>  <!-- TOAST -->  <div class="toast"  
+     id="toast">  <i class="fas fa-clock"></i>  
+
+<span id="toastText"></span>
+
+</div>  <script>  
+  
+/* =========================  
+   NAVIGATION  
+========================= */  
+  
+document.getElementById("backBtn").onclick = function(){  
+  
+    window.history.back();  
+  
+};  
+  
+  
+/* =========================  
+   SIDEBAR  
+========================= */  
+  
+const sidebar =  
+document.getElementById("sidebar");  
+  
+const overlay =  
+document.getElementById("overlay");  
+  
+function openSidebar(){  
+  
+    sidebar.classList.add("show");  
+  
+    overlay.classList.add("show");  
+  
+}  
+  
+function closeSidebar(){  
+  
+    sidebar.classList.remove("show");  
+  
+    overlay.classList.remove("show");  
+  
+}  
+  
+overlay.onclick = closeSidebar;  
+  
+document.getElementById("closeSidebar")  
+    .onclick = closeSidebar;  
+  
+  
+/*  
+   Desktop sidebar remains visible.  
+   Mobile opens from other dashboard  
+   navigation if needed.  
+*/  
+  
+  
+/* =========================  
+   THEME  
+========================= */  
+  
+const themeToggle =  
+document.getElementById("themeToggle");  
+  
+const themeIcon =  
+document.getElementById("themeIcon");  
+  
+  
+function loadTheme(){  
+  
+    const theme =  
+        localStorage.getItem("theme") || "dark";  
+  
+    if(theme === "light"){  
+  
+        document.body.classList.add("light");  
+  
+        themeIcon.className =  
+            "fas fa-sun";  
+  
+    }else{  
+  
+        document.body.classList.remove("light");  
+  
+        themeIcon.className =  
+            "fas fa-moon";  
+  
+    }  
+  
+}  
+  
+  
+loadTheme();  
+  
+  
+themeToggle.onclick = function(){  
+  
+    document.body.classList.toggle("light");  
+  
+    const light =  
+        document.body.classList.contains("light");  
+  
+    localStorage.setItem(  
+        "theme",  
+        light ? "light" : "dark"  
+    );  
+  
+    themeIcon.className =  
+        light  
+        ? "fas fa-sun"  
+        : "fas fa-moon";  
+  
+};  
+  
+  
+/* =========================  
+   AVATAR  
+========================= */  
+  
+try{  
+  
+    const user =  
+        JSON.parse(  
+            localStorage.getItem("autopayUser") || "null"  
+        );  
+  
+    if(user){  
+  
+        const name =  
+            user.fullName ||  
+            user.name ||  
+            "";  
+  
+        if(name){  
+  
+            document.getElementById("avatar")  
+                .textContent =  
+                name.trim()  
+                    .charAt(0)  
+                    .toUpperCase();  
+  
+        }  
+  
+    }  
+  
+}catch(error){  
+  
+    console.error(error);  
+  
+}  
+  
+  
+/* =========================  
+   COMING SOON  
+========================= */  
+  
+function comingSoon(country){  
+  
+    const toast =  
+        document.getElementById("toast");  
+  
+    const text =  
+        document.getElementById("toastText");  
+  
+    text.textContent =  
+        country +  
+        " integration is coming soon.";  
+  
+    toast.classList.add("show");  
+  
+    setTimeout(function(){  
+  
+        toast.classList.remove("show");  
+  
+    },3000);  
+  
+}  
+  
+  
+/* =========================  
+   NOTIFICATIONS  
+========================= */  
+  
+function openNotifications(){  
+  
+    /*  
+       Keep this connected to the  
+       existing notification system  
+       if your notification panel is  
+       shared across AUTOPAY pages.  
+    */  
+  
+    window.location.href =  
+        "notifications.html";  
+  
+}  
+  
+  
+/* =========================  
+   LOGOUT  
+========================= */  
+  
+document.getElementById("logoutBtn")  
+.onclick = function(e){  
+  
+    e.preventDefault();  
+  
+    if(!confirm(  
+        "Are you sure you want to logout?"  
+    )) return;  
+  
+    localStorage.removeItem(  
+        "autopayUser"  
+    );  
+  
+    window.location.href =  
+        "login.html";  
+  
+};  
+  
+</script>
+</body>  
+</html>
