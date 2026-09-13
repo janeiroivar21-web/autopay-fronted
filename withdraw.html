@@ -1986,17 +1986,14 @@ await fetch(
 {
 method:"POST",
 
-headers:{
-"Content-Type":"application/json",
+headers: {
+    "Content-Type": "application/json",
 
-/*
- * Backend should use this
- * value for idempotency.
- */
+    "Authorization":
+        "Bearer " + await currentUser.getIdToken(),
 
-"Idempotency-Key":
-withdrawData.idempotencyKey
-
+    "Idempotency-Key":
+        withdrawData.idempotencyKey
 },
 
 body:JSON.stringify({
