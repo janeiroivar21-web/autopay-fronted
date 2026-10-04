@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Developer Documentation - AUTOPAY</title>
+<title>Developer Documentation - BossXpay</title>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
@@ -279,7 +279,7 @@ white-space:nowrap;
 
         <p>
 
-            The AUTOPAY API allows merchants to initiate M-Pesa STK Push payments,
+            The BossXpay API allows merchants to initiate M-Pesa STK Push payments,
             verify transaction status, receive webhook notifications and manage
             payment collections securely.
 
@@ -297,7 +297,7 @@ Complete these steps to start accepting payments with AUTOPAY.
 
 <ol style="padding-left:20px;line-height:2;">
 
-<li>Create your AUTOPAY merchant account.</li>
+<li>Create your BossXpay merchant account.</li>
 
 <li>Generate your API Keys.</li>
 
@@ -317,9 +317,9 @@ Complete these steps to start accepting payments with AUTOPAY.
 
 <p>
 
-Every merchant configures a default collection method from their AUTOPAY dashboard.
+Every merchant configures a default collection method from their BossXpay dashboard.
 
-When an STK Push payment is successful, AUTOPAY automatically routes the payment to the configured destination.
+When an STK Push payment is successful, BossXpay automatically routes the payment to the configured destination.
 
 </p>
 
@@ -331,8 +331,8 @@ When an STK Push payment is successful, AUTOPAY automatically routes the payment
 </tr>
 
 <tr>
-<td>AUTOPAY Wallet</td>
-<td>Funds are credited to your AUTOPAY Wallet balance.</td>
+<td>BossXpay Wallet</td>
+<td>Funds are credited to your BossXpay Wallet balance.</td>
 </tr>
 
 <tr>
@@ -356,7 +356,7 @@ When an STK Push payment is successful, AUTOPAY automatically routes the payment
 
 Your integration never needs to specify where payments should be sent.
 
-AUTOPAY automatically uses your configured Collection Method.
+BossXpay automatically uses your configured Collection Method.
 
 </div>
 
@@ -371,7 +371,7 @@ AUTOPAY automatically uses your configured Collection Method.
         <div class="code-box">
 
             <code id="baseUrl">
-https://autopaydigital.co.ke/api
+https://BossXpay.co.ke/api
             </code>
 
             <button onclick="copyCode('baseUrl')">
@@ -435,7 +435,7 @@ Current Environment:
 
 <p>
 Base URL:
-<strong>https://autopaydigital.co.ke</strong>
+<strong>https://BossXpay.co.ke</strong>
 </p>
 
 <p>
@@ -476,7 +476,7 @@ Copy
 
 <p>
 
-Generate and manage your Live and Test API Keys from your AUTOPAY Dashboard.
+Generate and manage your Live and Test API Keys from your BossXpay Dashboard.
 
 Dashboard → API Keys
 
@@ -498,13 +498,13 @@ Use the API Keys page in your dashboard to copy or regenerate your credentials.
 
 <ol style="padding-left:20px;line-height:2;">
 
-<li>Create your AUTOPAY merchant account.</li>
+<li>Create your BossXpay merchant account.</li>
 
 <li>Generate your Live API Key.</li>
 
 <li>Include your Secret Key in the Authorization header.</li>
 
-<li>Use the API endpoints hosted on <strong>https://autopay.co.ke/api</strong>.</li>
+<li>Use the API endpoints hosted on <strong>https://BossXpay.co.ke/api</strong>.</li>
 
 <li>Receive payment confirmation through Webhook or Check Status.</li>
 
@@ -542,7 +542,7 @@ Copy
 
 Do not send a Firebase UID in your request.
 
-AUTOPAY automatically identifies your merchant account using your Secret API Key.
+BossXpay automatically identifies your merchant account using your Secret API Key.
 
 The request body only requires:
 
@@ -588,7 +588,7 @@ Copy
 
 <p>
 
-When you initiate an STK Push request, AUTOPAY automatically identifies your merchant account from your API Key and checks your configured Collection Method.
+When you initiate an STK Push request, BossXpay automatically identifies your merchant account from your API Key and checks your configured Collection Method.
 
 No additional destination parameters are required.
 
@@ -608,17 +608,17 @@ No additional destination parameters are required.
 
 <tr>
 <td>2</td>
-<td>AUTOPAY validates your Secret API Key.</td>
+<td>BossXpay validates your Secret API Key.</td>
 </tr>
 
 <tr>
 <td>3</td>
-<td>AUTOPAY identifies your merchant account.</td>
+<td>BossXpay identifies your merchant account.</td>
 </tr>
 
 <tr>
 <td>4</td>
-<td>AUTOPAY reads your configured Collection Method.</td>
+<td>BossXpay reads your configured Collection Method.</td>
 </tr>
 
 <tr>
@@ -637,7 +637,7 @@ No additional destination parameters are required.
 
 You never need to specify whether funds should go to your Wallet, Till, Paybill or Bank Account in the API request.
 
-AUTOPAY automatically routes the payment based on your merchant settings.
+BossXpay automatically routes the payment based on your merchant settings.
 
 </div>
 
@@ -688,7 +688,7 @@ AUTOPAY automatically routes the payment based on your merchant settings.
 <div class="code-box">
 
 <pre id="javascriptExample">
-fetch("https://autopaydigital.co.ke/api/stk-push",{
+fetch("https://BossXpay.co.ke/api/stk-push",{
 
 method:"POST",
 
@@ -737,7 +737,7 @@ Copy
 
 Your application only initiates the payment request.
 
-After the customer completes the STK Push, AUTOPAY automatically routes the funds based on your configured Collection Method.
+After the customer completes the STK Push, BossXpay automatically routes the funds based on your configured Collection Method.
 
 </p>
 
@@ -749,7 +749,7 @@ After the customer completes the STK Push, AUTOPAY automatically routes the fund
 </tr>
 
 <tr>
-<td>AUTOPAY Wallet</td>
+<td>BossXpay Wallet</td>
 <td>Merchant Wallet Balance</td>
 </tr>
 
@@ -774,7 +774,7 @@ After the customer completes the STK Push, AUTOPAY automatically routes the fund
 
 The API request does not require any destination field.
 
-AUTOPAY automatically determines where to collect the payment using your merchant account settings.
+BossXpay automatically determines where to collect the payment using your merchant account settings.
 
 </div>
 
@@ -859,7 +859,7 @@ $payload = [
     "balanceType" => "wallet"
 ];
 
-$curl = curl_init("https://autopaydigital.co.ke/api/stk-push");
+$curl = curl_init("https://BossXpay.co.ke/api/stk-push");
 
 curl_setopt_array($curl, [
     CURLOPT_POST => true,
@@ -889,7 +889,7 @@ Copy
 
     <div class="note">
 
-AUTOPAY sends a POST request to your webhook after every payment.
+BossXpay sends a POST request to your webhook after every payment.
 
 Your endpoint should:
 
@@ -915,7 +915,7 @@ Your endpoint should:
 
 <p>
 
-When a payment is successfully completed, AUTOPAY automatically sends an HTTPS POST request to your configured Callback URL.
+When a payment is successfully completed, BossXpay automatically sends an HTTPS POST request to your configured Callback URL.
 
 Your endpoint must:
 
@@ -935,7 +935,7 @@ Your endpoint must:
 
 <div class="note">
 
-AUTOPAY sends webhook notifications only after a payment has been confirmed successfully.
+BossXpay sends webhook notifications only after a payment has been confirmed successfully.
 
 </div>
 
@@ -947,7 +947,7 @@ AUTOPAY sends webhook notifications only after a payment has been confirmed succ
 
 <p>
 
-Configure your Callback URL from your AUTOPAY Dashboard before accepting payments.
+Configure your Callback URL from your BossXpay Dashboard before accepting payments.
 
 Dashboard → Callback Link
 
@@ -1098,7 +1098,7 @@ async function initiatePayment(){
 
 const response = await axios.post(
 
-"https://autopaydigital.co.ke/api/stk-push",
+"https://BossXpay.co.ke/api/stk-push",
 
 {
 phone:"254712345678",
