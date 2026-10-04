@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Payment Accounts - AUTOPAY</title>
+<title>Payment Accounts - BossXpay</title>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
@@ -515,7 +515,7 @@ opacity:1;
 
             <i class="fas fa-wallet"></i>
 
-            AUTOPAY Wallet
+            BossXpay Wallet
 
         </div>
 
@@ -539,7 +539,7 @@ opacity:1;
 
             <span id="walletStatus">
 
-                AUTOPAY Wallet
+                BossXpay Wallet
 
             </span>
 
@@ -555,7 +555,7 @@ opacity:1;
 
             <span>
 
-                Receive all payments into your AUTOPAY Wallet.
+                Receive all payments into your BossXpay Wallet.
 
             </span>
 
@@ -836,7 +836,7 @@ document.getElementById("walletStatus").textContent=
 
 method==="wallet"
 
-?"AUTOPAY Wallet"
+?"BossXpay Wallet"
 
 :method.charAt(0).toUpperCase()+method.slice(1);
 
@@ -869,7 +869,7 @@ Soon you will be able to connect:<br><br>
 â€¢ M-PESA Till<br>
 â€¢ M-PESA Paybill<br>
 â€¢ Bank Account<br><br>
-For now, all payments are securely received into your <b>AUTOPAY Wallet</b>.`,
+For now, all payments are securely received into your <b>BossXpay Wallet</b>.`,
 true
 );
 
@@ -1052,7 +1052,7 @@ const currentMethod = (merchant.collectionMethod || "wallet").toLowerCase();
 
 let defaultType =
 currentMethod==="wallet"
-? "AUTOPAY Wallet"
+? "BossXpay Wallet"
 : currentMethod.charAt(0).toUpperCase()+currentMethod.slice(1);
 if(snapshot.empty){
 
@@ -1065,7 +1065,7 @@ container.innerHTML=`
 
 <p>
 Personal payment account integration is coming soon.
-All collections are currently received through your AUTOPAY Wallet.
+All collections are currently received through your BossXpay Wallet.
 </p>
 
 </div>
@@ -1312,17 +1312,17 @@ collectionMethod:"wallet"
 });
 
 // Update wallet card
-document.getElementById("walletStatus").textContent="AUTOPAY Wallet";
+document.getElementById("walletStatus").textContent="BossXpay Wallet";
 
 document.getElementById("walletBadge").innerHTML="DEFAULT";
 
 document.getElementById("walletDefaultBtn").style.display="none";
 
-document.getElementById("defaultType").textContent="AUTOPAY Wallet";
+document.getElementById("defaultType").textContent="BossXpay Wallet";
 
 showPopup(
 "Collection Method Updated",
-"AUTOPAY Wallet is now your default collection method."
+"BossXpay Wallet is now your default collection method."
 );
 
 };
