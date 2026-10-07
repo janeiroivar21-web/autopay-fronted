@@ -291,8 +291,8 @@ white-space:nowrap;
 
 <h2>Quick Start</h2>
 
-<p>
-Complete these steps to start accepting payments with AUTOPAY.
+<p>q
+Complete these steps to start accepting payments with BossXpay.
 </p>
 
 <ol style="padding-left:20px;line-height:2;">
@@ -371,7 +371,7 @@ BossXpay automatically uses your configured Collection Method.
         <div class="code-box">
 
             <code id="baseUrl">
-https://BossXpay.co.ke/api
+https://api.bossxpay.co.ke/api
             </code>
 
             <button onclick="copyCode('baseUrl')">
@@ -435,7 +435,7 @@ Current Environment:
 
 <p>
 Base URL:
-<strong>https://BossXpay.co.ke</strong>
+<strong>https://api.bossxpay.co.ke/api</strong>
 </p>
 
 <p>
@@ -504,7 +504,7 @@ Use the API Keys page in your dashboard to copy or regenerate your credentials.
 
 <li>Include your Secret Key in the Authorization header.</li>
 
-<li>Use the API endpoints hosted on <strong>https://BossXpay.co.ke/api</strong>.</li>
+<li>Use the API endpoints hosted on <strong>https://api.bossxpay.co.ke/api</strong>.</li>
 
 <li>Receive payment confirmation through Webhook or Check Status.</li>
 
@@ -688,7 +688,7 @@ BossXpay automatically routes the payment based on your merchant settings.
 <div class="code-box">
 
 <pre id="javascriptExample">
-fetch("https://BossXpay.co.ke/api/stk-push",{
+fetch("https://api.bossxpay.co.ke/api/stk-push",{
 
 method:"POST",
 
@@ -859,7 +859,7 @@ $payload = [
     "balanceType" => "wallet"
 ];
 
-$curl = curl_init("https://BossXpay.co.ke/api/stk-push");
+$curl = curl_init("https://api.bossxpay.co.ke/api/stk-push");
 
 curl_setopt_array($curl, [
     CURLOPT_POST => true,
@@ -1098,7 +1098,7 @@ async function initiatePayment(){
 
 const response = await axios.post(
 
-"https://BossXpay.co.ke/api/stk-push",
+"https://api.bossxpay.co.ke/api/stk-push",
 
 {
 phone:"254712345678",
@@ -1247,7 +1247,7 @@ Use the Health endpoint to verify that the BossXpay API is online.
 
 <pre id="healthExample">
 
-GET https://BossXpay.co.ke/health
+GET https://api.bossxpay.co.ke/health
 
 </pre>
 
