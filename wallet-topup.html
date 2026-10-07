@@ -720,7 +720,7 @@ BACKEND URL
 =========================================  
 */  
   
-const API_BASE = "https://BossXpay.co.ke";  
+const API_BASE = "https://api.bossxpay.co.ke";  
   
 /*  
 =========================================  
@@ -998,33 +998,35 @@ document.getElementById("topupBtn").innerHTML =
                 }  
             );  
   
-        const text = await response.text();  
-  
-console.log("STK Response:", text);  
-  
-let result;  
-  
-try {  
-  
-    result = JSON.parse(text);  
-  
-} catch (e) {  
-  
-    document.getElementById("loader").style.display = "none";  
-  
-    document.getElementById("topupBtn").disabled = false;  
-  
-    document.getElementById("topupBtn").innerHTML =  
-    "Top Up Wallet";  
-  
-    showPopup(  
-        "Server Error",  
-        text  
-    );  
-  
-    return;  
-  
-    }  
+        const text = await response.text();
+
+console.log("STK HTTP STATUS:", response.status);
+console.log("STK RESPONSE:", text);
+
+let result;
+
+try {
+
+    result = JSON.parse(text);
+
+} catch (e) {
+
+    document.getElementById("loader").style.display = "none";
+
+    document.getElementById("topupBtn").disabled = false;
+
+    document.getElementById("topupBtn").innerHTML =
+        "Top Up Wallet";
+
+    showPopup(
+        "Server Error",
+        `The payment server returned an invalid response.<br><br>
+         HTTP Status: ${response.status}`
+    );
+
+    return;
+  }
+      
         if (!response.ok || !result.success) {  
   
             document.getElementById("loader").style.display =  
