@@ -819,7 +819,13 @@ try {
 
     document.getElementById("loading").style.display = "none";
 
-    document.getElementById("failedMessage").innerHTML = text;
+    document.getElementById("failedMessage").textContent =
+    `The payment server returned an invalid response (HTTP ${response.status}). Please try again later.`;
+
+console.error("STK endpoint returned non-JSON:", {
+    status: response.status,
+    response: text.slice(0, 500)
+});
 
     document.getElementById("failedPopup").style.display = "flex";
 
