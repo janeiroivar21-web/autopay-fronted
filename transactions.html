@@ -568,676 +568,648 @@ Next
 </p>  </div>  <!-- Transaction Details -->  <div class="modal" id="detailsModal">  <div class="modal-card">  <div class="modal-header">  <h3>Transaction Details</h3>  <i class="fas fa-times" id="closeModal"></i>
 
 </div>  <div class="modal-body" id="detailsContent">  </div>  </div>  </div>  
-<script type="module">  
-import { auth, db } from "./firebase.js";  
-import Cache from "./cache.js";  import {
-onAuthStateChanged
+
+<script type="module">
+import { auth, db } from "./firebase.js";
+import Cache from "./cache.js";
+
+import {
+  onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
 
 import {
-doc,
-getDoc,
-collection,
-query,
-where,
-orderBy,
-onSnapshot
+  doc,
+  getDoc,
+  collection,
+  query,
+  where,
+  onSnapshot
 } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
 
-// Theme
-if(localStorage.getItem("theme")==="light"){
-document.body.classList.add("light");
-}
+// ==================================================
+// STATE
+// ==================================================
 
-let merchantId="";
-let allTransactions=[];
-let currentFilter="ALL";
-
-const pageSize = 10;
+let merchantId = "";
+let allTransactions = [];
+let currentFilter = "ALL";
 let currentPage = 1;
+const pageSize = 10;
 
-// Authentication
-let transactionsLoaded = false;
+let kenyaTransactions = [];
+let globalTransactions = [];
+let kenyaReady = false;
+let globalReady = false;
+let kenyaError = null;
+let globalError = null;
 
-onAuthStateChanged(auth,async(user)=>{
+let unsubscribeKenya = null;
+let unsubscribeGlobal = null;
+let loadGeneration = 0;
 
-if(!user){
-location.href="login.html";
-return;
+const $ = id => document.getElementById(id);
+
+// ==================================================
+// THEME
+// ==================================================
+
+if (localStorage.getItem("theme") === "light") {
+  document.body.classList.add("light");
 }
 
-// Load cached merchant immediately
-const cached = Cache.get("merchant");
+// ==================================================
+// SAFE HELPERS
+// ==================================================
 
-if(cached){
-
-merchantId = cached.merchantId || "";  
-
-document.getElementById("avatar").innerHTML =  
-    (cached.fullName || "A").charAt(0).toUpperCase();  
-
-// Show cached transactions instantly  
-const cachedTransactions = Cache.get("merchantTransactions");  
-
-if(cachedTransactions){  
-
-    allTransactions = cachedTransactions;  
-
-    document.getElementById("totalTransactions").textContent =  
-        allTransactions.length;  
-
-    let success = 0;  
-    let pending = 0;  
-    let failed = 0;  
-
-    allTransactions.forEach(tx=>{  
-
-        switch((tx.status || "").toUpperCase()){  
-
-            case "SUCCESS":  
-                success++;  
-                break;  
-
-            case "FAILED":  
-                failed++;  
-                break;  
-
-            default:  
-                pending++;  
-
-        }  
-
-    });  
-
-    document.getElementById("successTransactions").textContent = success;  
-    document.getElementById("pendingTransactions").textContent = pending;  
-    document.getElementById("failedTransactions").textContent = failed;  
-
-    renderTransactions();  
-
-}  
-
-if(merchantId){  
-    loadTransactions();  
+function escapeHTML(value) {
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
 }
 
+function getDate(value) {
+  if (!value) return null;
+
+  if (typeof value.toDate === "function") {
+    return value.toDate();
+  }
+
+  if (value instanceof Date) {
+    return value;
+  }
+
+  if (typeof value.seconds === "number") {
+    return new Date(value.seconds * 1000);
+  }
+
+  const date = new Date(value);
+
+  return Number.isNaN(date.getTime()) ? null : date;
 }
 
-const snap = await getDoc(doc(db,"users",user.uid));
-
-if(snap.exists()){
-
-const userData = snap.data();  
-
-Cache.set("merchant", userData);  
-
-localStorage.setItem("merchantUid", user.uid);  
-
-merchantId = userData.merchantId;  
-
-document.getElementById("avatar").innerHTML =  
-    (userData.fullName || "A").charAt(0).toUpperCase();  
-
-loadTransactions();
-
+function getTime(tx) {
+  return getDate(tx.createdAt)?.getTime() || 0;
 }
+
+function getReference(tx) {
+  return tx.checkoutRequestId ||
+    tx.checkout_request_id ||
+    tx.reference ||
+    tx.id ||
+    "--";
+}
+
+function getPhone(tx) {
+  return tx.phone ||
+    tx.phoneNumber ||
+    tx.customerPhone ||
+    tx.customer_phone ||
+    "";
+}
+
+function getStatus(tx) {
+  const status = String(tx.status || "PENDING")
+    .trim()
+    .toUpperCase();
+
+  if (["SUCCESS", "COMPLETED"].includes(status)) {
+    return "SUCCESS";
+  }
+
+  if (["FAILED", "CANCELLED", "REJECTED"].includes(status)) {
+    return "FAILED";
+  }
+
+  return "PENDING";
+}
+
+function getType(tx) {
+  const type = String(tx.type || "").toUpperCase();
+
+  if (type === "DEPOSIT") return "Wallet Deposit";
+  if (type === "WITHDRAWAL") return "Withdrawal";
+  if (type === "REVERSAL") return "Transaction Reversal";
+
+  if (type === "AUTO SERVICE TOP-UP" ||
+      type === "AUTO_SERVICE_TOPUP") {
+    return "Auto Service Top-up";
+  }
+
+  if (tx.balanceType === "wallet") return "Wallet Top-up";
+  if (tx.balanceType === "service") return "Service Balance Top-up";
+
+  if (tx.country === "Uganda") {
+    return "Uganda · " + (tx.type || "Payment");
+  }
+
+  return tx.type || "Transaction";
+}
+
+function getIcon(tx) {
+  const type = String(tx.type || "").toUpperCase();
+
+  if (type === "DEPOSIT") return "fa-arrow-down";
+  if (type === "WITHDRAWAL") return "fa-arrow-up";
+  if (type === "REVERSAL") return "fa-rotate-left";
+
+  if (tx.balanceType === "wallet") return "fa-wallet";
+  if (tx.balanceType === "service") return "fa-server";
+
+  return "fa-money-check-dollar";
+}
+
+function showMessage(title, message) {
+  $("transactionList").innerHTML = `
+    <div class="empty-state" style="display:block">
+      <i class="fas fa-circle-exclamation"></i>
+      <h2>${escapeHTML(title)}</h2>
+      <p>${escapeHTML(message)}</p>
+    </div>
+  `;
+
+  $("emptyState").style.display = "none";
+  $("pagination").style.display = "none";
+}
+
+// ==================================================
+// AUTHENTICATION AND MERCHANT
+// ==================================================
+
+onAuthStateChanged(auth, async user => {
+  const generation = ++loadGeneration;
+
+  stopListeners();
+
+  if (!user) {
+    location.href = "login.html";
+    return;
+  }
+
+  $("transactionList").innerHTML = `
+    <div class="empty-state" style="display:block">
+      <i class="fas fa-spinner fa-spin"></i>
+      <h2>Loading transactions...</h2>
+      <p>Please wait.</p>
+    </div>
+  `;
+
+  $("emptyState").style.display = "none";
+
+  try {
+    // Always resolve the current authenticated merchant.
+    const userSnap = await getDoc(doc(db, "users", user.uid));
+
+    if (generation !== loadGeneration) return;
+
+    if (!userSnap.exists()) {
+      showMessage(
+        "Merchant Not Found",
+        "Please sign in again or contact BossXpay support."
+      );
+      return;
+    }
+
+    const userData = userSnap.data();
+
+    Cache.set("merchant", userData);
+    localStorage.setItem("merchantUid", user.uid);
+
+    merchantId = userData.merchantId || "";
+
+    $("avatar").textContent =
+      (userData.fullName || "B").charAt(0).toUpperCase();
+
+    if (!merchantId) {
+      showMessage(
+        "Merchant ID Missing",
+        "Your account has no merchantId. Please contact support."
+      );
+      return;
+    }
+
+    // Do not use the dashboard's four-item cache as full history.
+    allTransactions = [];
+    renderTransactions();
+
+    listenToTransactions(generation);
+
+  } catch (error) {
+    console.error("MERCHANT LOAD ERROR:", error);
+
+    if (generation === loadGeneration) {
+      showMessage(
+        "Unable to Load Account",
+        error.message || "Please refresh and try again."
+      );
+    }
+  }
 });
 
-// Back
-document.getElementById("backBtn").onclick=()=>history.back();
+// ==================================================
+// REAL-TIME TRANSACTION LISTENERS
+// ==================================================
 
-// Load Transactions
-function loadTransactions(){
+function stopListeners() {
+  if (unsubscribeKenya) unsubscribeKenya();
+  if (unsubscribeGlobal) unsubscribeGlobal();
 
-if(transactionsLoaded || !merchantId) return;  
+  unsubscribeKenya = null;
+  unsubscribeGlobal = null;
 
-transactionsLoaded = true;  
+  kenyaTransactions = [];
+  globalTransactions = [];
 
-const q = query(  
-    collection(db,"transactions"),  
-    where("merchantId","==",merchantId)  
-);  
+  kenyaReady = false;
+  globalReady = false;
 
-onSnapshot(  
-    q,  
-
-    (snapshot)=>{  
-
-        console.log("Merchant ID:", merchantId);  
-        console.log("Transactions found:", snapshot.size);  
-
-        allTransactions = [];  
-
-        let success = 0;  
-        let pending = 0;  
-        let failed = 0;  
-
-        snapshot.forEach(docSnap=>{  
-
-            const data = docSnap.data();  
-
-            data.id = docSnap.id;  
-
-            allTransactions.push(data);  
-
-            const status = String(  
-                data.status || "PENDING"  
-            ).toUpperCase();  
-
-            if(  
-                status === "SUCCESS" ||  
-                status === "COMPLETED"  
-            ){  
-
-                success++;  
-
-            }else if(  
-                status === "FAILED" ||  
-                status === "CANCELLED"  
-            ){  
-
-                failed++;  
-
-            }else{  
-
-                pending++;  
-
-            }  
-
-        });  
-
-        // Save transactions to cache  
-        Cache.set(  
-            "merchantTransactions",  
-            allTransactions  
-        );  
-
-        // Update summary  
-        document.getElementById(  
-            "totalTransactions"  
-        ).textContent = allTransactions.length;  
-
-        document.getElementById(  
-            "successTransactions"  
-        ).textContent = success;  
-
-        document.getElementById(  
-            "pendingTransactions"  
-        ).textContent = pending;  
-
-        document.getElementById(  
-            "failedTransactions"  
-        ).textContent = failed;  
-
-        // Render transactions  
-        renderTransactions();  
-
-    },  
-
-    (error)=>{  
-
-        console.error(  
-            "Firestore Error:",  
-            error  
-        );  
-
-        const list =  
-            document.getElementById(  
-                "transactionList"  
-            );  
-
-        list.innerHTML = `  
-            <div class="empty-state"  
-                 style="display:block;">  
-
-                <i class="fas fa-triangle-exclamation"  
-                   style="color:#ef4444;"></i>  
-
-                <h2>  
-                    Unable to Load Transactions  
-                </h2>  
-
-                <p>  
-                    ${escapeHTML(error.message)}  
-                </p>  
-
-            </div>  
-        `;  
-
-        document.getElementById(  
-            "pagination"  
-        ).style.display = "none";  
-
-    }  
-
-);
-
+  kenyaError = null;
+  globalError = null;
 }
 
-// Search
-document.getElementById("searchInput")
-.addEventListener("input",()=>{
+function listenToTransactions(generation) {
+  const kenyaQuery = query(
+    collection(db, "transactions"),
+    where("merchantId", "==", merchantId)
+  );
 
-currentPage=1;
+  const globalQuery = query(
+    collection(db, "globalTransactions"),
+    where("merchantId", "==", merchantId)
+  );
 
-renderTransactions();
+  unsubscribeKenya = onSnapshot(
+    kenyaQuery,
+    snapshot => {
+      if (generation !== loadGeneration) return;
 
+      kenyaTransactions = snapshot.docs.map(d => ({
+        ...d.data(),
+        id: d.id,
+        _source: "transactions"
+      }));
+
+      kenyaReady = true;
+      kenyaError = null;
+      combineTransactions();
+    },
+    error => {
+      if (generation !== loadGeneration) return;
+
+      console.error("KENYA TRANSACTIONS ERROR:", error);
+      kenyaError = error;
+      kenyaReady = true;
+      combineTransactions();
+    }
+  );
+
+  unsubscribeGlobal = onSnapshot(
+    globalQuery,
+    snapshot => {
+      if (generation !== loadGeneration) return;
+
+      globalTransactions = snapshot.docs.map(d => ({
+        ...d.data(),
+        id: d.id,
+        _source: "globalTransactions"
+      }));
+
+      globalReady = true;
+      globalError = null;
+      combineTransactions();
+    },
+    error => {
+      if (generation !== loadGeneration) return;
+
+      console.error("GLOBAL TRANSACTIONS ERROR:", error);
+      globalError = error;
+      globalReady = true;
+      combineTransactions();
+    }
+  );
+}
+
+function combineTransactions() {
+  if (!kenyaReady || !globalReady) return;
+
+  if (kenyaError && globalError) {
+    showMessage(
+      "Unable to Load Transactions",
+      "Both transaction sources failed. Check your Firestore rules and browser console."
+    );
+    console.error("Both transaction listeners failed:", {
+      kenyaError,
+      globalError
+    });
+    return;
+  }
+
+  if (kenyaError || globalError) {
+    console.warn(
+      "One transaction source is unavailable.",
+      { kenyaError, globalError }
+    );
+  }
+
+  // Use source + document ID to avoid collisions between collections.
+  const combined = [
+    ...kenyaTransactions,
+    ...globalTransactions
+  ];
+
+  combined.sort((a, b) => getTime(b) - getTime(a));
+
+  allTransactions = combined;
+  currentPage = 1;
+
+  renderTransactions();
+}
+
+// ==================================================
+// SEARCH AND FILTERS
+// ==================================================
+
+$("searchInput").addEventListener("input", () => {
+  currentPage = 1;
+  renderTransactions();
 });
 
-// Filters
 document.querySelectorAll(".filter-btn[data-filter]")
-.forEach(btn=>{
+  .forEach(button => {
+    button.addEventListener("click", () => {
+      document.querySelectorAll(".filter-btn[data-filter]")
+        .forEach(b => b.classList.remove("active"));
 
-btn.onclick=function(){
+      button.classList.add("active");
+      currentFilter = button.dataset.filter;
+      currentPage = 1;
 
-document.querySelectorAll(".filter-btn[data-filter]")
-.forEach(b=>b.classList.remove("active"));
+      renderTransactions();
+    });
+  });
 
-this.classList.add("active");
+function getFilteredTransactions() {
+  const search = $("searchInput").value.trim().toLowerCase();
 
-currentFilter=this.dataset.filter;
+  return allTransactions.filter(tx => {
+    const reference = String(getReference(tx)).toLowerCase();
+    const phone = String(getPhone(tx)).toLowerCase();
+    const status = getStatus(tx);
 
-currentPage=1;
+    const matchesSearch =
+      reference.includes(search) || phone.includes(search);
 
-renderTransactions();
+    const matchesStatus =
+      currentFilter === "ALL" || status === currentFilter;
 
-};
+    return matchesSearch && matchesStatus;
+  }).sort((a, b) => getTime(b) - getTime(a));
+}
 
+// ==================================================
+// SUMMARY AND TRANSACTION RENDERING
+// ==================================================
+
+function renderTransactions() {
+  const list = $("transactionList");
+  const empty = $("emptyState");
+
+  // Summary counts reflect all loaded records, not just the current page.
+  let success = 0;
+  let pending = 0;
+  let failed = 0;
+
+  allTransactions.forEach(tx => {
+    const status = getStatus(tx);
+
+    if (status === "SUCCESS") success++;
+    else if (status === "FAILED") failed++;
+    else pending++;
+  });
+
+  $("totalTransactions").textContent =
+    allTransactions.length.toLocaleString();
+
+  $("successTransactions").textContent = success.toLocaleString();
+  $("pendingTransactions").textContent = pending.toLocaleString();
+  $("failedTransactions").textContent = failed.toLocaleString();
+
+  const filtered = getFilteredTransactions();
+
+  if (!filtered.length) {
+    list.innerHTML = "";
+    empty.style.display = "block";
+    $("pagination").style.display = "none";
+    return;
+  }
+
+  empty.style.display = "none";
+  $("pagination").style.display = "flex";
+
+  const totalPages = Math.max(
+    1,
+    Math.ceil(filtered.length / pageSize)
+  );
+
+  currentPage = Math.min(currentPage, totalPages);
+
+  const start = (currentPage - 1) * pageSize;
+  const pageTransactions = filtered.slice(start, start + pageSize);
+
+  $("pageInfo").textContent =
+    `Page ${currentPage} of ${totalPages}`;
+
+  $("prevPage").disabled = currentPage === 1;
+  $("nextPage").disabled = currentPage === totalPages;
+
+  $("prevPage").style.opacity =
+    currentPage === 1 ? ".5" : "1";
+
+  $("nextPage").style.opacity =
+    currentPage === totalPages ? ".5" : "1";
+
+  list.innerHTML = pageTransactions.map(tx => {
+    const status = getStatus(tx);
+    const css = status.toLowerCase();
+    const date = getDate(tx.createdAt);
+
+    const formattedDate = date
+      ? date.toLocaleString()
+      : "--";
+
+    const amount = Number(tx.amount || 0);
+    const safeAmount = Number.isFinite(amount) ? amount : 0;
+
+    return `
+      <div class="transaction-card"
+           data-id="${escapeHTML(tx.id)}"
+           data-source="${escapeHTML(tx._source)}">
+
+        <div class="transaction-top">
+          <div style="min-width:0">
+            <div class="reference">
+              <i class="fas ${getIcon(tx)}"
+                 style="color:#2563eb;margin-right:8px"></i>
+              ${escapeHTML(getType(tx))}
+            </div>
+
+            <div class="transaction-info">
+              ${escapeHTML(getPhone(tx) || "--")}
+            </div>
+
+            <div class="transaction-info">
+              ${escapeHTML(getReference(tx))}
+            </div>
+
+            <div class="transaction-info">
+              ${escapeHTML(tx.country || "Kenya")}
+            </div>
+          </div>
+
+          <div class="amount">
+            ${escapeHTML(tx.currency || "KES")}
+            ${Math.abs(safeAmount).toLocaleString()}
+          </div>
+        </div>
+
+        <div class="transaction-info">
+          <span>${escapeHTML(formattedDate)}</span>
+          <span class="status ${css}">
+            ${escapeHTML(status)}
+          </span>
+        </div>
+      </div>
+    `;
+  }).join("");
+
+  list.querySelectorAll(".transaction-card").forEach(card => {
+    card.addEventListener("click", () => {
+      showDetails(card.dataset.id, card.dataset.source);
+    });
+  });
+}
+
+// ==================================================
+// PAGINATION
+// ==================================================
+
+$("prevPage").addEventListener("click", () => {
+  if (currentPage > 1) {
+    currentPage--;
+    renderTransactions();
+  }
 });
 
-function escapeHTML(value){
+$("nextPage").addEventListener("click", () => {
+  const totalPages = Math.ceil(
+    getFilteredTransactions().length / pageSize
+  );
 
-return String(value ?? "")  
-    .replace(/&/g,"&amp;")  
-    .replace(/</g,"&lt;")  
-    .replace(/>/g,"&gt;")  
-    .replace(/"/g,"&quot;")  
-    .replace(/'/g,"&#039;");
-
-}
-
-// Render
-function renderTransactions(){
-
-const list = document.getElementById("transactionList");
-const empty = document.getElementById("emptyState");
-
-const search = document
-.getElementById("searchInput")
-.value
-.toLowerCase();
-
-const filtered = allTransactions.filter(tx=>{
-
-const status = (tx.status || "").toUpperCase();
-
-const ref = String(
-tx.checkoutRequestId ||
-tx.reference ||
-tx.id ||
-""
-).toLowerCase();
-
-const phone = String(tx.phone || "")
-.toLowerCase();
-
-const matchesSearch =
-ref.includes(search) || phone.includes(search);
-
-const matchesFilter =
-currentFilter === "ALL" ||
-status === currentFilter;
-
-return matchesSearch && matchesFilter;
-
+  if (currentPage < totalPages) {
+    currentPage++;
+    renderTransactions();
+  }
 });
 
-if(filtered.length===0){
+// ==================================================
+// TRANSACTION DETAILS
+// ==================================================
 
-list.innerHTML = "";
+function showDetails(id, source) {
+  const tx = allTransactions.find(item =>
+    item.id === id && item._source === source
+  );
 
-empty.style.display = "block";
+  if (!tx) return;
 
-document.getElementById("pagination").style.display = "none";
+  const amount = Number(tx.amount || 0);
+  const status = getStatus(tx);
+  const date = getDate(tx.createdAt);
 
-return;
+  const rows = [
+    ["Transaction Type", getType(tx)],
+    ["Reference", getReference(tx)],
+    ["Phone", getPhone(tx) || "--"],
+    [
+      "Amount",
+      `${tx.currency || "KES"} ${
+        Number.isFinite(amount) ? amount.toLocaleString() : "0"
+      }`
+    ],
+    ["Status", status],
+    ["Country", tx.country || "Kenya"],
+    ["Gateway", "BossXpay"],
+    ["Date", date ? date.toLocaleString() : "--"],
+    ["Merchant Request", tx.merchantRequestId || "--"]
+  ];
 
+  if (tx.fee != null) {
+    rows.push([
+      "Fee",
+      `${tx.currency || "KES"} ${Number(tx.fee || 0).toLocaleString()}`
+    ]);
+  }
+
+  if (tx.payoutAmount != null) {
+    rows.push([
+      "Net Amount",
+      `${tx.currency || "KES"} ${
+        Number(tx.payoutAmount || 0).toLocaleString()
+      }`
+    ]);
+  }
+
+  if (tx.description) {
+    rows.push(["Description", tx.description]);
+  }
+
+  $("detailsContent").innerHTML = rows.map(([label, value]) => `
+    <div class="detail-row">
+      <span>${escapeHTML(label)}</span>
+      <strong style="overflow-wrap:anywhere;text-align:right">
+        ${escapeHTML(value)}
+      </strong>
+    </div>
+  `).join("") + `
+    <button class="copy-btn" id="copyReferenceBtn">
+      Copy Reference
+    </button>
+  `;
+
+  $("copyReferenceBtn").addEventListener("click", async () => {
+    const reference = String(getReference(tx));
+
+    try {
+      await navigator.clipboard.writeText(reference);
+      alert("Reference copied.");
+    } catch (error) {
+      window.prompt("Copy this reference:", reference);
+    }
+  });
+
+  $("detailsModal").style.display = "flex";
 }
 
-empty.style.display = "none";
+// ==================================================
+// CLOSE MODAL AND BACK BUTTON
+// ==================================================
 
-document.getElementById("pagination").style.display = "flex";
-
-let html = "";
-
-filtered.sort((a,b)=>{
-
-const aTime =
-a.createdAt?.toDate
-? a.createdAt.toDate().getTime()
-:0;
-
-const bTime =
-b.createdAt?.toDate
-? b.createdAt.toDate().getTime()
-:0;
-
-return bTime-aTime;
-
+$("closeModal").addEventListener("click", () => {
+  $("detailsModal").style.display = "none";
 });
 
-const totalPages = Math.max(
-1,
-Math.ceil(filtered.length/pageSize)
-);
-
-if(currentPage>totalPages){
-
-currentPage=totalPages;
-
-}
-
-const start=(currentPage-1)*pageSize;
-
-const pageTransactions=
-filtered.slice(
-start,
-start+pageSize
-);
-
-document.getElementById("pageInfo").innerHTML=
-Page ${currentPage} of ${totalPages};
-
-const prevBtn = document.getElementById("prevPage");
-const nextBtn = document.getElementById("nextPage");
-
-prevBtn.disabled = currentPage === 1;
-nextBtn.disabled = currentPage === totalPages;
-
-prevBtn.style.opacity = prevBtn.disabled ? ".5" : "1";
-nextBtn.style.opacity = nextBtn.disabled ? ".5" : "1";
-
-prevBtn.style.cursor = prevBtn.disabled ? "not-allowed" : "pointer";
-nextBtn.style.cursor = nextBtn.disabled ? "not-allowed" : "pointer";
-
-pageTransactions.forEach(tx=>{
-
-const status =
-(tx.status || "PENDING").toUpperCase();
-
-let css = "pending";
-
-if(status==="SUCCESS") css="success";
-if(status==="FAILED") css="failed";
-
-const date =
-tx.createdAt?.toDate
-? tx.createdAt.toDate().toLocaleString()
-: "--";
-
-let icon = "fa-money-check-dollar";
-let title = tx.type || "Transaction";
-
-switch ((tx.type || "").toUpperCase()) {
-
-case "DEPOSIT":
-icon = "fa-arrow-down";
-title = "Wallet Deposit";
-break;
-
-case "WITHDRAWAL":
-icon = "fa-arrow-up";
-title = "Withdrawal";
-break;
-
-case "REVERSAL":
-icon = "fa-rotate-left";
-title = "Transaction Reversal";
-break;
-
-case "AUTO SERVICE TOP-UP":
-icon = "fa-rotate";
-title = "Auto Service Top-up";
-break;
-
-default:
-
-if (tx.balanceType === "wallet") {  
-    icon = "fa-wallet";  
-    title = "Wallet Top-up";  
-}  
-
-else if (tx.balanceType === "service") {  
-    icon = "fa-server";  
-    title = "Service Balance Top-up";  
-}
-
-}
-
-html += `
-
-<div class="transaction-card" data-id="${tx.id}">  <div class="transaction-top">  <div>  <div class="reference">  <i class="fas ${icon}" style="color:#2563eb;margin-right:8px;"></i>
-
-${title}
-
-</div>  <div class="transaction-info">  ${tx.phone || "--"}
-
-</div>  <div class="transaction-info">  ${tx.checkoutRequestId || tx.reference || tx.id}
-
-</div>  </div>  <div class="amount">  
-${Number(tx.amount) < 0 ? "-" : ""}  
-${tx.currency || "KES"} ${Math.abs(Number(tx.amount || 0)).toLocaleString()}  
-</div>  </div>  <div class="transaction-info">  <span>${date}</span>
-
-<span class="status ${css}">  
-${status}  
-</span>  </div>  </div>  
-`;  });
-
-list.innerHTML = html;
-
-document.querySelectorAll(".transaction-card")
-.forEach(card=>{
-
-card.onclick = ()=>{
-
-showDetails(card.dataset.id);
-
-};
-
+$("detailsModal").addEventListener("click", event => {
+  if (event.target === $("detailsModal")) {
+    $("detailsModal").style.display = "none";
+  }
 });
 
-}
-
-// Modal
-window.showDetails = function(id){
-
-const tx = allTransactions.find(t => t.id === id);
-
-if(!tx) return;
-
-let transactionName = "Transaction";
-
-switch ((tx.type || "").toUpperCase()) {
-
-case "DEPOSIT":
-transactionName = "Wallet Deposit";
-break;
-
-case "WITHDRAWAL":
-transactionName = "Withdrawal";
-break;
-
-case "REVERSAL":
-transactionName = "Transaction Reversal";
-break;
-
-case "AUTO SERVICE TOP-UP":
-transactionName = "Auto Service Top-up";
-break;
-
-default:
-
-if(tx.balanceType === "wallet"){  
-    transactionName = "Wallet Top-up";  
-}  
-else if(tx.balanceType === "service"){  
-    transactionName = "Service Balance Top-up";  
-}
-
-}
-
-document.getElementById("detailsContent").innerHTML = `
-
-<div class="detail-row">  
-<span>Transaction Type</span>  
-<strong>${transactionName}</strong>  
-</div>  <div class="detail-row">  
-<span>Reference</span>  
-<strong>${tx.checkoutRequestId || tx.reference || tx.id}</strong>  
-</div>  <div class="detail-row">  
-<span>Phone</span>  
-<strong>${tx.phone || "--"}</strong>  
-</div>  <div class="detail-row">  
-<span>Amount</span>  
-<strong>  
-${tx.currency || "KES"}  
-${Number(tx.amount || 0).toLocaleString()}  
-</strong>  
-</div>  <div class="detail-row">  
-<span>Status</span>  
-<strong>${tx.status || "--"}</strong>  
-</div>  <div class="detail-row">
-<span>Gateway</span>
-<strong>BossXpay</strong>
-</div>  ${tx.fee ? `
-
-<div class="detail-row">  
-<span>Fee</span>  
-<strong>  
-${tx.currency || "KES"}  
-${Number(tx.fee).toLocaleString()}  
-</strong>  
-</div>  
-` : ""}  ${tx.payoutAmount ? `
-
-<div class="detail-row">  
-<span>Net Amount</span>  
-<strong>  
-${tx.currency || "KES"}  
-${Number(tx.payoutAmount).toLocaleString()}  
-</strong>  
-</div>  
-` : ""}  ${tx.description ? `
-
-<div class="detail-row">  
-<span>Description</span>  
-<strong>${tx.description}</strong>  
-</div>  
-` : ""}  <div class="detail-row">  
-<span>Merchant Request</span>  
-<strong>${tx.merchantRequestId || "--"}</strong>  
-</div>  <button  
-class="copy-btn"  
-onclick="copyReference('${tx.checkoutRequestId || tx.reference || tx.id}')">
-Copy Reference
-</button>
-
-`;
-
-document.getElementById("detailsModal").style.display = "flex";
-
-};
-
-// Close Modal
-document.getElementById("closeModal").onclick=()=>{
-
-document.getElementById("detailsModal").style.display="none";
-
-};
-
-window.onclick=function(e){
-
-const modal=document.getElementById("detailsModal");
-
-if(e.target===modal){
-
-modal.style.display="none";
-
-}
-
-};
-
-document.getElementById("prevPage").onclick=()=>{
-
-if(currentPage>1){
-
-currentPage--;
-
-renderTransactions();
-
-}
-
-};
-
-document.getElementById("nextPage").onclick=()=>{
-
-const totalPages=Math.max(
-1,
-Math.ceil(filteredTransactionCount()/pageSize)
-);
-
-if(currentPage<totalPages){
-
-currentPage++;
-
-renderTransactions();
-
-}
-
-};
-
-function filteredTransactionCount(){
-
-const search=document
-.getElementById("searchInput")
-.value
-.toLowerCase();
-
-return allTransactions.filter(tx=>{
-
-const status=(tx.status||"").toUpperCase();
-
-const ref=String(
-tx.checkoutRequestId||
-tx.reference||
-""
-).toLowerCase();
-
-const phone=String(
-tx.phone||""
-).toLowerCase();
-
-return(
-(ref.includes(search)||phone.includes(search))
-&&
-(currentFilter==="ALL"||
-status===currentFilter)
-);
-
-}).length;
-
-}
-
-// Copy
-window.copyReference=function(ref){
-
-navigator.clipboard.writeText(ref);
-
-alert("Reference copied.");
-
-};
-
-</script>  
+$("backBtn").addEventListener("click", () => {
+  location.href = "dashboard.html";
+});
+</script>
+  
 </body>  
  </html>
